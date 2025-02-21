@@ -4,8 +4,20 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('landing');
-});
+    return view('pages.landing');
+})->name('landing');
+
+Route::get('/over-oostenrijk', function () {
+    return view('pages.over-oostenrijk');
+})->name('over-oostenrijk');
+
+Route::get('/aanbod', function () {
+    return view('pages.aanbod');
+})->name('aanbod');
+
+Route::get('/detail/{id}', function ($id) {
+    return view('pages.detail', compact('id'));
+})->name('detail');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
