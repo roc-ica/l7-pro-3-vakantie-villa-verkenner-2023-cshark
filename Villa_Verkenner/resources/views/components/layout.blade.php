@@ -23,5 +23,8 @@
 <main>
     {{ $slot }}
 </main>
+<footer>
+    <p class="copy_text">&copy; CShark {{ date('Y') }}</p>
+</footer>
 </body>
 </html>
