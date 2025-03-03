@@ -11,20 +11,26 @@
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
 </head>
 <body>
-<nav class="nav">
-    <a href="{{ route('landing') }}">Home</a>
-    <a href="{{ route('aanbod') }}">Aanbod</a>
-    <a href="{{ route('over-oostenrijk') }}">Over Oostenrijk</a>
-</nav>
-<img class="logo" src="{{ asset('images/austria-flag.jpg') }}" alt="Logo"">
+
+<header>
+  <img class="logo" src="{{ asset('images/austria-flag.jpg') }}" alt="Logo"">
+  <nav class="nav">
+      <a href="{{ route('landing') }}">Home</a>
+      <a href="{{ route('aanbod') }}">Aanbod</a>
+      <a href="{{ route('over-oostenrijk') }}">Over Oostenrijk</a>
+  </nav>
+</header>
+
 <main>
     {{ $slot }}
 </main>
 <main>
     {{ $slot }}
 </main>
+
 <footer>
-    <p class="copy_text">&copy; CShark {{ date('Y') }}</p>
+    <p>&copy; CShark {{ date('Y') }}</p>
 </footer>
+
 </body>
 </html>
