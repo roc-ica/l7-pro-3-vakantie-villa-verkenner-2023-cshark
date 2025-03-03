@@ -1,63 +1,71 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Inter:wght@800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+@mixin flex($justify: center, $align: center, $direction: row) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}
+
+// variables
+$black: #111;
+$white: #f9f9f9;
+$dark-green: #1C3747;
+$dark-purple: #3a2c5f;
+$light-purple: #61499d;
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    background: url('/images/background.jpg') no-repeat;
-    background-size: fit;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    background-color: #345481;
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
+  min-height: 100vh;
+  background: url('/images/background.jpg') no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  backdrop-filter: brightness(0.5);
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
-// Navbar
+// header
 
-.nav {
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-    margin-top: 30px;
-}
+header {
+  height: 5rem;
+  @include flex;
+  position: relative;
 
-a {
-    text-decoration: none;
-    color: #fff;
-}
-
-.logo {
+  .logo {
+    height: 60%;
     position: absolute;
-    top: 15px;
-    left: 15px;
-    height: 60px;
+    left: 1rem;
+  }
+
+  nav {
+    @include flex;
+    gap: 3rem;
+
+    a {
+      color: $white;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+  }
 }
 
-// home
+// home page
 
-//footer
-
+// footer
 footer {
-    background-color: #1C3747;
-    color: #fff;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+  background-color: $dark-green;
+  width: 100%;
+  height: 2.7rem;
+  @include flex;
+  position: absolute;
+  bottom: 0;
+  color: $white;
+  font-size: 0.9rem;
 }
-
-.copy_text {
-    margin: 8px;
-    font-size: 14px;
-}
-
