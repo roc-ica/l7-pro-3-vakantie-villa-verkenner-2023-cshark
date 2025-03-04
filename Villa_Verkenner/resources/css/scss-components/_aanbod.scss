@@ -1,0 +1,56 @@
+// aanbod
+.aanbod-main {
+  @extend .home-main;
+  @include flex(start, center, column);
+
+  .search {
+    button {
+      @include flex;
+      gap: .5rem;
+    }
+  }
+
+  .main-container-aanbod {
+    width: 80%;
+    @include flex(start, center, column);
+    gap: 1.5rem;
+
+    .title-text {
+      font-size: 1.8rem;
+      color: $white;
+      font-weight: 800;
+      align-self: start;
+      line-height: 1;
+    }
+
+    .filter-section {
+      height: 5rem;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+
+      .price-range,
+      .first-dropdown,
+      .second-dropdown {
+        @include flex;
+
+        & > * {
+          width: 80%;
+        }
+      }
+
+      .price-range {
+        background: purple;
+      }
+
+      .first-dropdown {
+        background: greenyellow;
+      }
+
+      .second-dropdown {
+        background: dodgerblue;
+      }
+    }
+  }
+}
