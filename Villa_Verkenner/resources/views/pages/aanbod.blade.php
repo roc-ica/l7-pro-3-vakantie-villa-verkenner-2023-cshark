@@ -8,10 +8,9 @@
       <div class="title-text">Huizen in Oostenrijk</div>
       <div class="filter-section">
         <div class="price-range">
-          <div class="slider">
-            <div class="slider-thumb thumb-left" id="thumbLeft"></div>
-            <div class="filled-part"></div>
-            <div class="slider-thumb thumb-right" id="thumbRight"></div>
+          <div class="pricing">
+              <input type="text" placeholder="Min. prijs" id="min-price">
+              <input type="text" placeholder="Max. prijs" id="max-price">
           </div>
         </div>
         <div class="first-dropdown">

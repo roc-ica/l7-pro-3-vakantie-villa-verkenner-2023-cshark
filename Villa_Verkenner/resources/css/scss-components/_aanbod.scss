@@ -41,41 +41,27 @@
       }
 
       .price-range {
-        background: purple;
         position: relative;
+        @include flex(center, start, column);
+        gap: 10px;
 
-        .slider {
-          position: relative;
+        .price-display {
+          @include flex(space-between);
           width: 80%;
-          height: 5px;
-          background-color: $white;
-          border-radius: 1rem;
+          font-size: 0.8rem;
+        }
 
-          .filled-part {
-            position: absolute;
-            height: 100%;
-            background-color: dodgerblue;
-            z-index: 2;
-          }
+        .pricing {
+          @include flex(space-between);
+          width: 60%;
 
-          .slider-thumb {
-            position: absolute;
-            width: 15px;
-            aspect-ratio: 1;
-            background-color: dodgerblue;
-            border-radius: 50%;
-            cursor: pointer;
-            top: 50%;
-            z-index: 3;
-            transform: translateY(-50%);
-
-            &.thumb-left {
-              left: 0;
-            }
-
-            &.thumb-right {
-              right: 0;
-            }
+          input {
+            width: 45%;
+            padding: .7em .5em;
+            border-radius: .3rem;
+            border: 1px solid #ccc;
+            outline: none;
+            font-family: "Poppins", sans-serif;
           }
         }
       }
