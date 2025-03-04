@@ -7,3 +7,4 @@ import '../css/app.scss';
 window.Alpine = Alpine;
 
 Alpine.start();
+
