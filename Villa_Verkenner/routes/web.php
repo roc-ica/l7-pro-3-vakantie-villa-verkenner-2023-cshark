@@ -19,6 +19,10 @@ Route::get('/detail/{id}', function ($id) {
     return view('pages.detail', compact('id'));
 })->name('detail');
 
+Route::get('/admin', function () {
+    return view('pages.admin.admin-login');
+})->name('admin.login');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
