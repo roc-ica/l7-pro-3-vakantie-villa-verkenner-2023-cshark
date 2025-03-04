@@ -29,9 +29,6 @@
 <main>
     {{ $slot }}
 </main>
-<main>
-    {{ $slot }}
-</main>
 
 <footer>
     <p>&copy; CShark {{ date('Y') }}</p>
