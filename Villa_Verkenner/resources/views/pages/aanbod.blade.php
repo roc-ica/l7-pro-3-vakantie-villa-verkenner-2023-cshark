@@ -9,9 +9,9 @@
       <div class="filter-section">
         <div class="price-range">
           <div class="slider">
-            <div class="slider-thumb thumb-left"></div>
+            <div class="slider-thumb thumb-left" id="thumbLeft"></div>
             <div class="filled-part"></div>
-            <div class="slider-thumb thumb-right"></div>
+            <div class="slider-thumb thumb-right" id="thumbRight"></div>
           </div>
         </div>
         <div class="first-dropdown">

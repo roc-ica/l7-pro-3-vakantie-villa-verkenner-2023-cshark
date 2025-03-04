@@ -23,7 +23,7 @@
     height: 45px;
     @include flex;
     border-radius: 8rem;
-    background-color: $white;
+    background-color: $dark-green;
     overflow: hidden;
 
     input {
@@ -32,7 +32,7 @@
       font-family: "Poppins", sans-serif;
       outline: none;
       border: none;
-      background-color: transparent;
+      background-color: $white;
       padding-left: 1rem;
     }
 
