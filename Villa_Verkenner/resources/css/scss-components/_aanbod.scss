@@ -24,44 +24,127 @@
     }
 
     .filter-section {
-      height: 5rem;
+      height: 6rem;
       width: 100%;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      gap: 3rem;
 
       .price-range,
       .first-dropdown,
       .second-dropdown {
-        @include flex;
-
-        & > * {
-          width: 80%;
-        }
+        position: relative;
       }
 
       .price-range {
-        position: relative;
-        @include flex(center, start, column);
-        gap: 10px;
+        @include flex(center, center, column);
+        gap: 1.5rem;
 
-        .price-display {
-          @include flex(space-between);
-          width: 80%;
-          font-size: 0.8rem;
+        .values {
+          background-color: $dark-blue;
+          width: fit-content;
+          position: relative;
+          padding: 5px 10px;
+          border-radius: 5px;
+          text-align: center;
+          font-weight: 400;
+          font-size: 1rem;
+          color: $white;
+          letter-spacing: 1px;
+
+          &::before {
+            content: "";
+            position: absolute;
+            height: 0;
+            width: 0;
+            border-top: 10px solid $dark-blue;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            margin: auto;
+            bottom: -9px;
+            left: 0;
+            right: 0;
+          }
         }
 
-        .pricing {
-          @include flex(space-between);
-          width: 60%;
+        .slider {
+          width: 100%;
+          position: relative;
 
-          input {
-            width: 45%;
-            padding: .7em .5em;
-            border-radius: .3rem;
-            border: 1px solid #ccc;
+          input[type="range"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100%;
             outline: none;
-            font-family: "Poppins", sans-serif;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            background-color: transparent;
+            pointer-events: none;
+
+            &::-webkit-slider-runnable-track {
+              -webkit-appearance: none;
+              height: 5px;
+            }
+
+            &::-moz-range-track {
+              -moz-appearance: none;
+              height: 5px;
+            }
+
+            &::-ms-track {
+              appearance: none;
+              height: 5px;
+            }
+
+            &::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              height: 1.2rem;
+              aspect-ratio: 1;
+              background-color: $dark-blue;
+              cursor: pointer;
+              border-radius: 50px;
+              pointer-events: auto;
+              margin-top: -7px;
+            }
+
+            &::-moz-range-thumb {
+              -moz-appearance: none;
+              height: 1.3em;
+              aspect-ratio: 1;
+              background-color: $dark-blue;
+              cursor: pointer;
+              border-radius: 50%;
+              pointer-events: auto;
+            }
+
+            &::-ms-thumb {
+              appearance: none;
+              height: 1.3em;
+              aspect-ratio: 1;
+              background-color: $dark-blue;
+              cursor: pointer;
+              pointer-events: auto;
+              border-radius: 50%;
+              pointer-events: auto;
+            }
+
+            &:active::-webkit-slider-thumb {
+              background: $light-gray;
+              border: 4px solid $dark-blue;
+            } 
+          }
+
+          .slider-track {
+            width: 100%;
+            height: 5px;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            border-radius: 5px;
           }
         }
       }
