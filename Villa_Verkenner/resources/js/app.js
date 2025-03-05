@@ -9,6 +9,9 @@ window.Alpine = Alpine;
 Alpine.start();
 
 document.addEventListener('DOMContentLoaded', function() {
+  const dropdown = document.querySelectorAll('.dropdown');
+  const dropdownToggle = document.querySelectorAll('.dropdown-toggle');
+  const dropdownContent = document.querySelectorAll('.dropdown-content');
   let sliderOne = document.getElementById('slider-1');
   let sliderTwo = document.getElementById('slider-2');
   let displayValOne = document.getElementById('range1');
@@ -52,4 +55,21 @@ document.addEventListener('DOMContentLoaded', function() {
   displayValOne.textContent = formatCurrency(sliderOne.value);
   displayValTwo.textContent = formatCurrency(sliderTwo.value);
   fillColor();
+
+   // dropdowns
+   dropdownToggle.forEach((toggle, index) => {
+    toggle.addEventListener('click', () => {
+      const content = dropdownContent[index];
+      const dropdown = toggle.parentElement;
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        content.style.borderRadius = '5px';
+        dropdown.style.borderRadius = '45px';
+      } else {
+        content.style.display = 'block';
+        content.style.borderRadius = '0 0 5px 5px';
+        dropdown.style.borderRadius = `${45 / 2}px ${45 / 2}px 0 0`;
+      }
+    });
+  });
 });

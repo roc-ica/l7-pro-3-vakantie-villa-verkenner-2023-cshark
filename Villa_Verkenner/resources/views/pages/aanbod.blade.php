@@ -24,11 +24,61 @@
 
 
         <div class="first-dropdown">
-          <div class="dropdown"></div>
+          <div class="dropdown dropdown-one">
+            <div class="dropdown-toggle">
+              <span>Eigenschappen</span>
+              <i class="fa-sharp fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-content">
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+
         <div class="second-dropdown">
-        <div class="dropdown"></div>
+          <div class="dropdown dropdown-two">
+            <div class="dropdown-toggle">
+              <span>Ligginsopties</span>
+              <i class="fa-sharp fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-content">
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+              <div class="option">
+                <input type="checkbox">
+                <span>placeholder</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+
       </div>
     </div>
   </div>
