@@ -46,9 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let percentageOne = ((valueOne - sliderOne.min) / (sliderMaxValue - sliderOne.min)) * 100;
     let percentageTwo = ((valueTwo - sliderTwo.min) / (sliderMaxValue - sliderTwo.min)) * 100;
   
-    console.log(`Slider One Value: ${valueOne}, Percentage: ${percentageOne}%`);
-    console.log(`Slider Two Value: ${valueTwo}, Percentage: ${percentageTwo}%`);
-  
     sliderTrack.style.background = `linear-gradient(90deg, #d9d9d9 ${percentageOne}%, #345481 ${percentageOne}%, #345481 ${percentageTwo}%, #d9d9d9 ${percentageTwo}%)`;
   }
 

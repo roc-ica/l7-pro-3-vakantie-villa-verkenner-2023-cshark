@@ -1,161 +1,148 @@
-// aanbod
 .aanbod-main {
-  @extend .home-main;
+  width: 80%;
+  margin: 0 auto;
   @include flex(start, center, column);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 
-  .search {
-    button {
-      @include flex;
-      gap: .5rem;
-    }
+  .title-top {
+    align-self: start;
+    line-height: 1;
+    color: $white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
   }
 
-  .main-container-aanbod {
-    width: 80%;
-    @include flex(start, center, column);
-    gap: 1.5rem;
+  .filter-section {
+    width: 100%;
+    height: 6rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
 
-    .title-text {
-      font-size: 1.8rem;
-      color: $white;
-      font-weight: 800;
-      align-self: start;
-      line-height: 1;
+    & > * {
+      position: relative;
     }
 
-    .filter-section {
-      height: 6rem;
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3rem;
+    .filter-one {
+      @include flex(center, center, column);
+      gap: 1.5rem;
 
-      .price-range,
-      .first-dropdown,
-      .second-dropdown {
+      .values {
+        background-color: $dark-blue;
+        width: fit-content;
         position: relative;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: 400;
+        font-size: 1rem;
+        color: $white;
+        letter-spacing: 1px;
+
+        &::before {
+          content: "";
+          position: absolute;
+          height: 0;
+          width: 0;
+          border-top: 10px solid $dark-blue;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          margin: 0 auto;
+          bottom: -9px;
+          left: 0;
+          right: 0;
+        }
       }
 
-      .price-range {
-        @include flex(center, center, column);
-        gap: 1.5rem;
+      .slider {
+        width: 100%;
+        position: relative;
 
-        .values {
-          background-color: $dark-blue;
-          width: fit-content;
-          position: relative;
-          padding: 5px 10px;
-          border-radius: 5px;
-          text-align: center;
-          font-weight: 400;
-          font-size: 1rem;
-          color: $white;
-          letter-spacing: 1px;
-
-          &::before {
-            content: "";
-            position: absolute;
-            height: 0;
-            width: 0;
-            border-top: 10px solid $dark-blue;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            margin: auto;
-            bottom: -9px;
-            left: 0;
-            right: 0;
-          }
-        }
-
-        .slider {
+        input[type="range"] {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
           width: 100%;
-          position: relative;
+          outline: none;
+          position: absolute;
+          margin: auto;
+          top: 0;
+          bottom: 0;
+          background-color: transparent;
+          pointer-events: none;
 
-          input[type="range"] {
+          // slider track
+          &::-webkit-slider-runnable-track {
             -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 100%;
-            outline: none;
-            position: absolute;
-            margin: auto;
-            top: 0;
-            bottom: 0;
-            background-color: transparent;
-            pointer-events: none;
-
-            &::-webkit-slider-runnable-track {
-              -webkit-appearance: none;
-              height: 5px;
-            }
-
-            &::-moz-range-track {
-              -moz-appearance: none;
-              height: 5px;
-            }
-
-            &::-ms-track {
-              appearance: none;
-              height: 5px;
-            }
-
-            &::-webkit-slider-thumb {
-              -webkit-appearance: none;
-              height: 1.2rem;
-              aspect-ratio: 1;
-              background-color: $dark-blue;
-              cursor: pointer;
-              border-radius: 50px;
-              pointer-events: auto;
-              margin-top: -7px;
-            }
-
-            &::-moz-range-thumb {
-              -moz-appearance: none;
-              height: 1.3em;
-              aspect-ratio: 1;
-              background-color: $dark-blue;
-              cursor: pointer;
-              border-radius: 50%;
-              pointer-events: auto;
-            }
-
-            &::-ms-thumb {
-              appearance: none;
-              height: 1.3em;
-              aspect-ratio: 1;
-              background-color: $dark-blue;
-              cursor: pointer;
-              pointer-events: auto;
-              border-radius: 50%;
-              pointer-events: auto;
-            }
-
-            &:active::-webkit-slider-thumb {
-              background: $light-gray;
-              border: 4px solid $dark-blue;
-            } 
+            height: 5px;
           }
 
-          .slider-track {
-            width: 100%;
+          &::-moz-range-track {
+            -moz-appearance: none;
             height: 5px;
-            position: absolute;
-            margin: auto;
-            top: 0;
-            bottom: 0;
-            border-radius: 5px;
+          }
+
+          &::-ms-track {
+            appearance: none;
+            height: 5px;
+          }
+
+          // slider thumb
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 1.3em;
+            aspect-ratio: 1;
+            background-color: $dark-blue;
+            cursor: pointer;
+            border-radius: 50%;
+            pointer-events: auto;
+            margin-top: -4px;
+          }
+
+          &::-moz-range-thumb {
+            -moz-appearance: none;
+            height: 1.3em;
+            aspect-ratio: 1;
+            background-color: $dark-blue;
+            cursor: pointer;
+            border-radius: 50%;
+            pointer-events: auto;
+          }
+
+          &::-ms-thumb {
+            appearance: none;
+            height: 1.3em;
+            aspect-ratio: 1;
+            background-color: $dark-blue;
+            cursor: pointer;
+            pointer-events: auto;
+            border-radius: 50%;
+          }
+
+          // active thumb
+          &:active::-webkit-slider-thumb {
+            background: $light-gray;
+            border: 4px solid $dark-blue;
           }
         }
-      }
 
-      .first-dropdown {
-        @include flex;
+        .slider-track {
+          width: 100%;
+          height: 5px;
+          position: absolute;
+          margin: 0 auto;
+          top: 0;
+          bottom: 0;
+          border-radius: 5px;
+        }
       }
+    }
 
-      .second-dropdown {
-        @include flex;
-      }
+    .filter-two,
+    .filter-three {
+      @include flex;
 
       .dropdown {
         width: 100%;
@@ -169,6 +156,8 @@
           @include flex(space-between);
           padding: 1rem;
           cursor: pointer;
+          user-select: none;
+          color: $white;
         }
 
         .dropdown-content {
@@ -178,7 +167,7 @@
           display: none;
 
           .option {
-            padding: .7rem 1rem;
+            padding: .7em 1rem;
             @include flex(start);
             gap: .5rem;
 
@@ -192,13 +181,18 @@
 
             input[type="checkbox"] {
               appearance: none;
-              width: 1rem;
-              height: 1rem;
+              width: .9rem;
+              aspect-ratio: 1;
               background-color: $white;
               border-radius: .1rem;
               cursor: pointer;
               position: relative;
               @include flex;
+              transition: background-color .2s ease;
+
+              &:hover {
+                background-color: $light-gray;
+              }
 
               &:checked {
                 background-color: dodgerblue;
@@ -207,17 +201,94 @@
                   content: "\f00c";
                   font-family: FontAwesome;
                   position: absolute;
-                  color: white;
+                  color: $white;
                 }
               }
             }
 
             span {
-              line-height: 16px;
+              line-height: 1rem;
               height: 1rem;
+              color: $white;
             }
           }
         }
+      }
+    }
+  }
+
+  .card-container {
+    $_inner-radius: .5rem;
+    $_padding: .6rem;
+
+    width: 100%;
+    padding-bottom: 3rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 3rem;
+
+    .house {
+      position: relative;
+      background-color: $white;
+      padding: $_padding;
+      border-radius: $_inner-radius + $_padding;
+      @include flex(start, start, column);
+
+      .price {
+        position: absolute;
+        top: -20px;
+        right: .5rem;
+
+        span {
+          color: $white;
+          text-decoration: none;
+          left: 50%;
+          top: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+        }
+
+        img {
+          height: 120px;
+          @include flex;
+        }
+      }
+
+      img {
+        width: 100%;
+        border-radius: $_inner-radius;
+      }
+
+      .house-title {
+        line-height: 1.1;
+        font-weight: 600;
+      }
+
+      .see-button {
+        position: absolute;
+        bottom: .5rem;
+        right: .5rem;
+
+        span {
+          color: $white;
+          text-decoration: none;
+          left: 50%;
+          top: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+        }
+
+        img {
+          height: 60px;
+          @include flex;
+        }
+      }
+
+      .house-info {
+        color: $light-purple;
+        font-size: .8rem;
+        font-weight: 400;
+        line-height: 1;
       }
     }
   }
