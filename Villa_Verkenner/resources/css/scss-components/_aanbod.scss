@@ -162,9 +162,12 @@
 
         .dropdown-content {
           background-color: $dark-blue;
-          box-shadow: 3px 5px 10px rgba($black, 0.1);
+          box-shadow: 3px 5px 10px rgba($black, 0.3);
           border-radius: 5px;
           display: none;
+          z-index: 999;
+          position: absolute;
+          width: 100%;
 
           .option {
             padding: .7em 1rem;
