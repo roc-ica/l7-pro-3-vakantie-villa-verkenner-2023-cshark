@@ -2,5 +2,5 @@
 
 <x-layouts.admin>
     <h1>Admin Dashboard</h1>
-    <!-- Your content here -->
+
 </x-layouts.admin>
