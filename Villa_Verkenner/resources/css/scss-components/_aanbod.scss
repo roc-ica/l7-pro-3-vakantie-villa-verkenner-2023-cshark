@@ -14,17 +14,25 @@
     letter-spacing: 1px;
   }
 
+  // Ensure the form takes full width of the main container
+  form#filterForm {
+    width: 100%;
+  }
+
   .filter-section {
     width: 100%;
     height: 6rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
+    justify-content: space-between;  // centers each filter in its grid cell
+    align-items: center;
 
     & > * {
       position: relative;
     }
 
+    // Filter One: Price Slider
     .filter-one {
       @include flex(center, center, column);
       gap: 1.5rem;
@@ -138,8 +146,9 @@
           border-radius: 5px;
         }
       }
-    }
+    } // end .filter-one
 
+    // Filter Two & Three: Dropdowns
     .filter-two,
     .filter-three {
       @include flex;
@@ -149,30 +158,39 @@
         height: 45px;
         border-radius: 99rem;
         background-color: $dark-blue;
+        position: relative;
 
         .dropdown-toggle {
           width: 100%;
           height: 100%;
-          @include flex(space-between);
+          @include flex(space-between, center);
           padding: 1rem;
           cursor: pointer;
           user-select: none;
           color: $white;
+          font-size: 1rem;
         }
 
         .dropdown-content {
           background-color: $dark-blue;
           box-shadow: 3px 5px 10px rgba($black, 0.3);
           border-radius: 5px;
-          display: none;
+          display: none; // hidden by default
           z-index: 999;
           position: absolute;
           width: 100%;
+          top: 110%;
+          left: 0;
+
+          &.open {
+            display: block; // shown when .open is added
+          }
 
           .option {
-            padding: .7em 1rem;
-            @include flex(start);
-            gap: .5rem;
+            padding: 0.7em 1rem;
+            @include flex(start, center);
+            gap: 0.5rem;
+            cursor: pointer;
 
             &:not(:last-child) {
               border-bottom: 1px solid $light-gray;
@@ -184,14 +202,14 @@
 
             input[type="checkbox"] {
               appearance: none;
-              width: .9rem;
+              width: 0.9rem;
               aspect-ratio: 1;
               background-color: $white;
-              border-radius: .1rem;
+              border-radius: 0.1rem;
               cursor: pointer;
               position: relative;
-              @include flex;
-              transition: background-color .2s ease;
+              @include flex(center, center);
+              transition: background-color 0.2s ease;
 
               &:hover {
                 background-color: $light-gray;
@@ -218,11 +236,11 @@
         }
       }
     }
-  }
+  } // end .filter-section
 
   .card-container {
-    $_inner-radius: .5rem;
-    $_padding: .6rem;
+    $_inner-radius: 0.5rem;
+    $_padding: 0.6rem;
 
     width: 100%;
     padding-bottom: 3rem;
@@ -240,14 +258,14 @@
       .price {
         position: absolute;
         top: -20px;
-        right: .5rem;
+        right: 0.5rem;
 
         span {
           color: $white;
           text-decoration: none;
+          position: absolute;
           left: 50%;
           top: 50%;
-          position: absolute;
           transform: translate(-50%, -50%);
         }
 
@@ -263,21 +281,21 @@
       }
 
       .house-title {
-        line-height: 1.1;
+        line-height: 1.8;
         font-weight: 600;
       }
 
       .see-button {
         position: absolute;
-        bottom: .5rem;
-        right: .5rem;
+        bottom: 0.5rem;
+        right: 0.5rem;
 
         span {
           color: $white;
           text-decoration: none;
+          position: absolute;
           left: 50%;
           top: 50%;
-          position: absolute;
           transform: translate(-50%, -50%);
         }
 
@@ -289,9 +307,10 @@
 
       .house-info {
         color: $light-purple;
-        font-size: .8rem;
+        font-size: 0.8rem;
         font-weight: 400;
-        line-height: 1;
+        line-height: 1.2;
+        padding-right: 12rem;
       }
     }
   }

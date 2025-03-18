@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Models\House;
+use App\Models\Feature;
+use App\Models\GeoOption;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('pages.landing');
@@ -12,8 +16,36 @@ Route::get('/over-oostenrijk', function () {
     return view('pages.over-oostenrijk');
 })->name('over-oostenrijk');
 
-Route::get('/aanbod', function () {
-    return view('pages.aanbod');
+Route::get('/aanbod', function (Request $request) {
+    $query = House::query();
+
+    if ($request->filled('min_price')) {
+        $query->where('price', '>=', $request->min_price);
+    }
+    if ($request->filled('max_price')) {
+        $query->where('price', '<=', $request->max_price);
+    }
+
+    if ($request->filled('features')) {
+        $selectedFeatures = $request->features;
+        $query->whereHas('features', function($q) use ($selectedFeatures) {
+            // Use singular table name since join is on `feature`
+            $q->whereIn('feature.id', $selectedFeatures);
+        });
+    }
+
+    if ($request->filled('geoOptions')) {
+        $selectedGeoOptions = $request->geoOptions;
+        $query->whereHas('geoOptions', function($q) use ($selectedGeoOptions) {
+            $q->whereIn('geo_option.id', $selectedGeoOptions);
+        });
+    }
+
+    $houses = $query->with(['features', 'geoOptions'])->get();
+    $allFeatures = Feature::all();
+    $allGeoOptions = GeoOption::all();
+
+    return view('pages.aanbod', compact('houses', 'allFeatures', 'allGeoOptions'));
 })->name('aanbod');
 
 Route::get('/detail/{id}', function ($id) {
@@ -33,4 +65,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
