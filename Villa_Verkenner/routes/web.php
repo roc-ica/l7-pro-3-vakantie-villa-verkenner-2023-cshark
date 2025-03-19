@@ -22,18 +22,18 @@ Route::get('/aanbod', function (Request $request) {
         $query = House::query();
 
         if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
+            $query->where('price', '>=', (int)$request->min_price);
         }
         if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
+            $query->where('price', '<=', (int)$request->max_price);
         }
 
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
             });
         }
 
@@ -48,7 +48,7 @@ Route::get('/aanbod', function (Request $request) {
                 $q->whereIn('feature.id', $selectedFeatures);
             });
         }
-        
+
         if ($request->filled('geoOptions')) {
             $selectedGeoOptions = $request->geoOptions;
             if (!is_array($selectedGeoOptions)) {

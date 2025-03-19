@@ -6,7 +6,7 @@ import axios from "axios";
 window.Alpine = Alpine;
 Alpine.start();
 
-// Complete Debounce helper: waits "wait" milliseconds before executing the function
+// Debounce helper: waits "wait" milliseconds before executing the function
 function debounce(func, wait, immediate) {
     let timeout;
     return function () {
@@ -28,6 +28,7 @@ function debounce(func, wait, immediate) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Get slider elements and related DOM nodes.
     let sliderOne = document.getElementById("slider-1");
     let sliderTwo = document.getElementById("slider-2");
     let displayValOne = document.getElementById("range1");
@@ -35,83 +36,86 @@ document.addEventListener("DOMContentLoaded", function () {
     let sliderTrack = document.querySelector(".slider-track");
     let sliderMaxValue = parseInt(sliderOne.max);
     let minGap = 50000;
-    // Get the search input (it's outside the form)
+    // Get the search input (outside the form)
     let searchInput = document.querySelector('input[name="search"]');
 
     // Create a debounced function for filtering (500ms delay)
     window.debouncedRunFilters = debounce(runFilters, 500);
 
     if (searchInput) {
-        // Update filters dynamically on each keystroke
+        // Update filters dynamically on keystrokes (debounced)
         searchInput.addEventListener("input", debouncedRunFilters);
     }
 
-    // Prevent the form from submitting traditionally so AJAX always takes over (avoid Enter issues)
+    // Prevent the form from submitting traditionally so AJAX always takes over.
     const filterForm = document.getElementById("filterForm");
     filterForm.addEventListener("submit", function (e) {
         e.preventDefault();
         runFilters();
     });
 
+    // Formats a value as Dutch currency.
     function formatCurrency(v) {
         return "€" + parseInt(v).toLocaleString("nl-NL");
     }
 
-    window.slideOne = function () {
-        if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-            sliderOne.value = parseInt(sliderTwo.value) - minGap;
-        }
-        displayValOne.textContent = formatCurrency(sliderOne.value);
-        fillColor();
-        runFilters();
-    };
-
-    window.slideTwo = function () {
-        if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-            sliderTwo.value = parseInt(sliderOne.value) + minGap;
-        }
-        displayValTwo.textContent = formatCurrency(sliderTwo.value);
-        fillColor();
-        runFilters();
-    };
-
+    // Update the slider track's fill color.
     function fillColor() {
         let valueOne = parseInt(sliderOne.value);
         let valueTwo = parseInt(sliderTwo.value);
-        let percentageOne =
-            ((valueOne - sliderOne.min) / (sliderMaxValue - sliderOne.min)) *
-            100;
-        let percentageTwo =
-            ((valueTwo - sliderTwo.min) / (sliderMaxValue - sliderTwo.min)) *
-            100;
+        let percentageOne = ((valueOne - sliderOne.min) / (sliderMaxValue - sliderOne.min)) * 100;
+        let percentageTwo = ((valueTwo - sliderTwo.min) / (sliderMaxValue - sliderTwo.min)) * 100;
         sliderTrack.style.background = `linear-gradient(90deg, #d9d9d9 ${percentageOne}%, #345481 ${percentageOne}%, #345481 ${percentageTwo}%, #d9d9d9 ${percentageTwo}%)`;
     }
 
+    // Update UI continuously when dragging (without triggering filter).
+    sliderOne.addEventListener("input", function () {
+        displayValOne.textContent = formatCurrency(sliderOne.value);
+        fillColor();
+    });
+    sliderTwo.addEventListener("input", function () {
+        displayValTwo.textContent = formatCurrency(sliderTwo.value);
+        fillColor();
+    });
+
+    // When slider is released, update UI and trigger filtering.
+    sliderOne.addEventListener("change", function () {
+        displayValOne.textContent = formatCurrency(sliderOne.value);
+        fillColor();
+        runFilters();
+    });
+    sliderTwo.addEventListener("change", function () {
+        displayValTwo.textContent = formatCurrency(sliderTwo.value);
+        fillColor();
+        runFilters();
+    });
+
+    // Set initial display and fill colors.
     displayValOne.textContent = formatCurrency(sliderOne.value);
     displayValTwo.textContent = formatCurrency(sliderTwo.value);
     fillColor();
 
-    // Dropdown toggling: when closing a dropdown, update the filters.
+    // Dropdown toggling: when a dropdown is closed, update the filters.
     document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
         toggle.addEventListener("click", () => {
             const dropdownContent = toggle.nextElementSibling;
             const wasOpen = dropdownContent.classList.contains("open");
             dropdownContent.classList.toggle("open");
-            // If the dropdown was open and now closed, update filters.
+            // If the dropdown was open and is now closed, update filters.
             if (wasOpen) {
                 runFilters();
             }
         });
     });
 
-    // Run filters via AJAX and update house cards
+    // The runFilters function sends an AJAX request with current filters.
     function runFilters() {
         console.log("runFilters triggered");
         const form = document.getElementById("filterForm");
         const formData = new FormData(form);
         const params = {};
-
-        // Remove square brackets from keys if present so Laravel can detect them
+    
+        // Process form entries, removing any trailing [] from keys.
         for (let pair of formData.entries()) {
             let key = pair[0].replace("[]", "");
             if (params[key]) {
@@ -124,13 +128,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 params[key] = pair[1];
             }
         }
-        // Also include the search input value (from outside the form)
-        const searchInput = document.querySelector('input[name="search"]');
-        if (searchInput) {
-            params.search = searchInput.value;
+    
+        // Explicitly add the slider price values.
+        params.min_price = sliderOne.value;
+        params.max_price = sliderTwo.value;
+    
+        // Also include the search input value (from outside the form).
+        const externalSearchInput = document.querySelector('input[name="search"]');
+        if (externalSearchInput) {
+            params.search = externalSearchInput.value;
         }
+        
         console.log("Search params:", params);
-
+    
         axios
             .get(form.action, {
                 params: params,
