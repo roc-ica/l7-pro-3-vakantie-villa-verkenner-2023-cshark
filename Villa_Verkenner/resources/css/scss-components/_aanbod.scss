@@ -249,13 +249,13 @@
       gap: 2rem 3rem;
   
       .notFound {
-          grid-column: 1 / -1;  // span across both grid columns
-          color: $white;        // white text
-          text-align: center;   // horizontally center the text
-          display: flex;        // use flexbox for centering
-          justify-content: center; // center horizontally
-          align-items: center;     // center vertically
-          height: 300px;           // height to center content vertically
+          grid-column: 1 / -1;
+          color: $white;        
+          text-align: center;  
+          display: flex;      
+          justify-content: center; 
+          align-items: center;   
+          height: 300px;          
           width: 100%;
           font-size: 2rem;
       }

@@ -95,14 +95,20 @@ document.addEventListener("DOMContentLoaded", function () {
     displayValTwo.textContent = formatCurrency(sliderTwo.value);
     fillColor();
 
-    // Dropdown toggling: when a dropdown is closed, update the filters.
+    // Dropdown toggling: when a dropdown is clicked, toggle its open state.
     document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
-        toggle.addEventListener("click", () => {
+        toggle.addEventListener("click", (e) => {
+            e.stopPropagation();
             const dropdownContent = toggle.nextElementSibling;
-            const wasOpen = dropdownContent.classList.contains("open");
             dropdownContent.classList.toggle("open");
-            // If the dropdown was open and is now closed, update filters.
-            if (wasOpen) {
+        });
+    });
+
+    document.addEventListener("click", function (e) {
+        document.querySelectorAll(".dropdown-content.open").forEach((dropdownContent) => {
+            if (!dropdownContent.contains(e.target) && 
+                !dropdownContent.previousElementSibling.contains(e.target)) {
+                dropdownContent.classList.remove("open");
                 runFilters();
             }
         });
@@ -114,8 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("filterForm");
         const formData = new FormData(form);
         const params = {};
-    
-        // Process form entries, removing any trailing [] from keys.
         for (let pair of formData.entries()) {
             let key = pair[0].replace("[]", "");
             if (params[key]) {
@@ -128,19 +132,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 params[key] = pair[1];
             }
         }
-    
-        // Explicitly add the slider price values.
         params.min_price = sliderOne.value;
         params.max_price = sliderTwo.value;
-    
-        // Also include the search input value (from outside the form).
         const externalSearchInput = document.querySelector('input[name="search"]');
         if (externalSearchInput) {
             params.search = externalSearchInput.value;
         }
-        
+
         console.log("Search params:", params);
-    
+
         axios
             .get(form.action, {
                 params: params,

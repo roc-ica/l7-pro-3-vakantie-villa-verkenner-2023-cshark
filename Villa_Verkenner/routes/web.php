@@ -42,7 +42,6 @@ Route::get('/aanbod', function (Request $request) {
             if (!is_array($selectedFeatures)) {
                 $selectedFeatures = [$selectedFeatures];
             }
-            // Cast values to integers
             $selectedFeatures = array_map('intval', $selectedFeatures);
             $query->whereHas('features', function ($q) use ($selectedFeatures) {
                 $q->whereIn('feature.id', $selectedFeatures);
@@ -54,7 +53,6 @@ Route::get('/aanbod', function (Request $request) {
             if (!is_array($selectedGeoOptions)) {
                 $selectedGeoOptions = [$selectedGeoOptions];
             }
-            // Cast values to integers
             $selectedGeoOptions = array_map('intval', $selectedGeoOptions);
             $query->whereHas('geoOptions', function ($q) use ($selectedGeoOptions) {
                 $q->whereIn('geo_option.id', $selectedGeoOptions);
@@ -65,7 +63,6 @@ Route::get('/aanbod', function (Request $request) {
         $allFeatures = Feature::all();
         $allGeoOptions = GeoOption::all();
 
-        // If AJAX request then return only the housing cards partial.
         if ($request->ajax()) {
             $view = view('partials.houses', compact('houses'))->render();
             return response()->json(['html' => $view]);
@@ -73,7 +70,6 @@ Route::get('/aanbod', function (Request $request) {
 
         return view('pages.aanbod', compact('houses', 'allFeatures', 'allGeoOptions'));
     } catch (\Exception $e) {
-        // Log error and also return JSON error for AJAX
         Log::error($e->getMessage());
         if ($request->ajax()) {
             return response()->json(['error' => $e->getMessage()], 500);
