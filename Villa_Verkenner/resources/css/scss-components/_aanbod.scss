@@ -248,7 +248,7 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem 3rem;
   
-      p {
+      .notFound {
           grid-column: 1 / -1;  // span across both grid columns
           color: $white;        // white text
           text-align: center;   // horizontally center the text

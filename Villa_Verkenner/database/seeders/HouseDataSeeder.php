@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\House;
 use App\Models\Feature;
 use App\Models\GeoOption;
+use Illuminate\Support\Collection;
 
 class HouseDataSeeder extends Seeder
 {
@@ -20,15 +21,21 @@ class HouseDataSeeder extends Seeder
 
         // For each house attach random features and geo options
         foreach ($houses as $house) {
-            // Attach 1 to 3 random features
-            $house->features()->attach(
-                $features->random(rand(1, 3))->pluck('id')->toArray()
-            );
+            // Randomly select 1 to 3 features
+            $randomFeatures = $features->random(rand(1, 3));
+            // Ensure we have a Collection even for a single result
+            if (!$randomFeatures instanceof Collection) {
+                $randomFeatures = collect([$randomFeatures]);
+            }
+            $house->features()->attach($randomFeatures->pluck('id')->toArray());
 
-            // Attach 1 to 2 random geo options
-            $house->geoOptions()->attach(
-                $geoOptions->random(rand(1, 2))->pluck('id')->toArray()
-            );
+            // Randomly select 1 to 2 geo options
+            $randomGeoOptions = $geoOptions->random(rand(1, 2));
+            // Ensure we have a Collection even for a single result
+            if (!$randomGeoOptions instanceof Collection) {
+                $randomGeoOptions = collect([$randomGeoOptions]);
+            }
+            $house->geoOptions()->attach($randomGeoOptions->pluck('id')->toArray());
         }
     }
 }

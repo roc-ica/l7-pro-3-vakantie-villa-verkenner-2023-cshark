@@ -3,8 +3,9 @@
 use App\Models\House;
 use App\Models\Feature;
 use App\Models\GeoOption;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 
@@ -17,35 +18,68 @@ Route::get('/over-oostenrijk', function () {
 })->name('over-oostenrijk');
 
 Route::get('/aanbod', function (Request $request) {
-    $query = House::query();
+    try {
+        $query = House::query();
 
-    if ($request->filled('min_price')) {
-        $query->where('price', '>=', $request->min_price);
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('address', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('features')) {
+            $selectedFeatures = $request->features;
+            if (!is_array($selectedFeatures)) {
+                $selectedFeatures = [$selectedFeatures];
+            }
+            // Cast values to integers
+            $selectedFeatures = array_map('intval', $selectedFeatures);
+            $query->whereHas('features', function ($q) use ($selectedFeatures) {
+                $q->whereIn('feature.id', $selectedFeatures);
+            });
+        }
+        
+        if ($request->filled('geoOptions')) {
+            $selectedGeoOptions = $request->geoOptions;
+            if (!is_array($selectedGeoOptions)) {
+                $selectedGeoOptions = [$selectedGeoOptions];
+            }
+            // Cast values to integers
+            $selectedGeoOptions = array_map('intval', $selectedGeoOptions);
+            $query->whereHas('geoOptions', function ($q) use ($selectedGeoOptions) {
+                $q->whereIn('geo_option.id', $selectedGeoOptions);
+            });
+        }
+
+        $houses = $query->with(['features', 'geoOptions'])->get();
+        $allFeatures = Feature::all();
+        $allGeoOptions = GeoOption::all();
+
+        // If AJAX request then return only the housing cards partial.
+        if ($request->ajax()) {
+            $view = view('partials.houses', compact('houses'))->render();
+            return response()->json(['html' => $view]);
+        }
+
+        return view('pages.aanbod', compact('houses', 'allFeatures', 'allGeoOptions'));
+    } catch (\Exception $e) {
+        // Log error and also return JSON error for AJAX
+        Log::error($e->getMessage());
+        if ($request->ajax()) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        abort(500, $e->getMessage());
     }
-    if ($request->filled('max_price')) {
-        $query->where('price', '<=', $request->max_price);
-    }
-
-    if ($request->filled('features')) {
-        $selectedFeatures = $request->features;
-        $query->whereHas('features', function($q) use ($selectedFeatures) {
-            // Use singular table name since join is on `feature`
-            $q->whereIn('feature.id', $selectedFeatures);
-        });
-    }
-
-    if ($request->filled('geoOptions')) {
-        $selectedGeoOptions = $request->geoOptions;
-        $query->whereHas('geoOptions', function($q) use ($selectedGeoOptions) {
-            $q->whereIn('geo_option.id', $selectedGeoOptions);
-        });
-    }
-
-    $houses = $query->with(['features', 'geoOptions'])->get();
-    $allFeatures = Feature::all();
-    $allGeoOptions = GeoOption::all();
-
-    return view('pages.aanbod', compact('houses', 'allFeatures', 'allGeoOptions'));
 })->name('aanbod');
 
 Route::get('/detail/{id}', function ($id) {

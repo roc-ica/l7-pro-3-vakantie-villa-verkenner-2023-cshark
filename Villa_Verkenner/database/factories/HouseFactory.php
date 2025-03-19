@@ -13,7 +13,7 @@ class HouseFactory extends Factory
     {
         return [
             'name'        => $this->faker->sentence(3),
-            'description' => $this->faker->paragraph,
+            'description' => $this->faker->paragraph(1),
             'image'       => $this->faker->imageUrl(),
             'price'       => $this->faker->numberBetween(50000, 500000),
             'address'     => $this->faker->address,

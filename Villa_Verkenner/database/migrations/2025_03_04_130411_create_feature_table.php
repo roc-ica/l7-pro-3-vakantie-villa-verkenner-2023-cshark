@@ -6,21 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('feature', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->id(); // Add this primary key
+            $table->string('name'); // Optionally add a column
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('feature');
