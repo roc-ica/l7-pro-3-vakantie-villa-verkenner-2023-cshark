@@ -3,38 +3,40 @@
 @section('content')
 <div class="admin-login-container">
     <div class="login-card">
-        <h2>Admin Login</h2>
+        <h2>Villa Verkenner Admin</h2>
         
         <form method="POST" action="{{ route('admin.login') }}" class="admin-login-form">
             @csrf
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required autofocus>
+                <label for="username">
+                    <i class="fa-solid fa-user"></i> Username
+                </label>
+                <input type="text" id="username" name="username" value="{{ old('username') }}" required autofocus>
                 @error('username')
                     <span class="error">{{ $message }}</span>
                 @enderror
             </div>
             
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">
+                    <i class="fa-solid fa-lock"></i> Password
+                </label>
                 <input type="password" id="password" name="password" required>
                 @error('password')
                     <span class="error">{{ $message }}</span>
                 @enderror
             </div>
             
-            <button type="submit" class="login-button">Login</button>
-        </form>
+            <button type="submit" class="login-button">
+                Login
+            </button>
 
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+            @if($errors->any())
+                <div class="alert alert-danger" style="margin-top: 1rem;">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+        </form>
     </div>
 </div>
 @endsection

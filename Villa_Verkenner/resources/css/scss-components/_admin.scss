@@ -1,0 +1,370 @@
+// Admin Styling
+
+html,
+body {
+    &:has(.admin-login-container) {
+        height: 100%;
+        overflow: hidden !important;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+// Admin Layout
+.admin-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    &:has(.admin-login-container) {
+        height: 100vh;
+        overflow: hidden !important;
+    }
+
+    &:has(.admin-nav) {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: 1fr;
+    }
+}
+
+.admin-nav {
+    background-color: $dark-green;
+    color: $white;
+    height: 100vh;
+    position: fixed;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+
+    .admin-nav-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba($white, 0.2);
+
+        h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+    }
+
+    .admin-nav-links {
+        list-style: none;
+        padding: 1rem 0;
+        flex: 1;
+
+        li {
+            a {
+                display: block;
+                padding: 0.8rem 1.5rem;
+                color: $white;
+                text-decoration: none;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: rgba($white, 0.1);
+                }
+
+                &.active {
+                    background-color: $light-purple;
+                    position: relative;
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 4px;
+                        height: 100%;
+                        background-color: $white;
+                    }
+                }
+            }
+
+            form {
+                padding: 0 1.5rem;
+
+                button {
+                    width: 100%;
+                    background-color: transparent;
+                    border: 1px solid rgba($white, 0.3);
+                    color: $white;
+                    padding: 0.6rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    margin-top: 2rem;
+                    transition: background-color 0.2s;
+
+                    &:hover {
+                        background-color: rgba($white, 0.1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.admin-content {
+    padding: 2rem;
+    background-color: rgba($dark-blue, 0.95);
+    min-height: 100vh;
+    color: $white;
+    grid-column: 2;
+
+    .alert {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+
+        &.alert-success {
+            background-color: rgba(#4caf50, 0.2);
+            border: 1px solid #4caf50;
+        }
+
+        &.alert-danger {
+            background-color: rgba(#f44336, 0.2);
+            border: 1px solid #f44336;
+        }
+    }
+}
+
+// Admin Login Page
+.admin-login-container {
+    width: 100%;
+    height: 100vh; 
+    @include flex(center, center);
+    background: url('../images/background.jpg') no-repeat;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+    
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba($black, 0.6);
+      z-index: 0;
+    }
+    
+    .login-card {
+      background-color: $dark-green;
+      width: 400px;
+      padding: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba($black, 0.5);
+      position: relative;
+      z-index: 1;
+      margin: auto;
+      
+      h2 {
+        text-align: center;
+        color: $white;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        font-size: 1.8rem;
+      }
+
+        .admin-login-form {
+            @include flex(start, stretch, column);
+            gap: 1.2rem;
+
+            .form-group {
+                @include flex(start, stretch, column);
+                gap: 0.5rem;
+
+                label {
+                    color: $white;
+                    font-size: 0.9rem;
+                }
+
+                input {
+                    height: 45px;
+                    border-radius: 4px;
+                    border: 1px solid rgba($white, 0.2);
+                    background-color: rgba($white, 0.1);
+                    color: $white;
+                    padding: 0 1rem;
+                    outline: none;
+
+                    &:focus {
+                        border-color: $light-purple;
+                    }
+                }
+
+                .error {
+                    color: #f44336;
+                    font-size: 0.8rem;
+                    margin-top: 0.3rem;
+                }
+            }
+
+            .login-button {
+                margin-top: 1rem;
+                height: 45px;
+                background-color: $light-purple;
+                border: none;
+                border-radius: 4px;
+                color: $white;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: darken($light-purple, 10%);
+                }
+            }
+        }
+
+        .alert {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 4px;
+            background-color: rgba(#f44336, 0.2);
+            border: 1px solid #f44336;
+            color: $white;
+
+            ul {
+                list-style-position: inside;
+            }
+        }
+    }
+}
+
+// Admin Dashboard
+.admin-dashboard {
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: rgba($white, 0.8);
+        margin-bottom: 2rem;
+    }
+
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+
+        .stat-card {
+            background-color: $dark-green;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba($black, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+
+            &:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 15px rgba($black, 0.3);
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                color: rgba($white, 0.8);
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                font-size: 2rem;
+                font-weight: 700;
+                color: $white;
+                margin: 0;
+            }
+        }
+    }
+
+    // Dashboard actions (if needed)
+    .dashboard-actions {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: $light-purple;
+            color: $white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: darken($light-purple, 10%);
+            }
+
+            i {
+                font-size: 1rem;
+            }
+        }
+    }
+
+    // Recent activity section (optional)
+    .recent-activity {
+        margin-top: 2.5rem;
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba($white, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .activity-list {
+            .activity-item {
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba($white, 0.1);
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .activity-icon {
+                    background-color: $light-purple;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    @include flex;
+                    flex-shrink: 0;
+
+                    i {
+                        color: $white;
+                    }
+                }
+
+                .activity-details {
+                    flex: 1;
+
+                    h4 {
+                        font-size: 1rem;
+                        margin-bottom: 0.2rem;
+                    }
+
+                    p {
+                        font-size: 0.8rem;
+                        color: rgba($white, 0.6);
+                        margin: 0;
+                    }
+                }
+
+                .activity-time {
+                    color: rgba($white, 0.6);
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+}
