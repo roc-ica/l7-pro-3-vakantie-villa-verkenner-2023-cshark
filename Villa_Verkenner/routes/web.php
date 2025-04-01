@@ -19,7 +19,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Protected admin routes using the AdminMiddleware
     Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        // Add more admin routes here as needed
+        
+        // House management routes
+        Route::get('/houses', [AdminController::class, 'houses'])->name('houses.index');
+        Route::get('/houses/create', [AdminController::class, 'createHouse'])->name('houses.create');
+        Route::post('/houses', [AdminController::class, 'storeHouse'])->name('houses.store');
+        Route::get('/houses/{house}/edit', [AdminController::class, 'editHouse'])->name('houses.edit');
+        Route::put('/houses/{house}', [AdminController::class, 'updateHouse'])->name('houses.update');
+        Route::delete('/houses/{house}', [AdminController::class, 'destroyHouse'])->name('houses.destroy');
     });
 });
 
