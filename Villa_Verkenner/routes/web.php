@@ -10,6 +10,20 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\ProfileController;
 
+// Admin Routes - PLACE THESE FIRST
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [AdminController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AdminController::class, 'login']);
+    Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+    
+    // Protected admin routes using the AdminMiddleware
+    Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        // Add more admin routes here as needed
+    });
+});
+
+// Regular routes
 Route::get('/', function () {
     return view('pages.landing');
 })->name('landing');
@@ -28,13 +42,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/admin', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin', [AdminController::class, 'login']);
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Load auth routes LAST
 require __DIR__ . '/auth.php';
