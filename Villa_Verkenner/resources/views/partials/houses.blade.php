@@ -4,7 +4,7 @@
     @foreach ($houses as $house)
         <div class="house">
             <div class="price">
-                <img src="{{ asset('images/verf/verf_lichtpaars.webp') }}" alt="image">
+                <img src="{{ asset('images/verf/verf_lichtpaars3.png') }}" alt="image">
                 <span>€{{ number_format($house->price, 0, ',', '.') }}</span>
             </div>
             {{-- Use a placeholder image for the house --}}
