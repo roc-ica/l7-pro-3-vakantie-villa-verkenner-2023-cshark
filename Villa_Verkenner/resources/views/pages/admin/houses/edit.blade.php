@@ -7,7 +7,7 @@
             <h1>Edit House</h1>
             <p>Update property information</p>
         </div>
-        <a href="{{ route('admin.houses.index') }}" class="back-btn">
+        <a href="{{ route('admin.dashboard') }}" class="back-btn">
             <i class="fa-solid fa-arrow-left"></i> Back to Houses
         </a>
     </div>

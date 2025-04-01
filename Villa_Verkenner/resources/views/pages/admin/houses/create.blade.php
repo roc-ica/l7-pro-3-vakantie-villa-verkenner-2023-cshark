@@ -7,8 +7,8 @@
             <h1>Create New House</h1>
             <p>Add a new property to your listing</p>
         </div>
-        <a href="{{ route('admin.houses.index') }}" class="back-btn">
-            <i class="fa-solid fa-arrow-left"></i> Back to Houses
+        <a href="{{ route('admin.dashboard') }}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
         </a>
     </div>
     

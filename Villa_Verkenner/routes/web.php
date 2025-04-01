@@ -21,7 +21,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         
         // House management routes
-        Route::get('/houses', [AdminController::class, 'houses'])->name('houses.index');
         Route::get('/houses/create', [AdminController::class, 'createHouse'])->name('houses.create');
         Route::post('/houses', [AdminController::class, 'storeHouse'])->name('houses.store');
         Route::get('/houses/{house}/edit', [AdminController::class, 'editHouse'])->name('houses.edit');
