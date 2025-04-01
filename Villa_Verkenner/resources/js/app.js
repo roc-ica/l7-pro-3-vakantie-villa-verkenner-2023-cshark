@@ -47,6 +47,14 @@ document.addEventListener("DOMContentLoaded", function () {
         searchInput.addEventListener("input", debouncedRunFilters);
     }
 
+    // Add event listeners to all checkboxes in dropdowns
+    document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            // Run filters without closing the dropdown
+            debouncedRunFilters();
+        });
+    });
+
     // Prevent the form from submitting traditionally so AJAX always takes over.
     const filterForm = document.getElementById("filterForm");
     filterForm.addEventListener("submit", function (e) {
@@ -95,23 +103,53 @@ document.addEventListener("DOMContentLoaded", function () {
     displayValTwo.textContent = formatCurrency(sliderTwo.value);
     fillColor();
 
+    // Track the currently open dropdown
+    let currentOpenDropdown = null;
+
     // Dropdown toggling: when a dropdown is clicked, toggle its open state.
     document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
         toggle.addEventListener("click", (e) => {
             e.stopPropagation();
             const dropdownContent = toggle.nextElementSibling;
+            
+            // If another dropdown is open, close it first
+            if (currentOpenDropdown && currentOpenDropdown !== dropdownContent && currentOpenDropdown.classList.contains('open')) {
+                currentOpenDropdown.classList.remove('open');
+                // Run filters when closing a dropdown
+                debouncedRunFilters();
+            }
+            
+            // Toggle the clicked dropdown
             dropdownContent.classList.toggle("open");
+            
+            // Update the reference to the currently open dropdown
+            if (dropdownContent.classList.contains('open')) {
+                currentOpenDropdown = dropdownContent;
+            } else {
+                currentOpenDropdown = null;
+                // Run filters when closing a dropdown
+                debouncedRunFilters();
+            }
         });
     });
 
+    // Close dropdown when clicking outside
     document.addEventListener("click", function (e) {
+        let shouldRunFilters = false;
+        
         document.querySelectorAll(".dropdown-content.open").forEach((dropdownContent) => {
             if (!dropdownContent.contains(e.target) && 
                 !dropdownContent.previousElementSibling.contains(e.target)) {
                 dropdownContent.classList.remove("open");
-                runFilters();
+                shouldRunFilters = true;
+                currentOpenDropdown = null;
             }
         });
+        
+        // Only run filters once if any dropdown was closed
+        if (shouldRunFilters) {
+            debouncedRunFilters();
+        }
     });
 
     // The runFilters function sends an AJAX request with current filters.
