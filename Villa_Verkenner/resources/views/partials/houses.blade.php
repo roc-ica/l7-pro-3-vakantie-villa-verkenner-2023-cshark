@@ -12,7 +12,7 @@
             <h1 class="house-title">{{ $house->name }}</h1>
             <p class="house-info">{{ $house->address }}</p>
             <a class="see-button" href="{{ route('detail', $house->id) }}">
-                <img src="{{ asset('images/verf/donker-groen.png') }}" alt="image">
+                <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="image">
                 <span>Bekijk</span>
             </a>
             <br>
