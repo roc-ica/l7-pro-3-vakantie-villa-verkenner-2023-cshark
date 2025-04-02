@@ -1,4 +1,3 @@
-<!-- filepath: resources/views/pages/aanbod.blade.php -->
 <x-layout title="Aanbod">
     <main class="aanbod-main">
         <div class="search">
@@ -8,10 +7,8 @@
 
         <h1 class="title-top">Huizen in Oostenrijk</h1>
 
-        <!-- Wrap all filters in a GET form -->
         <form id="filterForm" method="GET" action="{{ route('aanbod') }}">
             <div class="filter-section">
-                <!-- Filter One: Price Slider -->
                 <div class="filter-one">
                     <div class="values">
                         <span id="range1">{{ number_format(request('min_price', 150000), 0, ',', '.') }}</span>
@@ -20,10 +17,10 @@
                     </div>
                     <div class="slider">
                         <div class="slider-track"></div>
-                        <input type="range" name="min_price" min="150000" max="900000"
-                            value="{{ request('min_price', '150000') }}" id="slider-1" oninput="slideOne()">
-                        <input type="range" name="max_price" min="150000" max="900000"
-                            value="{{ request('max_price', '900000') }}" id="slider-2" oninput="slideTwo()">
+                        <input type="range" name="min_price" min="25000" max="2000000"
+                            value="{{ request('min_price', '25000') }}" id="slider-1" oninput="slideOne()">
+                        <input type="range" name="max_price" min="25000" max="2000000"
+                            value="{{ request('max_price', '2000000') }}" id="slider-2" oninput="slideTwo()">
                     </div>
                 </div>
                 <!-- Filter Two: Features Dropdown -->

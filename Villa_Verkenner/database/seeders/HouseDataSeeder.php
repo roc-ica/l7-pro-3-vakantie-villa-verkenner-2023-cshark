@@ -15,7 +15,7 @@ class HouseDataSeeder extends Seeder
         $features = Feature::factory()->count(5)->create();
         $geoOptions = GeoOption::factory()->count(3)->create();
 
-        $houses = House::factory()->count(10)->create();
+        $houses = House::factory()->count(30)->create();
 
         foreach ($houses as $house) {
             $randomFeatures = $features->random(rand(1, 3));
