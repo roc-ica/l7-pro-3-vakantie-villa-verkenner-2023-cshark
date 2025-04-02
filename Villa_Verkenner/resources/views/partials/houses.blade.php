@@ -9,7 +9,7 @@
             </div>
             {{-- Use the actual house image from storage with WebP default fallback --}}
             <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->name }}"
-                onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'" loading="lazy" class="house-image">
+                onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'" class="house-image">
             <h1 class="house-title">{{ $house->name }}</h1>
             <p class="house-info">{{ $house->address }}</p>
             <a class="see-button" href="{{ route('detail', $house->id) }}">

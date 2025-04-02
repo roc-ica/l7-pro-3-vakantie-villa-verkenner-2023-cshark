@@ -94,32 +94,10 @@ class AdminController extends Controller
 
         // Handle file upload
         if ($request->hasFile('image')) {
-            $uploadedImage = $request->file('image');
-
-            // Generate a unique filename
-            $filename = time() . '.webp';
-
-            // Load the uploaded image based on its type
-            switch ($uploadedImage->getClientMimeType()) {
-                case 'image/jpeg':
-                case 'image/jpg':
-                    $image = imagecreatefromjpeg($uploadedImage->getPathname());
-                    break;
-                case 'image/png':
-                    $image = imagecreatefrompng($uploadedImage->getPathname());
-                    break;
-                default:
-                    $image = imagecreatefromjpeg($uploadedImage->getPathname());
-            }
-
-            // Save as WebP
-            $path = storage_path('app/public/houses/' . $filename);
-            imagewebp($image, $path, 80);
-            imagedestroy($image);
-
-            $validated['image'] = 'houses/' . $filename;
+            $imagePath = $request->file('image')->store('houses', 'public');
+            $validated['image'] = $imagePath;
         } else {
-            $validated['image'] = 'houses/defaultImage.webp';
+            $validated['image'] = 'houses/default.jpg'; // Default image
         }
 
         $house = House::create($validated);
@@ -174,34 +152,12 @@ class AdminController extends Controller
         // Handle file upload
         if ($request->hasFile('image')) {
             // Delete old image if it exists and isn't the default
-            if ($house->image && $house->image != 'houses/defaultImage.webp' && Storage::disk('public')->exists($house->image)) {
+            if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {
                 Storage::disk('public')->delete($house->image);
             }
 
-            $uploadedImage = $request->file('image');
-
-            // Generate a unique filename
-            $filename = time() . '.webp';
-
-            // Load the uploaded image based on its type
-            switch ($uploadedImage->getClientMimeType()) {
-                case 'image/jpeg':
-                case 'image/jpg':
-                    $image = imagecreatefromjpeg($uploadedImage->getPathname());
-                    break;
-                case 'image/png':
-                    $image = imagecreatefrompng($uploadedImage->getPathname());
-                    break;
-                default:
-                    $image = imagecreatefromjpeg($uploadedImage->getPathname());
-            }
-
-            // Save as WebP
-            $path = storage_path('app/public/houses/' . $filename);
-            imagewebp($image, $path, 80);
-            imagedestroy($image);
-
-            $validated['image'] = 'houses/' . $filename;
+            $imagePath = $request->file('image')->store('houses', 'public');
+            $validated['image'] = $imagePath;
         }
 
         $house->update($validated);
