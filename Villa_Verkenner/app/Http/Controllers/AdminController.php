@@ -77,43 +77,93 @@ class AdminController extends Controller
     }
 
     public function storeHouse(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'address' => 'required|max:255',
-            'rooms' => 'required',
-            'status' => 'required',
-            'popular' => 'required|boolean',
-            'image' => 'nullable|image|max:10240',
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|max:255',
+        'description' => 'required',
+        'price' => 'required|numeric|min:25000|max:2000000',
+        'address' => 'required|max:255',
+        'rooms' => 'required|integer|min:1|max:20',
+        'status' => 'required',
+        'popular' => 'required|boolean',
+        'image' => 'nullable|image|max:10240',
+        'features' => 'required|array|min:1', // Require at least one feature
+        'geo_options' => 'required|array|min:1', // Require at least one geo option
+    ]);
 
-        // Set default value for popular if not provided
-        $validated['popular'] = $request->has('popular') ? true : false;
+    // Set default value for popular if not provided
+    $validated['popular'] = $request->has('popular') ? true : false;
 
-        // Handle file upload
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('houses', 'public');
-            $validated['image'] = $imagePath;
-        } else {
-            $validated['image'] = 'houses/default.jpg'; // Default image
-        }
-
-        $house = House::create($validated);
-
-        // Sync relationships
-        if ($request->has('features')) {
-            $house->features()->sync($request->features);
-        }
-
-        if ($request->has('geo_options')) {
-            $house->geoOptions()->sync($request->geo_options);
-        }
-
-        return redirect()->route('admin.dashboard')
-            ->with('success', 'House created successfully!');
+    // Handle file upload
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('houses', 'public');
+        $validated['image'] = $imagePath;
+    } else {
+        $validated['image'] = 'houses/default.jpg'; // Default image
     }
+
+    $house = House::create($validated);
+
+    // Sync relationships
+    if ($request->has('features')) {
+        $house->features()->sync($request->features);
+    }
+
+    if ($request->has('geo_options')) {
+        $house->geoOptions()->sync($request->geo_options);
+    }
+
+    return redirect()->route('admin.dashboard')
+        ->with('success', 'House created successfully!');
+}
+
+public function updateHouse(Request $request, House $house)
+{
+    $validated = $request->validate([
+        'name' => 'required|max:255',
+        'description' => 'required',
+        'price' => 'required|numeric|min:25000|max:2000000',
+        'address' => 'required|max:255',
+        'rooms' => 'required|integer|min:1|max:20',
+        'status' => 'required',
+        'image' => 'nullable|image|max:10240',
+        'popular' => 'required|boolean',
+        'features' => 'required|array|min:1', // Require at least one feature
+        'geo_options' => 'required|array|min:1', // Require at least one geo option
+    ]);
+
+    // Handle the checkbox value (will be missing from request if not checked)
+    $validated['popular'] = $request->has('popular');
+
+    // Handle file upload
+    if ($request->hasFile('image')) {
+        // Delete old image if it exists and isn't the default
+        if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {
+            Storage::disk('public')->delete($house->image);
+        }
+
+        $imagePath = $request->file('image')->store('houses', 'public');
+        $validated['image'] = $imagePath;
+    }
+
+    $house->update($validated);
+
+    // Sync relationships
+    if ($request->has('features')) {
+        $house->features()->sync($request->features);
+    } else {
+        $house->features()->sync([]);
+    }
+
+    if ($request->has('geo_options')) {
+        $house->geoOptions()->sync($request->geo_options);
+    } else {
+        $house->geoOptions()->sync([]);
+    }
+
+    return redirect()->route('admin.dashboard')
+        ->with('success', 'House updated successfully!');
+}
 
     public function editHouse(House $house)
     {
@@ -132,54 +182,7 @@ class AdminController extends Controller
             'selectedGeoOptions'
         ));
     }
-
-    public function updateHouse(Request $request, House $house)
-    {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'address' => 'required|max:255',
-            'rooms' => 'required',
-            'status' => 'required',
-            'image' => 'nullable|image|max:10240',
-            'popular' => 'required|boolean',
-        ]);
-
-        // Handle the checkbox value (will be missing from request if not checked)
-        $validated['popular'] = $request->has('popular');
-
-        // Handle file upload
-        if ($request->hasFile('image')) {
-            // Delete old image if it exists and isn't the default
-            if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {
-                Storage::disk('public')->delete($house->image);
-            }
-
-            $imagePath = $request->file('image')->store('houses', 'public');
-            $validated['image'] = $imagePath;
-        }
-
-        $house->update($validated);
-
-        // Sync relationships
-        if ($request->has('features')) {
-            $house->features()->sync($request->features);
-        } else {
-            $house->features()->sync([]);
-        }
-
-        if ($request->has('geo_options')) {
-            $house->geoOptions()->sync($request->geo_options);
-        } else {
-            $house->geoOptions()->sync([]);
-        }
-
-        return redirect()->route('admin.dashboard')
-            ->with('success', 'House updated successfully!');
-    }
-
-    public function destroyHouse(House $house)
+        public function destroyHouse(House $house)
     {
         // Delete image if it exists and isn't the default
         if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {

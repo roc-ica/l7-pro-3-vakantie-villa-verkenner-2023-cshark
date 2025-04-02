@@ -27,7 +27,7 @@
                 
                 <div class="form-group">
                     <label for="price">Price (€) <span class="required">*</span></label>
-                    <input type="number" id="price" name="price" value="{{ old('price') }}" required>
+                    <input type="number" id="price" name="price" value="{{ old('price') }}" required min="25000" max="2000000" step="0.01">
                     @error('price')
                         <span class="error">{{ $message }}</span>
                     @enderror
@@ -35,7 +35,7 @@
                 
                 <div class="form-group">
                     <label for="rooms">Number of Rooms <span class="required">*</span></label>
-                    <input type="text" id="rooms" name="rooms" value="{{ old('rooms') }}" required>
+                    <input type="number" id="rooms" name="rooms" value="{{ old('rooms') }}" required min="1" max="20" step="1">
                     @error('rooms')
                         <span class="error">{{ $message }}</span>
                     @enderror
@@ -98,29 +98,39 @@
             
             <div class="form-sections">
                 <div class="form-section">
-                    <h3>Features</h3>
+                    <h3>Features <span class="required">*</span></h3>
                     <div class="checkbox-grid">
                         @foreach($features as $feature)
                             <div class="checkbox-item">
                                 <input type="checkbox" id="feature_{{ $feature->id }}" name="features[]" value="{{ $feature->id }}"
-                                    {{ in_array($feature->id, old('features', [])) ? 'checked' : '' }}>
+                                    {{ in_array($feature->id, old('features', [])) ? 'checked' : '' }}
+                                    class="feature-checkbox">
                                 <label for="feature_{{ $feature->id }}">{{ $feature->name }}</label>
                             </div>
                         @endforeach
                     </div>
+                    @error('features')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                    <div class="help-text">Select at least one feature for this property</div>
                 </div>
                 
                 <div class="form-section">
-                    <h3>Location Options</h3>
+                    <h3>Location Options <span class="required">*</span></h3>
                     <div class="checkbox-grid">
                         @foreach($geoOptions as $option)
                             <div class="checkbox-item">
                                 <input type="checkbox" id="geo_option_{{ $option->id }}" name="geo_options[]" value="{{ $option->id }}"
-                                    {{ in_array($option->id, old('geo_options', [])) ? 'checked' : '' }}>
+                                    {{ in_array($option->id, old('geo_options', [])) ? 'checked' : '' }}
+                                    class="geo-option-checkbox">
                                 <label for="geo_option_{{ $option->id }}">{{ $option->name }}</label>
                             </div>
                         @endforeach
                     </div>
+                    @error('geo_options')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                    <div class="help-text">Select at least one location option for this property</div>
                 </div>
             </div>
             
