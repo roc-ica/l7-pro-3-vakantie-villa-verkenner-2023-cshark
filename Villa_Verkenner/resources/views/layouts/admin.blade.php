@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        /* Force no scroll on login page */
         html.login-page,
         body.login-page {
             height: 100%;
@@ -17,13 +16,11 @@
             padding: 0;
         }
 
-        /* Animation for fade out effect */
         .alert-fade-out {
             opacity: 0;
             transition: opacity 0.5s ease-out;
         }
 
-        /* Styling for the close button */
         .close-alert {
             background: transparent;
             border: none;
@@ -55,7 +52,6 @@
             line-height: 1;
         }
 
-        /* Position the alerts properly */
         .alert {
             position: relative;
             display: flex;
@@ -72,8 +68,6 @@
 <body class="{{ request()->routeIs('admin.login') ? 'login-page' : '' }}">
     <div class="admin-container">
         @if (Auth::guard('admin')->check())
-            <nav class="admin-nav">
-                <!-- Your nav content remains the same -->
             </nav>
         @endif
 
@@ -105,32 +99,26 @@
     </div>
 
     <script>
-        // If we're on the login page, force no scrolling
         if (window.location.pathname.includes('/admin/login')) {
             document.documentElement.classList.add('login-page');
         }
 
-        // Auto-dismiss alerts after 3 seconds
         document.addEventListener('DOMContentLoaded', function() {
             const alerts = document.querySelectorAll('.auto-dismiss');
-
-            // Function to remove alert
             const removeAlert = (alert) => {
                 alert.classList.add('alert-fade-out');
                 setTimeout(() => {
                     if (alert.parentNode) {
                         alert.parentNode.removeChild(alert);
                     }
-                }, 500); // Wait for fade out animation
+                }, 500); 
             };
 
-            // Auto dismiss after 3 seconds
             alerts.forEach(alert => {
                 setTimeout(() => {
                     removeAlert(alert);
                 }, 3000);
 
-                // Allow manual dismissal with the close button
                 const closeBtn = alert.querySelector('.close-alert');
                 if (closeBtn) {
                     closeBtn.addEventListener('click', () => {

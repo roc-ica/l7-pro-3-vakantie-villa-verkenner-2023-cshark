@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status', ['Beschikbaar', 'Verkocht'])->default('Beschikbaar');
             $table->string('rooms');
             $table->boolean('popular')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

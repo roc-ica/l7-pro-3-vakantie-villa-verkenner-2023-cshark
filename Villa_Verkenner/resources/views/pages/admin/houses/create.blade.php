@@ -47,7 +47,6 @@
                         <option value="Beschikbaar" {{ old('status') == 'Beschikbaar' ? 'selected' : '' }}>Available</option>
                         <option value="Verkocht" {{ old('status') == 'Verkocht' ? 'selected' : '' }}>Sold</option>
                     </select>
-                    {{-- <div class="help-text">Set the current availability status of this property</div> --}}
                     @error('status')
                         <span class="error">{{ $message }}</span>
                     @enderror
@@ -59,7 +58,6 @@
                         <option value="0" {{ old('popular') == '0' ? 'selected' : '' }}>Not Featured</option>
                         <option value="1" {{ old('popular') == '1' ? 'selected' : '' }}>Featured</option>
                     </select>
-                    {{-- <div class="help-text">Featured properties appear in the highlighted section on the about us page</div> --}}
                     @error('popular')
                         <span class="error">{{ $message }}</span>
                     @enderror
@@ -112,7 +110,6 @@
                     @error('features')
                         <span class="error">{{ $message }}</span>
                     @enderror
-                    {{-- <div class="help-text">Select at least one feature for this property</div> --}}
                 </div>
                 
                 <div class="form-section">
@@ -147,21 +144,16 @@
 </div>
 
 <script>
-    // Display selected filename
     document.getElementById('image').addEventListener('change', function(e) {
         const fileName = e.target.files[0]?.name || 'No file chosen';
         document.querySelector('.file-name').textContent = fileName;
     });
 
-    // Display selected filename
     document.getElementById('image').addEventListener('change', function(e) {
         const fileName = e.target.files[0]?.name || 'No file chosen';
         document.querySelector('.file-name').textContent = fileName;
     });
-    
-    // Validate checkboxes before submission
     document.querySelector('form.admin-form').addEventListener('submit', function(e) {
-        // Check if at least one feature is selected
         const features = document.querySelectorAll('.feature-checkbox:checked');
         if (features.length === 0) {
             e.preventDefault();
@@ -169,8 +161,6 @@
             document.querySelector('.form-section:nth-child(1)').scrollIntoView({ behavior: 'smooth' });
             return false;
         }
-        
-        // Check if at least one geo option is selected
         const geoOptions = document.querySelectorAll('.geo-option-checkbox:checked');
         if (geoOptions.length === 0) {
             e.preventDefault();

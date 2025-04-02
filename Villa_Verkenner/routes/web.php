@@ -10,7 +10,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\ProfileController;
 
-// Admin Routes - PLACE THESE FIRST
+// Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AdminController::class, 'login']);
@@ -26,6 +26,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/houses/{house}/edit', [AdminController::class, 'editHouse'])->name('houses.edit');
         Route::put('/houses/{house}', [AdminController::class, 'updateHouse'])->name('houses.update');
         Route::delete('/houses/{house}', [AdminController::class, 'destroyHouse'])->name('houses.destroy');
+        Route::get('/houses/deleted', [AdminController::class, 'deletedHouses'])->name('houses.deleted');
+        Route::post('/houses/{house}/restore', [AdminController::class, 'restoreHouse'])->name('houses.restore');
     });
 });
 
@@ -52,5 +54,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Load auth routes LAST
 require __DIR__ . '/auth.php';

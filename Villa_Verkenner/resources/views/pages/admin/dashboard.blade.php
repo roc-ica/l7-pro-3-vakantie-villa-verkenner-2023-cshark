@@ -18,16 +18,15 @@
         <div class="dashboard-stats">
             <div class="stat-card">
                 <h3>Total Houses</h3>
+                <p>{{ \App\Models\House::withTrashed()->count() }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Houses</h3>
                 <p>{{ \App\Models\House::count() }}</p>
             </div>
             <div class="stat-card">
-                <h3>Available Houses</h3>
-                <p>{{ \App\Models\House::where('status', 'Beschikbaar')->count() }}</p>
-            </div>
-
-            <div class="stat-card">
                 <h3>Popular Houses</h3>
-                <p>{{ \App\Models\House::where('popular', 'Yes')->count() ?? 0 }}</p>
+                <p>{{ \App\Models\House::where('popular', true)->count() }}</p>
             </div>
         </div>
         <div class="dashboard-actions">
@@ -44,6 +43,12 @@
                     <i class="fa-solid fa-search"></i>
                     <input type="text" id="searchInput" placeholder="Search houses...">
                 </div>
+                
+                <div class="table-actions">
+                    <button id="toggleDeletedBtn">
+                        <i class="fa-solid fa-trash"></i> Show Deleted Houses
+                    </button>
+                </div>
             </div>
 
             <div class="data-table-wrapper">
@@ -59,7 +64,7 @@
                             <th class="actions-column">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="houseTableBody">
                         @php
                             $currentPage = request()->get('page', 1);
                             $perPage = 10;
@@ -67,7 +72,7 @@
                         @endphp
 
                         @foreach ($houses as $house)
-                            <tr>
+                            <tr data-deleted="false">
                                 <td>{{ $house->id }}</td>
                                 <td>{{ $house->name }}</td>
                                 <td>{{ $house->address }}</td>
@@ -81,17 +86,17 @@
                                 </td>
                                 <td class="actions-cell">
                                     <div class="row-actions">
-                                        <a href="#" class="edit-btn" title="Edit">
+                                        <a href="{{ route('admin.houses.edit', $house->id) }}" class="edit-btn" title="Edit">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
                                         <a href="{{ route('detail', $house->id) }}" class="view-btn" title="View">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
-                                        <form method="POST" action="#" class="delete-form"
-                                            onsubmit="return confirm('Are you sure you want to delete this house?');">
+                                        <form method="POST" action="{{ route('admin.houses.destroy', $house->id) }}" class="delete-form"
+                                            onsubmit="return confirm('Are you sure you want to remove this house from listings?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="delete-btn" title="Delete">
+                                            <button type="submit" class="delete-btn" title="Remove from Listings">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -132,10 +137,11 @@
     </div>
 
     <script>
-        // Simple client-side search functionality
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
             const rows = document.querySelectorAll('.data-table tbody tr');
+            const toggleDeletedBtn = document.getElementById('toggleDeletedBtn');
+            let showingDeleted = false;
 
             searchInput.addEventListener('keyup', function() {
                 const searchTerm = searchInput.value.toLowerCase();
@@ -148,6 +154,48 @@
                         row.style.display = 'none';
                     }
                 });
+            });
+            toggleDeletedBtn.addEventListener('click', function() {
+                showingDeleted = !showingDeleted;
+                
+                if (showingDeleted) {
+
+                    toggleDeletedBtn.innerHTML = '<i class="fa-solid fa-check"></i> Show Active Houses';
+                    fetch('/admin/houses/deleted')
+                        .then(response => response.json())
+                        .then(data => {
+                            const tableBody = document.getElementById('houseTableBody');
+                            tableBody.innerHTML = '';
+                            
+                            data.houses.forEach(house => {
+                                tableBody.innerHTML += `
+                                <tr data-deleted="true">
+                                    <td>${house.id}</td>
+                                    <td>${house.name}</td>
+                                    <td>${house.address}</td>
+                                    <td>€${new Intl.NumberFormat('nl-NL').format(house.price)}</td>
+                                    <td>${house.rooms}</td>
+                                    <td>
+                                        <span class="status-badge deleted">Deleted</span>
+                                    </td>
+                                    <td class="actions-cell">
+                                        <div class="row-actions">
+                                            <form method="POST" action="/admin/houses/${house.id}/restore" class="restore-form">
+                                                @csrf
+                                                <button type="submit" class="restore-btn" title="Restore">
+                                                    <i class="fa-solid fa-trash-arrow-up"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                `;
+                            });
+                        });
+                } else {
+                    toggleDeletedBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Show Deleted Houses';
+                    window.location.reload();
+                }
             });
         });
     </script>

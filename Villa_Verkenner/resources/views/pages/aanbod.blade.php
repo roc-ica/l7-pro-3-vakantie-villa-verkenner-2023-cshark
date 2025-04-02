@@ -1,4 +1,3 @@
-<!-- filepath: resources/views/pages/aanbod.blade.php -->
 <x-layout title="Aanbod">
     <main class="aanbod-main">
         <div class="search">
@@ -8,10 +7,8 @@
 
         <h1 class="title-top">Huizen in Oostenrijk</h1>
 
-        <!-- Wrap all filters in a GET form -->
         <form id="filterForm" method="GET" action="{{ route('aanbod') }}">
             <div class="filter-section">
-                <!-- Filter One: Price Slider -->
                 <div class="filter-one">
                     <div class="values">
                         <span id="range1">{{ number_format(request('min_price', 150000), 0, ',', '.') }}</span>

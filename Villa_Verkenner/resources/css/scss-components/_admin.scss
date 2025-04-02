@@ -562,6 +562,12 @@ body {
                     background-color: rgba(#F44336, 0.2);
                     border: 1px solid #F44336;
                 }
+
+                &.deleted {
+                    background-color: rgba(#9E9E9E, 0.2);
+                    border: 1px solid #9E9E9E;
+                    color: #E0E0E0;
+                }
             }
             
             .row-actions {
@@ -599,6 +605,11 @@ body {
                     &.delete-btn:hover {
                         background-color: rgba(#F44336, 0.3);
                         color: #F44336;
+                    }
+
+                    &.restore-btn:hover {
+                        background-color: rgba(#4CAF50, 0.3);
+                        color: #4CAF50;
                     }
                     
                     i {

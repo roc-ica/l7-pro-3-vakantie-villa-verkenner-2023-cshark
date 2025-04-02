@@ -16,8 +16,7 @@ class FilterController extends Controller
         $allFeatures = Feature::all();
         $allGeoOptions = GeoOption::all();
 
-        // Start with base query
-        $query = House::query();
+        $query = House::withoutTrashed();
 
         // Apply search filter if provided
         if ($request->has('search') && $request->search) {
@@ -56,18 +55,13 @@ class FilterController extends Controller
             }, '=', count($geoOptionIds));
         }
 
-        // Execute the query with eager loading for performance
         $houses = $query->with(['features', 'geoOptions'])->get();
 
-        // Log::debug('Executed query:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
-
-        // If this is an AJAX request, return partial view
         if ($request->ajax()) {
             $html = view('partials.houses', compact('houses'))->render();
             return response()->json(['html' => $html]);
         }
 
-        // For regular requests, return the full view
         return view('pages.aanbod', compact('houses', 'allFeatures', 'allGeoOptions'));
     }
 }

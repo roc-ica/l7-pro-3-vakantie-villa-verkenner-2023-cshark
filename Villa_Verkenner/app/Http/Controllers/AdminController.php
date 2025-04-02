@@ -13,7 +13,6 @@ use App\Http\Middleware\AdminMiddleware;
 
 class AdminController extends Controller
 {
-    // Constructor remains the same
     public function __construct() {}
 
     public function showLoginForm()
@@ -60,15 +59,6 @@ class AdminController extends Controller
 
         return redirect()->route('admin.login');
     }
-
-    // New House Management Methods
-
-    // public function houses()
-    // {
-    //     $houses = House::latest()->paginate(10);
-    //     return view('pages.admin.houses.index', compact('houses'));
-    // }
-
     public function createHouse()
     {
         $features = Feature::all();
@@ -77,100 +67,90 @@ class AdminController extends Controller
     }
 
     public function storeHouse(Request $request)
-{
-    $validated = $request->validate([
-        'name' => 'required|max:255',
-        'description' => 'required',
-        'price' => 'required|numeric|min:25000|max:2000000',
-        'address' => 'required|max:255',
-        'rooms' => 'required|integer|min:1|max:20',
-        'status' => 'required',
-        'popular' => 'required|boolean',
-        'image' => 'nullable|image|max:10240',
-        'features' => 'required|array|min:1', // Require at least one feature
-        'geo_options' => 'required|array|min:1', // Require at least one geo option
-    ]);
+    {
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric|min:25000|max:2000000',
+            'address' => 'required|max:255',
+            'rooms' => 'required|integer|min:1|max:20',
+            'status' => 'required',
+            'popular' => 'required|boolean',
+            'image' => 'nullable|image|max:10240',
+            'features' => 'required|array|min:1', 
+            'geo_options' => 'required|array|min:1', 
+        ]);
 
-    // Set default value for popular if not provided
-    $validated['popular'] = $request->has('popular') ? true : false;
+        $validated['popular'] = $request->has('popular') ? true : false;
 
-    // Handle file upload
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('houses', 'public');
-        $validated['image'] = $imagePath;
-    } else {
-        $validated['image'] = 'houses/default.jpg'; // Default image
-    }
-
-    $house = House::create($validated);
-
-    // Sync relationships
-    if ($request->has('features')) {
-        $house->features()->sync($request->features);
-    }
-
-    if ($request->has('geo_options')) {
-        $house->geoOptions()->sync($request->geo_options);
-    }
-
-    return redirect()->route('admin.dashboard')
-        ->with('success', 'House created successfully!');
-}
-
-public function updateHouse(Request $request, House $house)
-{
-    $validated = $request->validate([
-        'name' => 'required|max:255',
-        'description' => 'required',
-        'price' => 'required|numeric|min:25000|max:2000000',
-        'address' => 'required|max:255',
-        'rooms' => 'required|integer|min:1|max:20',
-        'status' => 'required',
-        'image' => 'nullable|image|max:10240',
-        'popular' => 'required|boolean',
-        'features' => 'required|array|min:1', // Require at least one feature
-        'geo_options' => 'required|array|min:1', // Require at least one geo option
-    ]);
-
-    // Handle the checkbox value (will be missing from request if not checked)
-    $validated['popular'] = $request->has('popular');
-
-    // Handle file upload
-    if ($request->hasFile('image')) {
-        // Delete old image if it exists and isn't the default
-        if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {
-            Storage::disk('public')->delete($house->image);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('houses', 'public');
+            $validated['image'] = $imagePath;
+        } else {
+            $validated['image'] = 'houses/default.jpg'; // Default image
         }
 
-        $imagePath = $request->file('image')->store('houses', 'public');
-        $validated['image'] = $imagePath;
+        $house = House::create($validated);
+        if ($request->has('features')) {
+            $house->features()->sync($request->features);
+        }
+
+        if ($request->has('geo_options')) {
+            $house->geoOptions()->sync($request->geo_options);
+        }
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'House created successfully!');
     }
 
-    $house->update($validated);
+    public function updateHouse(Request $request, House $house)
+    {
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric|min:25000|max:2000000',
+            'address' => 'required|max:255',
+            'rooms' => 'required|integer|min:1|max:20',
+            'status' => 'required',
+            'image' => 'nullable|image|max:10240',
+            'popular' => 'required|boolean',
+            'features' => 'required|array|min:1', 
+            'geo_options' => 'required|array|min:1', 
+        ]);
 
-    // Sync relationships
-    if ($request->has('features')) {
-        $house->features()->sync($request->features);
-    } else {
-        $house->features()->sync([]);
+        $validated['popular'] = $request->has('popular');
+
+        if ($request->hasFile('image')) {
+            if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {
+                Storage::disk('public')->delete($house->image);
+            }
+
+            $imagePath = $request->file('image')->store('houses', 'public');
+            $validated['image'] = $imagePath;
+        }
+
+        $house->update($validated);
+
+        if ($request->has('features')) {
+            $house->features()->sync($request->features);
+        } else {
+            $house->features()->sync([]);
+        }
+
+        if ($request->has('geo_options')) {
+            $house->geoOptions()->sync($request->geo_options);
+        } else {
+            $house->geoOptions()->sync([]);
+        }
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'House updated successfully!');
     }
-
-    if ($request->has('geo_options')) {
-        $house->geoOptions()->sync($request->geo_options);
-    } else {
-        $house->geoOptions()->sync([]);
-    }
-
-    return redirect()->route('admin.dashboard')
-        ->with('success', 'House updated successfully!');
-}
 
     public function editHouse(House $house)
     {
         $features = Feature::all();
         $geoOptions = GeoOption::all();
-
-        // Get current selections
         $selectedFeatures = $house->features->pluck('id')->toArray();
         $selectedGeoOptions = $house->geoOptions->pluck('id')->toArray();
 
@@ -182,17 +162,27 @@ public function updateHouse(Request $request, House $house)
             'selectedGeoOptions'
         ));
     }
-        public function destroyHouse(House $house)
-    {
-        // Delete image if it exists and isn't the default
-        if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {
-            Storage::disk('public')->delete($house->image);
-        }
 
-        // Delete the house
+    public function destroyHouse(House $house)
+    {
         $house->delete();
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House deleted successfully!');
+            ->with('success', 'House removed from listings successfully!');
+    }
+
+    public function deletedHouses()
+    {
+        $houses = House::onlyTrashed()->latest()->get();
+        return response()->json(['houses' => $houses]);
+    }
+
+    public function restoreHouse($id)
+    {
+        $house = House::onlyTrashed()->findOrFail($id);
+        $house->restore();
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'House has been restored successfully.');
     }
 }

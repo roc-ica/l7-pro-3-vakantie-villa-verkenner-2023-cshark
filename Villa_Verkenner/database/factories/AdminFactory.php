@@ -25,7 +25,7 @@ class AdminFactory extends Factory
     {
         return [
             'username' => fake()->unique()->userName(),
-            'password' => Hash::make('password'), // Default password for generated admins
+            'password' => Hash::make('password'), 
             'remember_token' => Str::random(10),
         ];
     }
@@ -38,7 +38,7 @@ class AdminFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'username' => 'admin',
-                'password' => Hash::make('admin123'), // You should change this in production
+                'password' => Hash::make('admin123'), 
             ];
         });
     }

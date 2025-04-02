@@ -7,7 +7,6 @@
                 <img src="{{ asset('images/verf/verf_lichtpaars3.png') }}" alt="image">
                 <span>€{{ number_format($house->price, 0, ',', '.') }}</span>
             </div>
-            {{-- Use the actual house image from storage with WebP default fallback --}}
             <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->name }}"
                 onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'" class="house-image">
             <h1 class="house-title">{{ $house->name }}</h1>
