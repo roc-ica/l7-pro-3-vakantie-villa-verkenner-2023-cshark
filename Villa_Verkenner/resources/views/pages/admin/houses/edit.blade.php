@@ -176,5 +176,35 @@
             const fileName = e.target.files[0]?.name || 'No file chosen';
             document.querySelector('.file-name').textContent = fileName;
         });
+        // Display selected filename
+        document.getElementById('image').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file chosen';
+            document.querySelector('.file-name').textContent = fileName;
+        });
+
+        // Validate checkboxes before submission
+        document.querySelector('form.admin-form').addEventListener('submit', function(e) {
+            // Check if at least one feature is selected
+            const features = document.querySelectorAll('.feature-checkbox:checked');
+            if (features.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one feature for this property');
+                document.querySelector('.form-section:nth-child(1)').scrollIntoView({
+                    behavior: 'smooth'
+                });
+                return false;
+            }
+
+            // Check if at least one geo option is selected
+            const geoOptions = document.querySelectorAll('.geo-option-checkbox:checked');
+            if (geoOptions.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one location option for this property');
+                document.querySelector('.form-section:nth-child(2)').scrollIntoView({
+                    behavior: 'smooth'
+                });
+                return false;
+            }
+        });
     </script>
 @endsection
