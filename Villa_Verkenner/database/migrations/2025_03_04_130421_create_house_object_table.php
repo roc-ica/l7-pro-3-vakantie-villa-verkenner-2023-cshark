@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('image');
             $table->integer('price');
             $table->string('address');
-            $table->string('status')->default('Beschikbaar');
+            $table->enum('status', ['Beschikbaar', 'Verkocht'])->default('Beschikbaar');
             $table->string('rooms');
-            $table->string('popular');
+            $table->boolean('popular')->default(false);
             $table->timestamps();
         });
     }

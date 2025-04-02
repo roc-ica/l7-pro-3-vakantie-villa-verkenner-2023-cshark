@@ -20,10 +20,10 @@
                     </div>
                     <div class="slider">
                         <div class="slider-track"></div>
-                        <input type="range" name="min_price" min="150000" max="900000"
-                            value="{{ request('min_price', '150000') }}" id="slider-1" oninput="slideOne()">
-                        <input type="range" name="max_price" min="150000" max="900000"
-                            value="{{ request('max_price', '900000') }}" id="slider-2" oninput="slideTwo()">
+                        <input type="range" name="min_price" min="25000" max="2000000"
+                            value="{{ request('min_price', '25000') }}" id="slider-1" oninput="slideOne()">
+                        <input type="range" name="max_price" min="25000" max="2000000"
+                            value="{{ request('max_price', '2000000') }}" id="slider-2" oninput="slideTwo()">
                     </div>
                 </div>
                 <!-- Filter Two: Features Dropdown -->

@@ -34,9 +34,6 @@
             <a href="{{ route('admin.houses.create') }}" class="action-btn">
                 <i class="fa-solid fa-plus"></i> Add New House
             </a>
-            {{-- <a href="{{ route('admin.houses.index') }}" class="action-btn">
-                <i class="fa-solid fa-database"></i> Manage Houses
-            </a> --}}
         </div>
 
         <div class="data-table-container">

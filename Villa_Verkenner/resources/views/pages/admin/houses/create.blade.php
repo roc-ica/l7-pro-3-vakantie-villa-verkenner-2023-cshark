@@ -42,13 +42,25 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="status">Status <span class="required">*</span></label>
+                    <label for="status">Property Status <span class="required">*</span></label>
                     <select id="status" name="status" required>
                         <option value="Beschikbaar" {{ old('status') == 'Beschikbaar' ? 'selected' : '' }}>Available</option>
                         <option value="Verkocht" {{ old('status') == 'Verkocht' ? 'selected' : '' }}>Sold</option>
-                        <option value="Gereserveerd" {{ old('status') == 'Gereserveerd' ? 'selected' : '' }}>Reserved</option>
                     </select>
+                    {{-- <div class="help-text">Set the current availability status of this property</div> --}}
                     @error('status')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
+                
+                <div class="form-group">
+                    <label for="popular">Featured Property <span class="required">*</span></label>
+                    <select id="popular" name="popular" required>
+                        <option value="0" {{ old('popular') == '0' ? 'selected' : '' }}>Not Featured</option>
+                        <option value="1" {{ old('popular') == '1' ? 'selected' : '' }}>Featured</option>
+                    </select>
+                    {{-- <div class="help-text">Featured properties appear in the highlighted section on the about us page</div> --}}
+                    @error('popular')
                         <span class="error">{{ $message }}</span>
                     @enderror
                 </div>
@@ -116,7 +128,7 @@
                 <button type="submit" class="submit-btn">
                     <i class="fa-solid fa-save"></i> Create House
                 </button>
-                <a href="{{ route('admin.houses.index') }}" class="cancel-btn">
+                <a href="{{ route('admin.dashboard') }}" class="cancel-btn">
                     <i class="fa-solid fa-times"></i> Cancel
                 </a>
             </div>
