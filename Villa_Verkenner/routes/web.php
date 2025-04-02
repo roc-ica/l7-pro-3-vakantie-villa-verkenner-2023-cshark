@@ -1,8 +1,14 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Models\House;
+use App\Models\Feature;
+use App\Models\GeoOption;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FilterController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('pages.landing');
@@ -12,9 +18,7 @@ Route::get('/over-oostenrijk', function () {
     return view('pages.over-oostenrijk');
 })->name('over-oostenrijk');
 
-Route::get('/aanbod', function () {
-    return view('pages.aanbod');
-})->name('aanbod');
+Route::get('/aanbod', [FilterController::class, 'filterHouses'])->name('aanbod');
 
 Route::get('/detail/{id}', function ($id) {
     return view('pages.detail', compact('id'));
@@ -33,4 +37,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
