@@ -18,7 +18,7 @@
 <body>
 
 <header>
-  <img class="logo" src="{{ asset('images/austria-flag.jpg') }}" alt="Logo"">
+
   <nav class="nav">
       <a href="{{ route('landing') }}">Home</a>
       <a href="{{ route('aanbod') }}">Aanbod</a>
