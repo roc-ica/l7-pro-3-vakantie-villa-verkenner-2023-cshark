@@ -80,15 +80,20 @@
                 </div>
                 
                 <div class="form-group full-width">
-                    <label for="image">Afbeelding Woning</label>
+                    <label for="images">Afbeeldingen Woning (1-5) <span class="required">*</span></label>
                     <div class="file-input-container">
-                        <input type="file" id="image" name="image" accept="image/*">
-                        <label for="image" class="file-input-label">
-                            <i class="fa-solid fa-cloud-upload-alt"></i> Kies Afbeelding
+                        <input type="file" id="images" name="images[]" accept="image/*" multiple>
+                        <label for="images" class="file-input-label">
+                            <i class="fa-solid fa-cloud-upload-alt"></i> Kies Afbeeldingen (max 5)
                         </label>
-                        <span class="file-name">Geen bestand gekozen</span>
+                        <span class="files-selected">Geen bestanden gekozen</span>
                     </div>
-                    @error('image')
+                    <p class="help-text">De eerste afbeelding wordt automatisch de primaire afbeelding. U kunt maximaal 5 afbeeldingen uploaden.</p>
+                    <div id="image-preview-container" class="image-previews"></div>
+                    @error('images')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                    @error('images.*')
                         <span class="error">{{ $message }}</span>
                     @enderror
                 </div>
@@ -143,15 +148,48 @@
 </div>
 
 <script>
-    document.getElementById('image').addEventListener('change', function(e) {
-        const fileName = e.target.files[0]?.name || 'Geen bestand gekozen';
-        document.querySelector('.file-name').textContent = fileName;
+    document.getElementById('images').addEventListener('change', function(e) {
+        const files = e.target.files;
+        const fileCount = files.length;
+        
+        if (fileCount === 0) {
+            document.querySelector('.files-selected').textContent = 'Geen bestanden gekozen';
+        } else if (fileCount > 5) {
+            document.querySelector('.files-selected').textContent = 'Te veel bestanden gekozen (max 5)';
+            this.value = '';
+            return;
+        } else {
+            document.querySelector('.files-selected').textContent = `${fileCount} ${fileCount === 1 ? 'bestand' : 'bestanden'} gekozen`;
+        }
+        
+        const previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
+        
+        for (let i = 0; i < Math.min(files.length, 5); i++) {
+            const file = files[i];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'image-preview';
+                
+                if (i === 0) {
+                    previewDiv.classList.add('primary-image');
+                    previewDiv.innerHTML = `
+                        <div class="primary-badge">Primair</div>
+                        <img src="${event.target.result}" alt="Preview">
+                    `;
+                } else {
+                    previewDiv.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+                }
+                
+                previewContainer.appendChild(previewDiv);
+            };
+            
+            reader.readAsDataURL(file);
+        }
     });
 
-    document.getElementById('image').addEventListener('change', function(e) {
-        const fileName = e.target.files[0]?.name || 'Geen bestand gekozen';
-        document.querySelector('.file-name').textContent = fileName;
-    });
     document.querySelector('form.admin-form').addEventListener('submit', function(e) {
         const features = document.querySelectorAll('.feature-checkbox:checked');
         if (features.length === 0) {
@@ -160,6 +198,7 @@
             document.querySelector('.form-section:nth-child(1)').scrollIntoView({ behavior: 'smooth' });
             return false;
         }
+        
         const geoOptions = document.querySelectorAll('.geo-option-checkbox:checked');
         if (geoOptions.length === 0) {
             e.preventDefault();
@@ -167,7 +206,14 @@
             document.querySelector('.form-section:nth-child(2)').scrollIntoView({ behavior: 'smooth' });
             return false;
         }
+        
+        const images = document.getElementById('images').files;
+        if (images.length === 0) {
+            e.preventDefault();
+            alert('Upload a.u.b. ten minste één afbeelding voor deze woning');
+            document.getElementById('images').scrollIntoView({ behavior: 'smooth' });
+            return false;
+        }
     });
-
 </script>
 @endsection

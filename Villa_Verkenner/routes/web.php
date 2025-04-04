@@ -28,6 +28,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/houses/{house}', [AdminController::class, 'destroyHouse'])->name('houses.destroy');
         Route::get('/houses/deleted', [AdminController::class, 'deletedHouses'])->name('houses.deleted');
         Route::post('/houses/{house}/restore', [AdminController::class, 'restoreHouse'])->name('houses.restore');
+        
+        // New routes for image management
+        Route::post('/houses/{house}/reorder-images', [AdminController::class, 'reorderImages'])->name('houses.reorder-images');
+        Route::delete('/houses/images/{image}', [AdminController::class, 'deleteImage'])->name('houses.delete-image');
 
         // Feature management routes
         Route::get('/features', [AdminController::class, 'featureIndex'])->name('features.index');

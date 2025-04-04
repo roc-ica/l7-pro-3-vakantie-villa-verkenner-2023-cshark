@@ -17,7 +17,7 @@ class House extends Model
     protected $fillable = [
         'name',
         'description',
-        'image',
+        'image', // Keeping for backward compatibility
         'price',
         'address',
         'status',
@@ -38,5 +38,22 @@ class House extends Model
     public function requestLogs(): HasMany
     {
         return $this->hasMany(HouseRequestLog::class, 'house_object_id', 'id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(HouseImage::class, 'house_object_id', 'id')->orderBy('display_order');
+    }
+
+    public function getPrimaryImageAttribute()
+    {
+        $primaryImage = $this->images()->where('is_primary', true)->first();
+        
+        if ($primaryImage) {
+            return $primaryImage->image_path;
+        }
+        
+        // Fallback to first image or old image field
+        return $this->images()->first()?->image_path ?? $this->image ?? 'houses/defaultImage.webp';
     }
 }
