@@ -1,15 +1,21 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
-protected $fillable = [
-'username', 'password',
-];
+    use HasFactory, Notifiable;
+    
+    protected $fillable = [
+        'username', 'password',
+    ];
 
-protected $hidden = [
-'password', 'remember_token',
-];
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+    
+    protected $table = 'admins'; // Make sure this matches your table name
 }

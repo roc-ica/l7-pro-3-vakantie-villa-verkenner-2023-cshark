@@ -4,11 +4,11 @@
     @foreach ($houses as $house)
         <div class="house">
             <div class="price">
-                <img src="{{ asset('images/verf/verf_lichtpaars.webp') }}" alt="image">
+                <img src="{{ asset('images/verf/verf_lichtpaars3.png') }}" alt="image">
                 <span>€{{ number_format($house->price, 0, ',', '.') }}</span>
             </div>
-            {{-- Use a placeholder image for the house --}}
-            <img src="https://picsum.photos/600/400" alt="Lorem Picsum House Image">
+            <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->name }}"
+                onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'" class="house-image">
             <h1 class="house-title">{{ $house->name }}</h1>
             <p class="house-info">{{ $house->address }}</p>
             <a class="see-button" href="{{ route('detail', $house->id) }}">

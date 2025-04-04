@@ -17,9 +17,9 @@ class HouseFactory extends Factory
             'image'       => $this->faker->imageUrl(),
             'price'       => $this->faker->numberBetween(50000, 500000),
             'address'     => $this->faker->address,
-            'status'      => 'Beschikbaar',
+            'status' => $this->faker->randomElement(['Beschikbaar', 'Verkocht']),
             'rooms'       => (string)$this->faker->numberBetween(1, 10),
-            'popular'     => $this->faker->randomElement(['Yes', 'No']),
+            'popular' => $this->faker->boolean(),
         ];
     }
 }
