@@ -16,8 +16,8 @@ Route::get('/aanbod', function () {
     return view('pages.aanbod');
 })->name('aanbod');
 
-Route::get('/detail/{id}', function ($id) {
-    return view('pages.detail', compact('id'));
+Route::get('/detail', function () {
+    return view('pages.detail');
 })->name('detail');
 
 Route::get('/dashboard', function () {

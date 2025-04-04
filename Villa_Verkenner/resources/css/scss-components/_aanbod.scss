@@ -239,8 +239,8 @@
 
       .price {
         position: absolute;
-        top: -20px;
-        right: .5rem;
+        top: 1rem;
+        right: 1rem;
 
         span {
           color: $white;
@@ -252,7 +252,7 @@
         }
 
         img {
-          height: 120px;
+          height: 40px;
           @include flex;
         }
       }

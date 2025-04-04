@@ -83,7 +83,7 @@
           <img src="{{ asset('images/house-image.webp') }}" alt="image of a house">
           <h1 class="house-title">Title of the house</h1>
           <p class="house-info">adres en plaatsnaam van huis</p>
-          <a class="see-button" href="#">
+          <a class="see-button" href="{{ route('detail') }}">
             <img src="{{ asset('images/verf/donker-groen.png') }}" alt="image">
             <span>Bekijk</span>
           </a>
