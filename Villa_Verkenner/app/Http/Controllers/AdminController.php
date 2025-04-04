@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\House;
+use App\Models\HouseImage;
 use App\Models\Feature;
 use App\Models\GeoOption;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class AdminController extends Controller
 
         Log::info('Login failed');
         return back()->withErrors([
-            'username' => 'Username or password is incorrect.',
+            'username' => 'Gebruikersnaam of wachtwoord is onjuist.',
         ]);
     }
 
@@ -59,6 +60,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin.login');
     }
+
     public function createHouse()
     {
         $features = Feature::all();
@@ -76,21 +78,36 @@ class AdminController extends Controller
             'rooms' => 'required|integer|min:1|max:20',
             'status' => 'required',
             'popular' => 'required|boolean',
-            'image' => 'nullable|image|max:10240',
+            'images' => 'required|array|min:1|max:5',
+            'images.*' => 'image|max:10240',
             'features' => 'required|array|min:1', 
             'geo_options' => 'required|array|min:1', 
         ]);
 
         $validated['popular'] = $request->has('popular') ? true : false;
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('houses', 'public');
-            $validated['image'] = $imagePath;
-        } else {
-            $validated['image'] = 'houses/default.jpg'; // Default image
-        }
+        
+        $validated['image'] = 'houses/defaultImage.webp';
 
         $house = House::create($validated);
+
+        // Process images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $imagePath = $image->store('houses', 'public');
+                
+                $house->images()->create([
+                    'image_path' => $imagePath,
+                    'is_primary' => $index === 0,
+                    'display_order' => $index,
+                ]);
+                
+                if ($index === 0) {
+                    $house->update(['image' => $imagePath]);
+                }
+            }
+        }
+
+        // Sync relationships
         if ($request->has('features')) {
             $house->features()->sync($request->features);
         }
@@ -100,7 +117,7 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House created successfully!');
+            ->with('success', 'Woning succesvol aangemaakt!');
     }
 
     public function updateHouse(Request $request, House $house)
@@ -112,25 +129,69 @@ class AdminController extends Controller
             'address' => 'required|max:255',
             'rooms' => 'required|integer|min:1|max:20',
             'status' => 'required',
-            'image' => 'nullable|image|max:10240',
             'popular' => 'required|boolean',
+            'new_images' => 'nullable|array|max:5',
+            'new_images.*' => 'image|max:10240',
+            'delete_image_ids' => 'nullable|array',
+            'primary_image_id' => 'nullable|integer',
             'features' => 'required|array|min:1', 
             'geo_options' => 'required|array|min:1', 
         ]);
 
         $validated['popular'] = $request->has('popular');
 
-        if ($request->hasFile('image')) {
-            if ($house->image && $house->image != 'houses/default.jpg' && Storage::disk('public')->exists($house->image)) {
-                Storage::disk('public')->delete($house->image);
-            }
-
-            $imagePath = $request->file('image')->store('houses', 'public');
-            $validated['image'] = $imagePath;
-        }
-
         $house->update($validated);
 
+        if ($request->has('delete_image_ids') && count($request->delete_image_ids) > 0) {
+            $imagesToDelete = $house->images()->whereIn('id', $request->delete_image_ids)->get();
+
+            $remainingImagesCount = $house->images()->count() - count($request->delete_image_ids);
+
+            if ($remainingImagesCount > 0 || $request->hasFile('new_images')) {
+                foreach ($imagesToDelete as $image) {
+                    if (Storage::disk('public')->exists($image->image_path)) {
+                        Storage::disk('public')->delete($image->image_path);
+                    }
+                    $image->delete();
+                }
+            } else {
+                return redirect()->back()->withErrors(['delete_image_ids' => 'Er moet minstens één afbeelding zijn voor de woning.']);
+            }
+        }
+
+        // Handle new image uploads
+        if ($request->hasFile('new_images')) {
+            $currentImageCount = $house->images()->count();
+            $newImagesCount = count($request->file('new_images'));
+            
+            if ($currentImageCount + $newImagesCount > 5) {
+                return redirect()->back()->withErrors(['new_images' => 'Maximaal 5 afbeeldingen toegestaan.']);
+            }
+            
+            $startOrder = $currentImageCount;
+            foreach ($request->file('new_images') as $index => $image) {
+                $imagePath = $image->store('houses', 'public');
+                
+                $house->images()->create([
+                    'image_path' => $imagePath,
+                    'is_primary' => false,
+                    'display_order' => $startOrder + $index,
+                ]);
+            }
+        }
+
+        if ($request->has('primary_image_id') && $request->primary_image_id) {
+            $house->images()->update(['is_primary' => false]);
+            $primaryImage = $house->images()->findOrFail($request->primary_image_id);
+            $primaryImage->update(['is_primary' => true]);
+            
+            $house->update(['image' => $primaryImage->image_path]);
+        } 
+        elseif ($house->images()->where('is_primary', true)->count() === 0 && $house->images()->count() > 0) {
+            $firstImage = $house->images()->orderBy('display_order')->first();
+            $firstImage->update(['is_primary' => true]);
+            $house->update(['image' => $firstImage->image_path]);
+        }
         if ($request->has('features')) {
             $house->features()->sync($request->features);
         } else {
@@ -144,7 +205,7 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House updated successfully!');
+            ->with('success', 'Woning succesvol bijgewerkt!');
     }
 
     public function editHouse(House $house)
@@ -168,7 +229,7 @@ class AdminController extends Controller
         $house->delete();
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House removed from listings successfully!');
+            ->with('success', 'Woning succesvol verwijderd uit de lijsten!');
     }
 
     public function deletedHouses()
@@ -183,6 +244,163 @@ class AdminController extends Controller
         $house->restore();
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House has been restored successfully.');
+            ->with('success', 'Woning is succesvol hersteld.');
+    }
+
+    public function reorderImages(Request $request, House $house)
+    {
+        $request->validate([
+            'image_order' => 'required|array',
+            'image_order.*' => 'integer|exists:house_images,id'
+        ]);
+
+        foreach ($request->image_order as $order => $imageId) {
+            $house->images()->where('id', $imageId)->update(['display_order' => $order]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteImage(Request $request, $imageId)
+    {
+        $image = HouseImage::findOrFail($imageId);
+        $house = $image->house;
+        
+        if ($house->images()->count() <= 1) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Er moet minstens één afbeelding zijn voor de woning.'
+            ], 422);
+        }
+        
+        if ($image->is_primary) {
+            $newPrimary = $house->images()->where('id', '!=', $image->id)->first();
+            $newPrimary->update(['is_primary' => true]);
+            $house->update(['image' => $newPrimary->image_path]);
+        }
+        
+        if (Storage::disk('public')->exists($image->image_path)) {
+            Storage::disk('public')->delete($image->image_path);
+        }
+        
+        $image->delete();
+        
+        return response()->json(['success' => true]);
+    }
+
+    // Feature management methods
+    public function featureIndex()
+    {
+        $features = Feature::latest()->paginate(10);
+        return view('pages.admin.features.index', compact('features'));
+    }
+
+    public function featureCreate()
+    {
+        return view('pages.admin.features.create');
+    }
+
+    public function featureStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:feature,name'
+        ]);
+
+        Feature::create([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.features.index')
+            ->with('success', 'Eigenschap succesvol aangemaakt');
+    }
+
+    public function featureEdit(Feature $feature)
+    {
+        return view('pages.admin.features.edit', compact('feature'));
+    }
+
+    public function featureUpdate(Request $request, Feature $feature)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:feature,name,' . $feature->id
+        ]);
+
+        $feature->update([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.features.index')
+            ->with('success', 'Eigenschap succesvol bijgewerkt');
+    }
+
+    public function featureDestroy(Feature $feature)
+    {
+        if ($feature->houses()->count() > 0) {
+            return redirect()->route('admin.features.index')
+                ->with('error', 'Deze eigenschap kan niet worden verwijderd omdat het in gebruik is bij één of meerdere woningen');
+        }
+
+        $feature->delete();
+
+        return redirect()->route('admin.features.index')
+            ->with('success', 'Eigenschap succesvol verwijderd');
+    }
+
+    // GeoOption management methods
+    public function geoOptionIndex()
+    {
+        $geoOptions = GeoOption::latest()->paginate(10);
+        return view('pages.admin.geo-options.index', compact('geoOptions'));
+    }
+
+    public function geoOptionCreate()
+    {
+        return view('pages.admin.geo-options.create');
+    }
+
+    public function geoOptionStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:geo_option,name'
+        ]);
+
+        GeoOption::create([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.geo-options.index')
+            ->with('success', 'Locatie optie succesvol aangemaakt');
+    }
+
+    public function geoOptionEdit(GeoOption $geoOption)
+    {
+        return view('pages.admin.geo-options.edit', compact('geoOption'));
+    }
+
+    public function geoOptionUpdate(Request $request, GeoOption $geoOption)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:geo_option,name,' . $geoOption->id
+        ]);
+
+        $geoOption->update([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.geo-options.index')
+            ->with('success', 'Locatie optie succesvol bijgewerkt');
+    }
+
+    public function geoOptionDestroy(GeoOption $geoOption)
+    {
+        if ($geoOption->houses()->count() > 0) {
+            return redirect()->route('admin.geo-options.index')
+                ->with('error', 'Deze locatie optie kan niet worden verwijderd omdat het in gebruik is bij één of meerdere woningen');
+        }
+
+        $geoOption->delete();
+
+        return redirect()->route('admin.geo-options.index')
+            ->with('success', 'Locatie optie succesvol verwijderd');
     }
 }

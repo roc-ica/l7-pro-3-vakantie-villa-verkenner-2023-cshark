@@ -5,48 +5,54 @@
         <div class="dashboard-header">
             <div>
                 <h1>Admin Dashboard</h1>
-                <p>Welcome, {{ Auth::guard('admin')->user()->username }}!</p>
+                <p>Welkom, {{ Auth::guard('admin')->user()->username }}!</p>
             </div>
             <form method="POST" action="{{ route('admin.logout') }}" class="logout-form">
                 @csrf
                 <button type="submit" class="logout-btn">
-                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                    <i class="fa-solid fa-sign-out-alt"></i> Uitloggen
                 </button>
             </form>
         </div>
 
         <div class="dashboard-stats">
             <div class="stat-card">
-                <h3>Total Houses</h3>
+                <h3>Totale Woningen</h3>
                 <p>{{ \App\Models\House::withTrashed()->count() }}</p>
             </div>
             <div class="stat-card">
-                <h3>Active Houses</h3>
+                <h3>Actieve Woningen</h3>
                 <p>{{ \App\Models\House::count() }}</p>
             </div>
             <div class="stat-card">
-                <h3>Popular Houses</h3>
+                <h3>Populaire Woningen</h3>
                 <p>{{ \App\Models\House::where('popular', true)->count() }}</p>
             </div>
         </div>
         <div class="dashboard-actions">
             <a href="{{ route('admin.houses.create') }}" class="action-btn">
-                <i class="fa-solid fa-plus"></i> Add New House
+                <i class="fa-solid fa-plus"></i> Nieuwe Woning Toevoegen
+            </a>
+            <a href="{{ route('admin.features.index') }}" class="action-btn">
+                <i class="fa-solid fa-list-check"></i> Eigenschappen Beheren
+            </a>
+            <a href="{{ route('admin.geo-options.index') }}" class="action-btn">
+                <i class="fa-solid fa-location-dot"></i> Locaties Beheren
             </a>
         </div>
 
         <div class="data-table-container">
-            <h2>House List</h2>
+            <h2>Woningenlijst</h2>
 
             <div class="table-toolbar">
                 <div class="search-box">
                     <i class="fa-solid fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search houses...">
+                    <input type="text" id="searchInput" placeholder="Zoek woningen...">
                 </div>
                 
                 <div class="table-actions">
                     <button id="toggleDeletedBtn">
-                        <i class="fa-solid fa-trash"></i> Show Deleted Houses
+                        <i class="fa-solid fa-trash"></i> Toon Verwijderde Woningen
                     </button>
                 </div>
             </div>
@@ -56,12 +62,12 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Price</th>
-                            <th>Rooms</th>
+                            <th>Naam</th>
+                            <th>Adres</th>
+                            <th>Prijs</th>
+                            <th>Kamers</th>
                             <th>Status</th>
-                            <th class="actions-column">Actions</th>
+                            <th class="actions-column">Acties</th>
                         </tr>
                     </thead>
                     <tbody id="houseTableBody">
@@ -86,17 +92,17 @@
                                 </td>
                                 <td class="actions-cell">
                                     <div class="row-actions">
-                                        <a href="{{ route('admin.houses.edit', $house->id) }}" class="edit-btn" title="Edit">
+                                        <a href="{{ route('admin.houses.edit', $house->id) }}" class="edit-btn" title="Bewerken">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
-                                        <a href="{{ route('detail', $house->id) }}" class="view-btn" title="View">
+                                        <a href="{{ route('detail', $house->id) }}" class="view-btn" title="Bekijken">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
                                         <form method="POST" action="{{ route('admin.houses.destroy', $house->id) }}" class="delete-form"
-                                            onsubmit="return confirm('Are you sure you want to remove this house from listings?');">
+                                            onsubmit="return confirm('Weet u zeker dat u deze woning wilt verwijderen uit de lijsten?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="delete-btn" title="Remove from Listings">
+                                            <button type="submit" class="delete-btn" title="Verwijderen uit Lijsten">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -120,7 +126,7 @@
                 @endif
 
                 <span class="pagination-info">
-                    Page {{ $houses->currentPage() }} of {{ $houses->lastPage() }}
+                    Pagina {{ $houses->currentPage() }} van {{ $houses->lastPage() }}
                 </span>
 
                 @if ($houses->hasMorePages())
@@ -160,7 +166,7 @@
                 
                 if (showingDeleted) {
 
-                    toggleDeletedBtn.innerHTML = '<i class="fa-solid fa-check"></i> Show Active Houses';
+                    toggleDeletedBtn.innerHTML = '<i class="fa-solid fa-check"></i> Toon Actieve Woningen';
                     fetch('/admin/houses/deleted')
                         .then(response => response.json())
                         .then(data => {
@@ -176,13 +182,13 @@
                                     <td>€${new Intl.NumberFormat('nl-NL').format(house.price)}</td>
                                     <td>${house.rooms}</td>
                                     <td>
-                                        <span class="status-badge deleted">Deleted</span>
+                                        <span class="status-badge deleted">Verwijderd</span>
                                     </td>
                                     <td class="actions-cell">
                                         <div class="row-actions">
                                             <form method="POST" action="/admin/houses/${house.id}/restore" class="restore-form">
                                                 @csrf
-                                                <button type="submit" class="restore-btn" title="Restore">
+                                                <button type="submit" class="restore-btn" title="Herstellen">
                                                     <i class="fa-solid fa-trash-arrow-up"></i>
                                                 </button>
                                             </form>
@@ -193,7 +199,7 @@
                             });
                         });
                 } else {
-                    toggleDeletedBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Show Deleted Houses';
+                    toggleDeletedBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Toon Verwijderde Woningen';
                     window.location.reload();
                 }
             });

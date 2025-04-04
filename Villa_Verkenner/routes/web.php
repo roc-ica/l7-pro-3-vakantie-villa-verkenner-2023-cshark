@@ -28,6 +28,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/houses/{house}', [AdminController::class, 'destroyHouse'])->name('houses.destroy');
         Route::get('/houses/deleted', [AdminController::class, 'deletedHouses'])->name('houses.deleted');
         Route::post('/houses/{house}/restore', [AdminController::class, 'restoreHouse'])->name('houses.restore');
+        
+        // New routes for image management
+        Route::post('/houses/{house}/reorder-images', [AdminController::class, 'reorderImages'])->name('houses.reorder-images');
+        Route::delete('/houses/images/{image}', [AdminController::class, 'deleteImage'])->name('houses.delete-image');
+
+        // Feature management routes
+        Route::get('/features', [AdminController::class, 'featureIndex'])->name('features.index');
+        Route::get('/features/create', [AdminController::class, 'featureCreate'])->name('features.create');
+        Route::post('/features', [AdminController::class, 'featureStore'])->name('features.store');
+        Route::get('/features/{feature}/edit', [AdminController::class, 'featureEdit'])->name('features.edit');
+        Route::put('/features/{feature}', [AdminController::class, 'featureUpdate'])->name('features.update');
+        Route::delete('/features/{feature}', [AdminController::class, 'featureDestroy'])->name('features.destroy');
+
+        // GeoOption management routes
+        Route::get('/geo-options', [AdminController::class, 'geoOptionIndex'])->name('geo-options.index');
+        Route::get('/geo-options/create', [AdminController::class, 'geoOptionCreate'])->name('geo-options.create');
+        Route::post('/geo-options', [AdminController::class, 'geoOptionStore'])->name('geo-options.store');
+        Route::get('/geo-options/{geoOption}/edit', [AdminController::class, 'geoOptionEdit'])->name('geo-options.edit');
+        Route::put('/geo-options/{geoOption}', [AdminController::class, 'geoOptionUpdate'])->name('geo-options.update');
+        Route::delete('/geo-options/{geoOption}', [AdminController::class, 'geoOptionDestroy'])->name('geo-options.destroy');
     });
 });
 
