@@ -9,7 +9,7 @@
             @csrf
             <div class="form-group">
                 <label for="username">
-                    <i class="fa-solid fa-user"></i> Username
+                    <i class="fa-solid fa-user"></i> Gebruikersnaam
                 </label>
                 <input type="text" id="username" name="username" value="{{ old('username') }}" required autofocus>
                 @error('username')
@@ -19,7 +19,7 @@
             
             <div class="form-group">
                 <label for="password">
-                    <i class="fa-solid fa-lock"></i> Password
+                    <i class="fa-solid fa-lock"></i> Wachtwoord
                 </label>
                 <input type="password" id="password" name="password" required>
                 @error('password')
@@ -28,7 +28,7 @@
             </div>
             
             <button type="submit" class="login-button">
-                Login
+                Inloggen
             </button>
 
             @if($errors->any())

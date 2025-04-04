@@ -4,11 +4,11 @@
 <div class="admin-dashboard">
     <div class="dashboard-header">
         <div>
-            <h1>Edit Location Option</h1>
-            <p>Update an existing property location option</p>
+            <h1>Locatie Optie Bewerken</h1>
+            <p>Bestaande locatie optie bijwerken</p>
         </div>
         <a href="{{ route('admin.geo-options.index') }}" class="back-btn">
-            <i class="fa-solid fa-arrow-left"></i> Back to Location Options
+            <i class="fa-solid fa-arrow-left"></i> Terug naar Locatie Opties
         </a>
     </div>
     
@@ -19,7 +19,7 @@
             
             <div class="form-grid">
                 <div class="form-group full-width">
-                    <label for="name">Location Option Name <span class="required">*</span></label>
+                    <label for="name">Naam Locatie Optie <span class="required">*</span></label>
                     <input type="text" id="name" name="name" value="{{ old('name', $geoOption->name) }}" required>
                     @error('name')
                         <span class="error">{{ $message }}</span>
@@ -29,10 +29,10 @@
             
             <div class="form-actions">
                 <button type="submit" class="submit-btn">
-                    <i class="fa-solid fa-save"></i> Update Location Option
+                    <i class="fa-solid fa-save"></i> Locatie Optie Bijwerken
                 </button>
                 <a href="{{ route('admin.geo-options.index') }}" class="cancel-btn">
-                    <i class="fa-solid fa-times"></i> Cancel
+                    <i class="fa-solid fa-times"></i> Annuleren
                 </a>
             </div>
         </form>

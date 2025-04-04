@@ -42,7 +42,7 @@ class AdminController extends Controller
 
         Log::info('Login failed');
         return back()->withErrors([
-            'username' => 'Username or password is incorrect.',
+            'username' => 'Gebruikersnaam of wachtwoord is onjuist.',
         ]);
     }
 
@@ -101,7 +101,7 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House created successfully!');
+            ->with('success', 'Woning succesvol aangemaakt!');
     }
 
     public function updateHouse(Request $request, House $house)
@@ -145,7 +145,7 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House updated successfully!');
+            ->with('success', 'Woning succesvol bijgewerkt!');
     }
 
     public function editHouse(House $house)
@@ -169,7 +169,7 @@ class AdminController extends Controller
         $house->delete();
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House removed from listings successfully!');
+            ->with('success', 'Woning succesvol verwijderd uit de lijsten!');
     }
 
     public function deletedHouses()
@@ -184,7 +184,7 @@ class AdminController extends Controller
         $house->restore();
 
         return redirect()->route('admin.dashboard')
-            ->with('success', 'House has been restored successfully.');
+            ->with('success', 'Woning is succesvol hersteld.');
     }
 
     // Feature management methods
@@ -210,7 +210,7 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.features.index')
-            ->with('success', 'Feature created successfully');
+            ->with('success', 'Eigenschap succesvol aangemaakt');
     }
 
     public function featureEdit(Feature $feature)
@@ -229,7 +229,7 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.features.index')
-            ->with('success', 'Feature updated successfully');
+            ->with('success', 'Eigenschap succesvol bijgewerkt');
     }
 
     public function featureDestroy(Feature $feature)
@@ -237,13 +237,13 @@ class AdminController extends Controller
         // Check if the feature is being used by any houses
         if ($feature->houses()->count() > 0) {
             return redirect()->route('admin.features.index')
-                ->with('error', 'This feature cannot be deleted because it is being used by one or more houses');
+                ->with('error', 'Deze eigenschap kan niet worden verwijderd omdat het in gebruik is bij één of meerdere woningen');
         }
 
         $feature->delete();
 
         return redirect()->route('admin.features.index')
-            ->with('success', 'Feature deleted successfully');
+            ->with('success', 'Eigenschap succesvol verwijderd');
     }
 
     // GeoOption management methods
@@ -269,7 +269,7 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.geo-options.index')
-            ->with('success', 'Location option created successfully');
+            ->with('success', 'Locatie optie succesvol aangemaakt');
     }
 
     public function geoOptionEdit(GeoOption $geoOption)
@@ -288,7 +288,7 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.geo-options.index')
-            ->with('success', 'Location option updated successfully');
+            ->with('success', 'Locatie optie succesvol bijgewerkt');
     }
 
     public function geoOptionDestroy(GeoOption $geoOption)
@@ -296,12 +296,12 @@ class AdminController extends Controller
         // Check if the geo option is being used by any houses
         if ($geoOption->houses()->count() > 0) {
             return redirect()->route('admin.geo-options.index')
-                ->with('error', 'This location option cannot be deleted because it is being used by one or more houses');
+                ->with('error', 'Deze locatie optie kan niet worden verwijderd omdat het in gebruik is bij één of meerdere woningen');
         }
 
         $geoOption->delete();
 
         return redirect()->route('admin.geo-options.index')
-            ->with('success', 'Location option deleted successfully');
+            ->with('success', 'Locatie optie succesvol verwijderd');
     }
 }

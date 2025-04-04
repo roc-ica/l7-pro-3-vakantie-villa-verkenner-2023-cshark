@@ -4,26 +4,26 @@
 <div class="admin-dashboard">
     <div class="dashboard-header">
         <div>
-            <h1>Manage Location Options</h1>
-            <p>Add, edit, or remove property location options</p>
+            <h1>Locatie Opties Beheren</h1>
+            <p>Toevoegen, bewerken of verwijderen van locatie opties</p>
         </div>
         <div class="header-actions">
             <a href="{{ route('admin.geo-options.create') }}" class="action-btn">
-                <i class="fa-solid fa-plus"></i> Add New Location Option
+                <i class="fa-solid fa-plus"></i> Nieuwe Locatie Optie Toevoegen
             </a>
             <a href="{{ route('admin.dashboard') }}" class="back-btn">
-                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                <i class="fa-solid fa-arrow-left"></i> Terug naar Dashboard
             </a>
         </div>
     </div>
 
     <div class="data-table-container">
-        <h2>Location Options List</h2>
+        <h2>Locatie Opties Lijst</h2>
 
         <div class="table-toolbar">
             <div class="search-box">
                 <i class="fa-solid fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search location options...">
+                <input type="text" id="searchInput" placeholder="Zoek locatie opties...">
             </div>
         </div>
 
@@ -32,9 +32,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Created At</th>
-                        <th class="actions-column">Actions</th>
+                        <th>Naam</th>
+                        <th>Aangemaakt Op</th>
+                        <th class="actions-column">Acties</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,14 +45,14 @@
                             <td>{{ $option->created_at->format('d M Y') }}</td>
                             <td class="actions-cell">
                                 <div class="row-actions">
-                                    <a href="{{ route('admin.geo-options.edit', $option->id) }}" class="edit-btn" title="Edit">
+                                    <a href="{{ route('admin.geo-options.edit', $option->id) }}" class="edit-btn" title="Bewerken">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                     <form method="POST" action="{{ route('admin.geo-options.destroy', $option->id) }}" class="delete-form"
-                                        onsubmit="return confirm('Are you sure you want to delete this location option? This cannot be undone if the option is not used by any properties.');">
+                                        onsubmit="return confirm('Weet u zeker dat u deze locatie optie wilt verwijderen? Dit kan niet ongedaan worden gemaakt als de optie niet door woningen wordt gebruikt.');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="delete-btn" title="Delete">
+                                        <button type="submit" class="delete-btn" title="Verwijderen">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
@@ -63,7 +63,7 @@
                     
                     @if($geoOptions->count() == 0)
                         <tr>
-                            <td colspan="4" style="text-align: center; padding: 2rem;">No location options found</td>
+                            <td colspan="4" style="text-align: center; padding: 2rem;">Geen locatie opties gevonden</td>
                         </tr>
                     @endif
                 </tbody>
@@ -82,7 +82,7 @@
             @endif
 
             <span class="pagination-info">
-                Page {{ $geoOptions->currentPage() }} of {{ $geoOptions->lastPage() }}
+                Pagina {{ $geoOptions->currentPage() }} van {{ $geoOptions->lastPage() }}
             </span>
 
             @if ($geoOptions->hasMorePages())

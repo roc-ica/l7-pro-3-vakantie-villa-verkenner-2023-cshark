@@ -4,26 +4,26 @@
 <div class="admin-dashboard">
     <div class="dashboard-header">
         <div>
-            <h1>Manage Features</h1>
-            <p>Add, edit, or remove property features</p>
+            <h1>Eigenschappen Beheren</h1>
+            <p>Toevoegen, bewerken of verwijderen van woning eigenschappen</p>
         </div>
         <div class="header-actions">
             <a href="{{ route('admin.features.create') }}" class="action-btn">
-                <i class="fa-solid fa-plus"></i> Add New Feature
+                <i class="fa-solid fa-plus"></i> Nieuwe Eigenschap Toevoegen
             </a>
             <a href="{{ route('admin.dashboard') }}" class="back-btn">
-                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                <i class="fa-solid fa-arrow-left"></i> Terug naar Dashboard
             </a>
         </div>
     </div>
 
     <div class="data-table-container">
-        <h2>Feature List</h2>
+        <h2>Eigenschappenlijst</h2>
 
         <div class="table-toolbar">
             <div class="search-box">
                 <i class="fa-solid fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search features...">
+                <input type="text" id="searchInput" placeholder="Zoek eigenschappen...">
             </div>
         </div>
 
@@ -32,9 +32,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Created At</th>
-                        <th class="actions-column">Actions</th>
+                        <th>Naam</th>
+                        <th>Aangemaakt Op</th>
+                        <th class="actions-column">Acties</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,14 +45,14 @@
                             <td>{{ $feature->created_at->format('d M Y') }}</td>
                             <td class="actions-cell">
                                 <div class="row-actions">
-                                    <a href="{{ route('admin.features.edit', $feature->id) }}" class="edit-btn" title="Edit">
+                                    <a href="{{ route('admin.features.edit', $feature->id) }}" class="edit-btn" title="Bewerken">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                     <form method="POST" action="{{ route('admin.features.destroy', $feature->id) }}" class="delete-form"
-                                        onsubmit="return confirm('Are you sure you want to delete this feature? This cannot be undone if the feature is not used by any properties.');">
+                                        onsubmit="return confirm('Weet u zeker dat u deze eigenschap wilt verwijderen? Dit kan niet ongedaan worden gemaakt als de eigenschap niet door woningen wordt gebruikt.');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="delete-btn" title="Delete">
+                                        <button type="submit" class="delete-btn" title="Verwijderen">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
@@ -63,7 +63,7 @@
                     
                     @if($features->count() == 0)
                         <tr>
-                            <td colspan="4" style="text-align: center; padding: 2rem;">No features found</td>
+                            <td colspan="4" style="text-align: center; padding: 2rem;">Geen eigenschappen gevonden</td>
                         </tr>
                     @endif
                 </tbody>
@@ -82,7 +82,7 @@
             @endif
 
             <span class="pagination-info">
-                Page {{ $features->currentPage() }} of {{ $features->lastPage() }}
+                Pagina {{ $features->currentPage() }} van {{ $features->lastPage() }}
             </span>
 
             @if ($features->hasMorePages())
