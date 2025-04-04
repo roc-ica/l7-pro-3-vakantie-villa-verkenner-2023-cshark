@@ -281,17 +281,21 @@
                     transform: translate(-50%, -50%);
                 }
 
-                img {
-                    height: 120px;
-                    @include flex;
-                }
-            }
+      .price {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
 
             img {
                 width: 100%;
                 border-radius: $_inner-radius;
             }
 
+        img {
+          height: 40px;
+          @include flex;
+        }
+      }
             .house-title {
                 line-height: 1.8;
                 font-weight: 600;

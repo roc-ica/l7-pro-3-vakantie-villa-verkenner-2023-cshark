@@ -196,4 +196,114 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
     }
+  });
+
+// Image slider popup
+const seeMoreBtn = document.getElementById('seeMoreBtnDetail');
+const sliderPopup = document.getElementById('imageSliderPopup');
+const closePopupBtn = document.getElementById('closePopupBtn');
+
+// Get images from the detail-main data attribute
+let images = [];
+
+// Try to find images from the detail-main element
+const detailMain = document.querySelector('.detail-main');
+console.log('Detail main element found:', detailMain);
+
+if (detailMain && detailMain.dataset.images) {
+  console.log('Data images attribute found:', detailMain.dataset.images);
+  try {
+    images = JSON.parse(detailMain.dataset.images);
+    console.log('Parsed images array:', images);
+  } catch (error) {
+    console.error('Error parsing images data attribute:', error);
+  }
+} else {
+  console.warn('No data-images attribute found on .detail-main element');
+}
+
+if (images.length === 0) {
+  // Fallback: hardcoded images
+  console.log('Using fallback image array');
+  images = [
+    "https://picsum.photos/id/53/1200/700",
+    "https://picsum.photos/id/22/2000",
+    "https://picsum.photos/id/310/2000",
+    "https://picsum.photos/id/237/1200/700",
+    "https://picsum.photos/id/239/1200/700"
+  ];
+}
+
+console.log('Final images array:', images);
+
+let currentSlide = 0;
+const prevBtn = document.getElementById('prevSlide');
+const nextBtn = document.getElementById('nextSlide');
+const sliderImage = document.getElementById('sliderImage');
+
+console.log('Slider elements found:', {
+  seeMoreBtn: !!seeMoreBtn,
+  sliderPopup: !!sliderPopup,
+  closePopupBtn: !!closePopupBtn,
+  prevBtn: !!prevBtn,
+  nextBtn: !!nextBtn,
+  sliderImage: !!sliderImage
 });
+
+if (seeMoreBtn) {
+  seeMoreBtn.addEventListener('click', function() {
+    console.log('See more button clicked');
+    if (sliderPopup) {
+      sliderPopup.style.display = 'flex';
+      
+      // Initialize with first image when opening
+      if (sliderImage && images.length > 0) {
+        currentSlide = 0;
+        sliderImage.src = images[currentSlide];
+        console.log('Set initial slide image:', images[currentSlide]);
+      }
+    }
+  });
+}
+
+if (closePopupBtn) {
+  closePopupBtn.addEventListener('click', function() {
+    console.log('Close button clicked');
+    if (sliderPopup) {
+      sliderPopup.style.display = 'none';
+    }
+  });
+}
+
+// Image slider functionality
+if (prevBtn && nextBtn && sliderImage && images.length > 0) {
+  function updateSlide() {
+    sliderImage.src = images[currentSlide];
+    console.log('Updated slide to index', currentSlide, 'with image:', images[currentSlide]);
+  }
+  
+  prevBtn.addEventListener('click', function() {
+    console.log('Previous button clicked');
+    currentSlide = (currentSlide > 0) ? currentSlide - 1 : images.length - 1;
+    updateSlide();
+  });
+  
+  nextBtn.addEventListener('click', function() {
+    console.log('Next button clicked');
+    currentSlide = (currentSlide < images.length - 1) ? currentSlide + 1 : 0;
+    updateSlide();
+  });
+  
+  // Initialize with first image
+  updateSlide();
+}
+});
+
+document.getElementById('moreInfoBtn').addEventListener('click', function() {
+  const sendInfoModual = document.getElementById('sendInfoModual');
+  const closeSendInfoBtn = document.getElementById('closeSendInfoBtn');
+  sendInfoModual.style.display = 'flex';
+  closeSendInfoBtn.addEventListener('click', function() {
+    sendInfoModual.style.display = 'none';
+  });
+})
