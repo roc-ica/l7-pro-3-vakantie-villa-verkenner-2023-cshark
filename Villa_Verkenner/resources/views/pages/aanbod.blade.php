@@ -42,7 +42,6 @@
                     </div>
                 </div>
 
-<<<<<<< HEAD
                 <!-- Filter Three: Geo Options Dropdown -->
                 <div class="filter-three">
                     <div class="dropdown">
@@ -67,23 +66,6 @@
         <!-- House Cards -->
         <div class="card-container">
             @include('partials.houses')
-=======
-      <div class="card-container">
-        <div class="house">
-          <div class="price">
-            <img src="{{ asset('images/verf/verf_lichtpaars.webp') }}" alt="image">
-            <span>€150.000</span>
-          </div>
-          <img src="{{ asset('images/house-image.webp') }}" alt="image of a house">
-          <h1 class="house-title">Title of the house</h1>
-          <p class="house-info">adres en plaatsnaam van huis</p>
-          <a class="see-button" href="{{ route('detail') }}">
-            <img src="{{ asset('images/verf/donker-groen.png') }}" alt="image">
-            <span>Bekijk</span>
-          </a>
-          <br>
-          <p class="house-info">3 slaapkamers, ligginsgoptie, eingenschap</p>
->>>>>>> DetailPage
         </div>
 
     </main>

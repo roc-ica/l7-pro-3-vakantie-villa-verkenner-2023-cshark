@@ -6,28 +6,27 @@ import axios from "axios";
 window.Alpine = Alpine;
 Alpine.start();
 
-<<<<<<< HEAD
 // Debounce helper: waits "wait" milliseconds before executing the function
 function debounce(func, wait, immediate) {
-    let timeout;
-    return function () {
-        const context = this,
-            args = arguments;
-        const later = function () {
-            timeout = null;
-            if (!immediate) {
-                func.apply(context, args);
-            }
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) {
-            func.apply(context, args);
-        }
-    };
+  let timeout;
+  return function () {
+      const context = this,
+          args = arguments;
+      const later = function () {
+          timeout = null;
+          if (!immediate) {
+              func.apply(context, args);
+          }
+      };
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) {
+          func.apply(context, args);
+      }
+  };
 }
-=======
+
 document.addEventListener('DOMContentLoaded', function() {
   const dropdown = document.querySelectorAll('.dropdown');
   const dropdownToggle = document.querySelectorAll('.dropdown-toggle');
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let sliderTrack = document.querySelector('.slider-track');
   let sliderMaxValue = sliderOne ? parseInt(sliderOne.max) : 0;
   let minGap = 50000;
->>>>>>> DetailPage
 
 document.addEventListener("DOMContentLoaded", function () {
     // Get slider elements and related DOM nodes.
@@ -120,99 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Track the currently open dropdown
     let currentOpenDropdown = null;
 
-<<<<<<< HEAD
-    // Dropdown toggling: when a dropdown is clicked, toggle its open state.
-    document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
-        toggle.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const dropdownContent = toggle.nextElementSibling;
-            
-            // If another dropdown is open, close it first
-            if (currentOpenDropdown && currentOpenDropdown !== dropdownContent && currentOpenDropdown.classList.contains('open')) {
-                currentOpenDropdown.classList.remove('open');
-                // Run filters when closing a dropdown
-                debouncedRunFilters();
-            }
-            
-            // Toggle the clicked dropdown
-            dropdownContent.classList.toggle("open");
-            
-            // Update the reference to the currently open dropdown
-            if (dropdownContent.classList.contains('open')) {
-                currentOpenDropdown = dropdownContent;
-            } else {
-                currentOpenDropdown = null;
-                // Run filters when closing a dropdown
-                debouncedRunFilters();
-            }
-        });
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener("click", function (e) {
-        let shouldRunFilters = false;
-        
-        document.querySelectorAll(".dropdown-content.open").forEach((dropdownContent) => {
-            if (!dropdownContent.contains(e.target) && 
-                !dropdownContent.previousElementSibling.contains(e.target)) {
-                dropdownContent.classList.remove("open");
-                shouldRunFilters = true;
-                currentOpenDropdown = null;
-            }
-        });
-        
-        // Only run filters once if any dropdown was closed
-        if (shouldRunFilters) {
-            debouncedRunFilters();
-        }
-    });
-
-    // The runFilters function sends an AJAX request with current filters.
-    function runFilters() {
-        console.log("runFilters triggered");
-        const form = document.getElementById("filterForm");
-        const formData = new FormData(form);
-        const params = {};
-        for (let pair of formData.entries()) {
-            let key = pair[0].replace("[]", "");
-            if (params[key]) {
-                if (Array.isArray(params[key])) {
-                    params[key].push(pair[1]);
-                } else {
-                    params[key] = [params[key], pair[1]];
-                }
-            } else {
-                params[key] = pair[1];
-            }
-        }
-        params.min_price = sliderOne.value;
-        params.max_price = sliderTwo.value;
-        const externalSearchInput = document.querySelector('input[name="search"]');
-        if (externalSearchInput) {
-            params.search = externalSearchInput.value;
-        }
-
-        console.log("Search params:", params);
-
-        axios
-            .get(form.action, {
-                params: params,
-                headers: { "X-Requested-With": "XMLHttpRequest" },
-            })
-            .then(function (response) {
-                const cardContainer = document.querySelector(".card-container");
-                cardContainer.innerHTML = response.data.html;
-            })
-            .catch(function (error) {
-                if (error.response) {
-                    console.error("Error details:", error.response.data);
-                } else {
-                    console.error(error);
-                }
-            });
-    }
-});
-=======
   if (displayValOne && displayValTwo) {
     displayValOne.textContent = formatCurrency(sliderOne.value);
     displayValTwo.textContent = formatCurrency(sliderTwo.value);
@@ -345,4 +250,96 @@ document.getElementById('moreInfoBtn').addEventListener('click', function() {
     sendInfoModual.style.display = 'none';
   });
 })
->>>>>>> DetailPage
+
+
+    // Dropdown toggling: when a dropdown is clicked, toggle its open state.
+    document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
+      toggle.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const dropdownContent = toggle.nextElementSibling;
+          
+          // If another dropdown is open, close it first
+          if (currentOpenDropdown && currentOpenDropdown !== dropdownContent && currentOpenDropdown.classList.contains('open')) {
+              currentOpenDropdown.classList.remove('open');
+              // Run filters when closing a dropdown
+              debouncedRunFilters();
+          }
+          
+          // Toggle the clicked dropdown
+          dropdownContent.classList.toggle("open");
+          
+          // Update the reference to the currently open dropdown
+          if (dropdownContent.classList.contains('open')) {
+              currentOpenDropdown = dropdownContent;
+          } else {
+              currentOpenDropdown = null;
+              // Run filters when closing a dropdown
+              debouncedRunFilters();
+          }
+      });
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+      let shouldRunFilters = false;
+      
+      document.querySelectorAll(".dropdown-content.open").forEach((dropdownContent) => {
+          if (!dropdownContent.contains(e.target) && 
+              !dropdownContent.previousElementSibling.contains(e.target)) {
+              dropdownContent.classList.remove("open");
+              shouldRunFilters = true;
+              currentOpenDropdown = null;
+          }
+      });
+      
+      // Only run filters once if any dropdown was closed
+      if (shouldRunFilters) {
+          debouncedRunFilters();
+      }
+  });
+
+  // The runFilters function sends an AJAX request with current filters.
+  function runFilters() {
+      console.log("runFilters triggered");
+      const form = document.getElementById("filterForm");
+      const formData = new FormData(form);
+      const params = {};
+      for (let pair of formData.entries()) {
+          let key = pair[0].replace("[]", "");
+          if (params[key]) {
+              if (Array.isArray(params[key])) {
+                  params[key].push(pair[1]);
+              } else {
+                  params[key] = [params[key], pair[1]];
+              }
+          } else {
+              params[key] = pair[1];
+          }
+      }
+      params.min_price = sliderOne.value;
+      params.max_price = sliderTwo.value;
+      const externalSearchInput = document.querySelector('input[name="search"]');
+      if (externalSearchInput) {
+          params.search = externalSearchInput.value;
+      }
+
+      console.log("Search params:", params);
+
+      axios
+          .get(form.action, {
+              params: params,
+              headers: { "X-Requested-With": "XMLHttpRequest" },
+          })
+          .then(function (response) {
+              const cardContainer = document.querySelector(".card-container");
+              cardContainer.innerHTML = response.data.html;
+          })
+          .catch(function (error) {
+              if (error.response) {
+                  console.error("Error details:", error.response.data);
+              } else {
+                  console.error(error);
+              }
+          });
+  }
+});
