@@ -887,11 +887,32 @@ body {
     }
 }
 
+
 // Header actions
 .dashboard-header {
     .header-actions {
         display: flex;
         gap: 1rem;
+        
+        .action-btn {
+            background-color: $light-purple;
+            color: $white;
+            border-radius: 4px;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            
+            &:hover {
+                background-color: darken($light-purple, 10%);
+            }
+            
+            i {
+                font-size: 0.9rem;
+            }
+        }
     }
     
     .back-btn {

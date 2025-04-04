@@ -59,6 +59,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin.login');
     }
+
     public function createHouse()
     {
         $features = Feature::all();
@@ -184,5 +185,123 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')
             ->with('success', 'House has been restored successfully.');
+    }
+
+    // Feature management methods
+    public function featureIndex()
+    {
+        $features = Feature::latest()->paginate(10);
+        return view('pages.admin.features.index', compact('features'));
+    }
+
+    public function featureCreate()
+    {
+        return view('pages.admin.features.create');
+    }
+
+    public function featureStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:feature,name'
+        ]);
+
+        Feature::create([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.features.index')
+            ->with('success', 'Feature created successfully');
+    }
+
+    public function featureEdit(Feature $feature)
+    {
+        return view('pages.admin.features.edit', compact('feature'));
+    }
+
+    public function featureUpdate(Request $request, Feature $feature)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:feature,name,' . $feature->id
+        ]);
+
+        $feature->update([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.features.index')
+            ->with('success', 'Feature updated successfully');
+    }
+
+    public function featureDestroy(Feature $feature)
+    {
+        // Check if the feature is being used by any houses
+        if ($feature->houses()->count() > 0) {
+            return redirect()->route('admin.features.index')
+                ->with('error', 'This feature cannot be deleted because it is being used by one or more houses');
+        }
+
+        $feature->delete();
+
+        return redirect()->route('admin.features.index')
+            ->with('success', 'Feature deleted successfully');
+    }
+
+    // GeoOption management methods
+    public function geoOptionIndex()
+    {
+        $geoOptions = GeoOption::latest()->paginate(10);
+        return view('pages.admin.geo-options.index', compact('geoOptions'));
+    }
+
+    public function geoOptionCreate()
+    {
+        return view('pages.admin.geo-options.create');
+    }
+
+    public function geoOptionStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:geo_option,name'
+        ]);
+
+        GeoOption::create([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.geo-options.index')
+            ->with('success', 'Location option created successfully');
+    }
+
+    public function geoOptionEdit(GeoOption $geoOption)
+    {
+        return view('pages.admin.geo-options.edit', compact('geoOption'));
+    }
+
+    public function geoOptionUpdate(Request $request, GeoOption $geoOption)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:geo_option,name,' . $geoOption->id
+        ]);
+
+        $geoOption->update([
+            'name' => $request->name
+        ]);
+
+        return redirect()->route('admin.geo-options.index')
+            ->with('success', 'Location option updated successfully');
+    }
+
+    public function geoOptionDestroy(GeoOption $geoOption)
+    {
+        // Check if the geo option is being used by any houses
+        if ($geoOption->houses()->count() > 0) {
+            return redirect()->route('admin.geo-options.index')
+                ->with('error', 'This location option cannot be deleted because it is being used by one or more houses');
+        }
+
+        $geoOption->delete();
+
+        return redirect()->route('admin.geo-options.index')
+            ->with('success', 'Location option deleted successfully');
     }
 }

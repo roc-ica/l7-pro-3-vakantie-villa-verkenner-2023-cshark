@@ -33,6 +33,12 @@
             <a href="{{ route('admin.houses.create') }}" class="action-btn">
                 <i class="fa-solid fa-plus"></i> Add New House
             </a>
+            <a href="{{ route('admin.features.index') }}" class="action-btn">
+                <i class="fa-solid fa-list-check"></i> Manage Features
+            </a>
+            <a href="{{ route('admin.geo-options.index') }}" class="action-btn">
+                <i class="fa-solid fa-location-dot"></i> Manage Locations
+            </a>
         </div>
 
         <div class="data-table-container">
