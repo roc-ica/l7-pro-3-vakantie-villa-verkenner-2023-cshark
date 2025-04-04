@@ -24,75 +24,40 @@
                     </div>
                     <br>
                     <h3 class="populaire-huizen-title">Populaire Huizen</h3>
-<div class="populaire-huizen">
-    <!-- Eerste huis -->
-    <div class="huis-box">
-        <div class="huis-info">
-            <div class="oostenrijkveeg-image">
-                <img src="{{ asset('images/verf/verf_donkerpaars1.png') }}" alt="Afbeelding met tekst" />
-                <span>€450.000</span>
-            </div>
-            <img src="{{ asset('images/huis1.webp') }}" alt="Populair huis 1" />
-            <div class="huis-details">
-                <h4 class="huis-title">Gezellig huis in de bergen</h4>
-                <p class="huis-adres">Weg 123, Salzburg</p>
-                <p class="huis-plaatsnaam">Salzburg, Oostenrijk</p>
-                <a class="see-button" href="">
-                    <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="image">
-                    <span>Bekijk</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tweede huis -->
-    <div class="huis-box">
-        <div class="huis-info">
-            <div class="oostenrijkveeg-image">
-                <img src="{{ asset('images/verf/verf_donkerpaars1.png') }}" alt="Afbeelding met tekst" />
-                <span>€600.000</span>
-            </div>
-            <img src="{{ asset('images/huis2.jpg') }}" alt="Populair huis 2" />
-            <div class="huis-details">
-                <h4 class="huis-title">Modern huis in het centrum</h4>
-                <p class="huis-adres">Laan 45, Wenen</p>
-                <p class="huis-plaatsnaam">Wenen, Oostenrijk</p>
-                <a class="see-button" href="">
-                    <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="image">
-                    <span>Bekijk</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Derde huis -->
-    <div class="huis-box">
-        <div class="huis-info">
-            <div class="oostenrijkveeg-image">
-                <img src="{{ asset('images/verf/verf_donkerpaars1.png') }}" alt="Afbeelding met tekst" />
-                <span>€750.000</span>
-            </div>
-            <img src="{{ asset('images/huis3.webp') }}" alt="Populair huis 3" />
-            <div class="huis-details">
-                <h4 class="huis-title">Landhuis met uitzicht</h4>
-                <p class="huis-adres">Bosweg 10, Innsbruck</p>
-                <p class="huis-plaatsnaam">Innsbruck, Oostenrijk</p>
-                <a class="see-button" href="">
-                    <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="image">
-                    <span>Bekijk</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="populaire-huizen">
+                        @forelse ($popularHouses as $house)
+                        <!-- Dynamisch gegenereerd huis -->
+                        <div class="huis-box">
+                            <div class="huis-info">
+                                <div class="oostenrijkveeg-image">
+                                    <img src="{{ asset('images/verf/verf_donkerpaars1.png') }}" alt="Afbeelding met tekst" />
+                                    <span>€{{ number_format($house->price, 0, ',', '.') }}</span>
+                                </div>
+                                <!-- Updated image loading to match houses.blade.php -->
+                                <img src="{{ asset('storage/' . $house->primary_image) }}" alt="{{ $house->name }}"
+                                    onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'" />
+                                <div class="huis-details">
+                                    <h4 class="huis-title">{{ $house->name }}</h4>
+                                    <p class="huis-adres">{{ $house->address }}</p>
+                                    <p class="huis-plaatsnaam">
+                                        @php
+                                            $location = $house->geoOptions->first();
+                                            echo $location ? $location->name : 'Oostenrijk';
+                                        @endphp
+                                    </p>
+                                    <a class="see-button" href="{{ route('detail', $house->id) }}">
+                                        <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="image">
+                                        <span>Bekijk</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
+                        @empty
+                        <p>Geen populaire huizen gevonden.</p>
+                        @endforelse
                     </div>
                 </div>
             </section>
         </div>
-
     </main>
 </x-layout>

@@ -56,9 +56,7 @@ Route::get('/', function () {
     return view('pages.landing');
 })->name('landing');
 
-Route::get('/over-oostenrijk', function () {
-    return view('pages.over-oostenrijk');
-})->name('over-oostenrijk');
+Route::get('/over-oostenrijk', [App\Http\Controllers\OostenrijkController::class, 'index'])->name('over-oostenrijk');
 
 Route::get('/aanbod', [FilterController::class, 'filterHouses'])->name('aanbod');
 
