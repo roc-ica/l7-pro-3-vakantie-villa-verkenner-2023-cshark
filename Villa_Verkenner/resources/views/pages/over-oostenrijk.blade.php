@@ -31,7 +31,7 @@
                             <div class="huis-box">
                                 <div class="huis-info">
                                     <div class="oostenrijkveeg-image">
-                                        <img src="{{ asset('images/verf/verf_donkerpaars1.png') }}"
+                                        <img src="{{ asset('images/verf/verf_lichtpaars3.png') }}"
                                             alt="Afbeelding met tekst" />
                                         <span>€{{ number_format($house->price, 0, ',', '.') }}</span>
                                     </div>
@@ -41,8 +41,6 @@
                                     <div class="huis-details">
                                         <h4 class="huis-title">{{ $house->name }}</h4>
                                         <p class="huis-adres">{{ $house->address }}</p>
-                                        <p class="huis-plaatsnaam">
-                                            {{ explode(',', $house->address)[1] ?? 'Oostenrijk' }}</p>
                                         <a class="see-button" href="{{ route('detail', $house->id) }}">
                                             <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="image">
                                             <span>Bekijk</span>

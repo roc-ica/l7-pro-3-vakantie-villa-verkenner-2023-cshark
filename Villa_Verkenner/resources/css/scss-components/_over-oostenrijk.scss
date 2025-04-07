@@ -81,13 +81,14 @@
         border-radius: 8px;
         overflow: hidden;
         background-color: #fff;
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.1s ease-in-out;
+        padding: 10px;
         margin-bottom: 30px;
 
     }
 
     .huis-box:hover {
-        transform: scale(1.05); 
+        transform: scale(1.02); 
     }
 
     .huis-info {
@@ -95,11 +96,11 @@
     }
 
     .huis-box img {
-        width: 90%;
+        width: 100%;
         height: auto;   
         border-radius: 10px;
         display: block;
-        margin: 15px auto 0 auto; /* 20px ruimte boven de afbeelding */
+        
     }
 
     .prijs {
@@ -115,8 +116,11 @@
     }
 
     .huis-details {
-        padding: 20px; /* Vergroot de padding voor een ruimere uitstraling */
+        padding: 0px; /* Vergroot de padding voor een ruimere uitstraling */
         background-color: #fff;
+        display: flex;
+        flex-direction: column;
+       
     }
 
     .huis-title {
@@ -126,22 +130,11 @@
         text-align: left; /* Zorgt ervoor dat de tekst links uitgelijnd blijft */
     }
 
-    .huis-adres,
-    .huis-plaatsnaam {
+    .huis-adres {
         font-size: 1.1rem; /* Kleinere tekstgrootte */
         color: #61499E;
         margin-bottom: 5px;
         text-align: left; /* Zorgt ervoor dat de tekst links uitgelijnd blijft */
-    }
-
-    .bekijk-link {
-        display: inline-block;
-        margin-top: auto; /* Duwt de knop naar de onderkant */
-        padding: 12px 28px; /* Vergroot de padding voor een grotere knop */
-        background-color: #1C3747;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
     }
 
     .huis-details {
@@ -173,16 +166,17 @@
     }
 
     .see-button {
-        position: absolute;
-        right: 0.5rem; /* Verkorte afstand vanaf de rechterkant */
-        bottom: 0.5rem; 
-        padding: 0.5rem 1rem; 
-
+        position: relative; /* Change from absolute to relative */
+        display: block;
+        margin-top: 10px; /* Add space between address and button */
+        width: 50%;
+        align-self: flex-end;
+        
         span {
             color: $white;
             text-decoration: none;
             left: 50%;
-            top: 55%; 
+            top: 50%; 
             position: absolute;
             transform: translate(-50%, -50%);
         }
@@ -196,11 +190,11 @@
 
     .oostenrijkveeg-image {
         position: absolute;
-        width: 35%; /* Vergroot de afbeelding naar 35% van de containerbreedte */
+        width: 40%; /* Vergroot de afbeelding naar 35% van de containerbreedte */
         height: auto; /* Houd de proporties van de afbeelding intact */
         border-radius: 8px; /* Ronde hoeken */
         top: -2rem; /* Zet de afbeelding hoger */
-        right: 0.5rem; /* Afstand vanaf de rechterkant */
+        right: 0rem; /* Afstand vanaf de rechterkant */
         
         display: flex;
         justify-content: center;
@@ -212,9 +206,9 @@
             text-decoration: none;
             position: absolute; /* Absoluut positioneren binnen de afbeelding */
             left: 50%; /* Horizontaal centreren */
-            top: 55%; /* Verticaal centreren */
+            top: 52%; /* Verticaal centreren */
             transform: translate(-50%, -50%); /* Centraal plaatsen */
-            font-size: 1rem; /* Grotere tekst indien nodig */
+            font-size: 1    rem; /* Grotere tekst indien nodig */
         }
         
         img {
