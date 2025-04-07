@@ -80,12 +80,12 @@ class AdminController extends Controller
             'popular' => 'required|boolean',
             'images' => 'required|array|min:1|max:5',
             'images.*' => 'image|max:10240',
-            'features' => 'required|array|min:1', 
-            'geo_options' => 'required|array|min:1', 
+            'features' => 'required|array|min:1',
+            'geo_options' => 'required|array|min:1',
         ]);
 
         $validated['popular'] = $request->has('popular') ? true : false;
-        
+
         $validated['image'] = 'houses/defaultImage.webp';
 
         $house = House::create($validated);
@@ -94,13 +94,13 @@ class AdminController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $image) {
                 $imagePath = $image->store('houses', 'public');
-                
+
                 $house->images()->create([
                     'image_path' => $imagePath,
                     'is_primary' => $index === 0,
                     'display_order' => $index,
                 ]);
-                
+
                 if ($index === 0) {
                     $house->update(['image' => $imagePath]);
                 }
@@ -134,11 +134,20 @@ class AdminController extends Controller
             'new_images.*' => 'image|max:10240',
             'delete_image_ids' => 'nullable|array',
             'primary_image_id' => 'nullable|integer',
-            'features' => 'required|array|min:1', 
-            'geo_options' => 'required|array|min:1', 
+            'features' => 'required|array|min:1',
+            'geo_options' => 'required|array|min:1',
         ]);
 
-        $validated['popular'] = $request->has('popular');
+        // Fix for select dropdown - convert "0"/"1" to boolean
+        $validated['popular'] = ($request->input('popular') == '1');
+
+        // Log for debugging
+        Log::info('Updating house popular status', [
+            'house_id' => $house->id,
+            'original_popular' => $house->popular,
+            'new_popular' => $validated['popular'],
+            'request_value' => $request->input('popular')
+        ]);
 
         $house->update($validated);
 
@@ -163,15 +172,15 @@ class AdminController extends Controller
         if ($request->hasFile('new_images')) {
             $currentImageCount = $house->images()->count();
             $newImagesCount = count($request->file('new_images'));
-            
+
             if ($currentImageCount + $newImagesCount > 5) {
                 return redirect()->back()->withErrors(['new_images' => 'Maximaal 5 afbeeldingen toegestaan.']);
             }
-            
+
             $startOrder = $currentImageCount;
             foreach ($request->file('new_images') as $index => $image) {
                 $imagePath = $image->store('houses', 'public');
-                
+
                 $house->images()->create([
                     'image_path' => $imagePath,
                     'is_primary' => false,
@@ -184,14 +193,14 @@ class AdminController extends Controller
             $house->images()->update(['is_primary' => false]);
             $primaryImage = $house->images()->findOrFail($request->primary_image_id);
             $primaryImage->update(['is_primary' => true]);
-            
+
             $house->update(['image' => $primaryImage->image_path]);
-        } 
-        elseif ($house->images()->where('is_primary', true)->count() === 0 && $house->images()->count() > 0) {
+        } elseif ($house->images()->where('is_primary', true)->count() === 0 && $house->images()->count() > 0) {
             $firstImage = $house->images()->orderBy('display_order')->first();
             $firstImage->update(['is_primary' => true]);
             $house->update(['image' => $firstImage->image_path]);
         }
+
         if ($request->has('features')) {
             $house->features()->sync($request->features);
         } else {
@@ -265,26 +274,26 @@ class AdminController extends Controller
     {
         $image = HouseImage::findOrFail($imageId);
         $house = $image->house;
-        
+
         if ($house->images()->count() <= 1) {
             return response()->json([
                 'success' => false,
                 'message' => 'Er moet minstens één afbeelding zijn voor de woning.'
             ], 422);
         }
-        
+
         if ($image->is_primary) {
             $newPrimary = $house->images()->where('id', '!=', $image->id)->first();
             $newPrimary->update(['is_primary' => true]);
             $house->update(['image' => $newPrimary->image_path]);
         }
-        
+
         if (Storage::disk('public')->exists($image->image_path)) {
             Storage::disk('public')->delete($image->image_path);
         }
-        
+
         $image->delete();
-        
+
         return response()->json(['success' => true]);
     }
 

@@ -9,11 +9,12 @@ class AustriaController extends Controller
 {
     public function index()
     {
-        // Get the 3 most recent popular houses
+        // Always get fresh data from database without cache
         $popularHouses = House::where('popular', true)
-                                    ->latest()
-                                    ->take(3)
-                                    ->get();
+                            ->latest()
+                            ->take(3)
+                            ->get()
+                            ->fresh(); // This ensures we get a fresh copy
         
         return view('pages.over-oostenrijk', [
             'popularHouses' => $popularHouses
