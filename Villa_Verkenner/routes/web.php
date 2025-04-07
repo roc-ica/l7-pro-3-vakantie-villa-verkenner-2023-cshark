@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\AustriaController;
 use App\Http\Controllers\ProfileController;
 
 // Admin Routes
@@ -56,10 +57,7 @@ Route::get('/', function () {
     return view('pages.landing');
 })->name('landing');
 
-Route::get('/over-oostenrijk', function () {
-    return view('pages.over-oostenrijk');
-})->name('over-oostenrijk');
-
+Route::get('/over-oostenrijk', [AustriaController::class, 'index'])->name('over-oostenrijk');
 Route::get('/aanbod', [FilterController::class, 'filterHouses'])->name('aanbod');
 
 Route::get('/detail', function () {
