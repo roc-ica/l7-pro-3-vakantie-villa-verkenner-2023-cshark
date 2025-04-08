@@ -10,6 +10,18 @@ body {
     }
 }
 
+// Add house link styling
+.house-link {
+    color: $white;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 500;
+    
+    &:hover {
+        color: $light-purple;
+    }
+}
+
 // Admin Layout
 .admin-container {
     min-height: 100vh;
@@ -568,6 +580,17 @@ body {
                     border: 1px solid #9E9E9E;
                     color: #E0E0E0;
                 }
+                
+                &.completed {
+                    background-color: rgba(#4CAF50, 0.2);
+                    border: 1px solid #4CAF50;
+                }
+                
+                &.pending {
+                    background-color: rgba(#FFC107, 0.2);
+                    border: 1px solid #FFC107;
+                    color: $white;
+                }
             }
             
             .row-actions {
@@ -608,6 +631,14 @@ body {
                     }
 
                     &.restore-btn:hover {
+                        background-color: rgba(#4CAF50, 0.3);
+                        color: #4CAF50;
+                    }
+                    &.pending-btn:hover {
+                        background-color: rgba(#FFC107, 0.3);
+                        color: #FFC107;
+                    }
+                    &.complete-btn:hover {
                         background-color: rgba(#4CAF50, 0.3);
                         color: #4CAF50;
                     }
@@ -659,6 +690,101 @@ body {
             color: rgba($white, 0.7);
             font-size: 0.9rem;
         }
+    }
+}
+
+// Message modal for request details
+.message-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($black, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    
+    .message-modal-content {
+        background-color: $dark-green;
+        padding: 20px;
+        border-radius: 5px;
+        width: 80%;
+        max-width: 600px;
+        position: relative;
+        color: $white;
+        box-shadow: 0 5px 15px rgba($black, 0.3);
+        
+        h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba($white, 0.1);
+        }
+    }
+    
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        color: rgba($white, 0.7);
+        transition: color 0.2s;
+        
+        &:hover {
+            color: $white;
+        }
+    }
+}
+
+.message-preview {
+    position: relative;
+}
+
+.view-more-btn {
+    background: none;
+    border: none;
+    color: $light-purple;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    transition: opacity 0.2s;
+    
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+// Action button styles for request management
+.complete-btn, .pending-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.complete-btn {
+    background-color: rgba(#4CAF50, 0.2);
+    color: #4CAF50;
+    
+    &:hover {
+        background-color: rgba(#4CAF50, 0.4);
+    }
+}
+
+.pending-btn {
+    background-color: rgba(#FFC107, 0.2);
+    color: #FFC107;
+    
+    &:hover {
+        background-color: rgba(#FFC107, 0.4);
     }
 }
 

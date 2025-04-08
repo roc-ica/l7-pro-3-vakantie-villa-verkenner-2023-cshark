@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HouseRequestLog extends Model
 {
@@ -19,8 +18,12 @@ class HouseRequestLog extends Model
         'completed',
     ];
 
-    public function house(): BelongsTo
+    protected $casts = [
+        'completed' => 'boolean',
+    ];
+
+    public function house()
     {
-        return $this->belongsTo(House::class, 'house_object_id', 'id');
+        return $this->belongsTo(House::class, 'house_object_id');
     }
 }

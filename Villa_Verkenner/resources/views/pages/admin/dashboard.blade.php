@@ -28,6 +28,10 @@
                 <h3>Populaire Woningen</h3>
                 <p>{{ \App\Models\House::where('popular', true)->count() }}</p>
             </div>
+            <div class="stat-card">
+                <h3>Informatieaanvragen</h3>
+                <p>{{ \App\Models\HouseRequestLog::where('completed', false)->count() }}</p>
+            </div>
         </div>
         <div class="dashboard-actions">
             <a href="{{ route('admin.houses.create') }}" class="action-btn">
@@ -38,6 +42,9 @@
             </a>
             <a href="{{ route('admin.geo-options.index') }}" class="action-btn">
                 <i class="fa-solid fa-location-dot"></i> Locaties Beheren
+            </a>
+            <a href="{{ route('admin.requests.index') }}" class="action-btn">
+                <i class="fa-solid fa-envelope"></i> Informatieaanvragen
             </a>
         </div>
 

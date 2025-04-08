@@ -1,6 +1,15 @@
 <x-layout title="{{ $house->name }}">
     <main class="detail-main"
         data-images='{{ json_encode($house->images->pluck('image_path')->map(function ($path) {return asset('storage/' . $path);})) }}'>
+        
+        @if(session('success'))
+        <div class="success-message">
+            <i class="fa-solid fa-check-circle"></i>
+            {{ session('success') }}
+            <button class="close-message"><i class="fa-solid fa-times"></i></button>
+        </div>
+        @endif
+        
         <div class="house-container">
             <div class="image-container">
                 <div class="left-side-image">
@@ -110,14 +119,6 @@
             </div>
 
             <div class="form-group">
-                <label for="name">Naam <span class="required">*</span></label>
-                <input type="text" id="name" name="name" placeholder="Uw naam" required>
-                @error('name')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group">
                 <label for="message">Bericht <span class="required">*</span></label>
                 <textarea placeholder="Uw bericht" name="message" id="message" rows="7" required></textarea>
                 @error('message')
@@ -133,4 +134,82 @@
             </button>
         </form>
     </div>
+
+    <script>
+        // Add JavaScript to handle the close button for the success message
+        document.addEventListener('DOMContentLoaded', function() {
+            const closeButtons = document.querySelectorAll('.close-message');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const messageElement = this.parentElement;
+                    messageElement.style.opacity = '0';
+                    setTimeout(() => {
+                        messageElement.style.display = 'none';
+                    }, 300);
+                });
+            });
+            
+            // Auto-hide success message after 5 seconds
+            const successMessage = document.querySelector('.success-message');
+            if (successMessage) {
+                setTimeout(() => {
+                    successMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 300);
+                }, 5000);
+            }
+        });
+    </script>
+
+    <style>
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(40, 167, 69, 0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+            transition: opacity 0.3s ease;
+        }
+        
+        .success-message i {
+            font-size: 18px;
+        }
+        
+        .close-message {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0;
+            font-size: 14px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        .close-message:hover {
+            opacity: 1;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
 </x-layout>
