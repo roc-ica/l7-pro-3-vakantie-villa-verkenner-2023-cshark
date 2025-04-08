@@ -73,7 +73,7 @@
                 
                 <div class="form-group full-width">
                     <label for="description">Beschrijving <span class="required">*</span></label>
-                    <textarea id="description" name="description" rows="5" required>{{ old('description') }}</textarea>
+                    <textarea id="description" name="description" rows="5" required maxlength="1000">{{ old('description') }}</textarea>
                     @error('description')
                         <span class="error">{{ $message }}</span>
                     @enderror

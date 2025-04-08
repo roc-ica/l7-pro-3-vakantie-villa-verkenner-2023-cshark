@@ -72,7 +72,7 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'description' => 'required',
+            'description' => 'required|max:1000',
             'price' => 'required|numeric|min:25000|max:2000000',
             'address' => 'required|max:255',
             'rooms' => 'required|integer|min:1|max:20',

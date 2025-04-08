@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\AustriaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContactController;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -60,9 +61,11 @@ Route::get('/', function () {
 Route::get('/over-oostenrijk', [AustriaController::class, 'index'])->name('over-oostenrijk');
 Route::get('/aanbod', [FilterController::class, 'filterHouses'])->name('aanbod');
 
-Route::get('/detail', function () {
-    return view('pages.detail');
+Route::get('/detail/{house}', function (House $house) {
+    return view('pages.detail', compact('house'));
 })->name('detail');
+
+Route::post('/contact/send-info/{house}', [ContactController::class, 'sendInfo'])->name('contact.send-info');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
