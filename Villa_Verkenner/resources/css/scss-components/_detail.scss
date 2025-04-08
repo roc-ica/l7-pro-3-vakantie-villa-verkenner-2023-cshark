@@ -1,372 +1,380 @@
 .detail-main {
-  @include flex(start, center, column);
-  padding: 2rem 0;
-  gap: 2rem;
+    @include flex(start, center, column);
+    padding: 2rem 0;
+    gap: 2rem;
 
-  .house-container {
-    $_inner-radius: .5rem;
-    $_padding: 1rem;
-    width: 75%;
-    background: $white;
-    padding: $_padding;
-    border-radius: $_inner-radius + $_padding;
-    position: relative;
-
-    .image-container {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      gap: $_padding;
-      margin-bottom: 1rem;
-
-      .left-side-image {
-        height: 100%;
-        
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: $_inner-radius;
-        }
-      }
-
-      .sides-image {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        gap: $_padding;
+    .house-container {
+        $_inner-radius: 0.5rem;
+        $_padding: 1rem;
+        width: 75%;
+        background: $white;
+        padding: $_padding;
+        border-radius: $_inner-radius + $_padding;
         position: relative;
 
-        .see-more-btn {
-          position: absolute;
-          bottom: 1rem;
-          right: 1rem;
-          background: $dark-blue;
-          color: $white;
-          font-family: "Poppins", sans-serif;
-          padding: .4rem .6rem;
-          border: none;
-          border-radius: .3rem;
-          cursor: pointer;
+        .image-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: $_padding;
+            margin-bottom: 1rem;
+
+            .left-side-image {
+                height: 100%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: $_inner-radius;
+                }
+            }
+
+            .sides-image {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                gap: $_padding;
+                position: relative;
+
+                .see-more-btn {
+                    position: absolute;
+                    bottom: 1rem;
+                    right: 1rem;
+                    background: $dark-blue;
+                    color: $white;
+                    font-family: "Poppins", sans-serif;
+                    padding: 0.4rem 0.6rem;
+                    border: none;
+                    border-radius: 0.3rem;
+                    cursor: pointer;
+                }
+
+                .top-right-image,
+                .bottom-right-image {
+                    flex: 1;
+                    width: 100%;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: $_inner-radius;
+                        aspect-ratio: 1;
+                    }
+                }
+            }
         }
 
-        .top-right-image,
-        .bottom-right-image {
-          flex: 1;
-          width: 100%;
+        .text-container {
+            @include flex(start, start, column);
+            gap: 0.5rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+            .place {
+                margin-bottom: 0.2rem;
+            }
+            .price {
+                position: absolute;
+                bottom: -2.3rem;
+                right: 1rem;
 
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: $_inner-radius;
-            aspect-ratio: 1;
-          }
+                img {
+                    height: 140px;
+                }
+
+                span {
+                    color: $white;
+                    position: absolute;
+                    top: 47%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+
+            .house-title {
+                line-height: 1;
+                font-family: "Poppins", sans-serif;
+            }
+
+            .place {
+                color: $light-purple;
+                font-size: 0.8rem;
+                font-weight: 400;
+                line-height: 1;
+                font-family: "Poppins", sans-serif;
+            }
+
+            .area-surroundings {
+                color: $light-purple;
+                font-size: 0.8rem;
+                font-weight: 400;
+                line-height: 1;
+                font-family: "Poppins", sans-serif;
+            }
         }
-      }
     }
 
-    .text-container {
-      @include flex(start, start, column);
-      gap: .5rem;
-      position: relative;
+    .description-container {
+        width: 75%;
+        padding: 1rem;
+        background: $white;
+        border-radius: 1.5rem;
+        font-family: "Poppins", sans-serif;
+        line-height: 1.2;
 
-      .price {
-        position: absolute;
-        bottom: 10px;
-        right: 1rem;
-        
-        img {
-          height: 60px;
+        h1 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-family: "Poppins", sans-serif;
         }
-        
-        span {
-          color: $white;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+
+        // House features styling
+        .house-features {
+            margin: 1.5rem 0;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+
+            h2 {
+                font-size: 1.4rem;
+                color: #333;
+                margin-bottom: 1rem;
+                font-family: "Poppins", sans-serif;
+            }
+
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .feature-item {
+                padding: 0.5rem 0;
+                border-bottom: 1px solid #eee;
+                font-family: "Poppins", sans-serif;
+            }
         }
-      }
 
-      .house-title {
-        line-height: 1;
-        font-family: "Poppins", sans-serif;
-      }
+        .more-btns {
+            display: flex;
+            justify-content: space-between;
 
-      .place {
-        color: $light-purple;
-        font-size: .8rem;
-        font-weight: 400;
-        line-height: 1;
-        font-family: "Poppins", sans-serif;
-      }
+            & > * {
+                position: relative;
+                cursor: pointer;
+                margin-top: 1rem;
 
-      .area-surroundings {
-        color: $light-purple;
-        font-size: .8rem;
-        font-weight: 400;
-        line-height: 1;
-        font-family: "Poppins", sans-serif;
-      }
+                img {
+                    height: 50px;
+                }
+
+                span {
+                    position: absolute;
+                    color: $white;
+                    top: 46%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+        }
     }
-  }
-
-  .description-container {
-    width: 75%;
-    padding: 1rem;
-    background: $white;
-    border-radius: 1.5rem;
-    font-family: "Poppins", sans-serif;
-    line-height: 1.2;
-
-    // House features styling
-    .house-features {
-      margin: 1.5rem 0;
-      padding: 1rem;
-      background-color: #f9f9f9;
-      border-radius: 6px;
-      
-      h2 {
-        font-size: 1.4rem;
-        color: #333;
-        margin-bottom: 1rem;
-        font-family: "Poppins", sans-serif;
-      }
-      
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 0.75rem;
-      }
-      
-      .feature-item {
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #eee;
-        font-family: "Poppins", sans-serif;
-      }
-    }
-
-    .more-btns {
-      display: flex;
-      gap: .5rem;
-
-      & > * {
-        position: relative;
-        cursor: pointer;
-        margin-top: 1rem;
-
-        img {
-          height: 50px;
-        }
-
-        span {
-          position: absolute;
-          color: $white;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      }
-    }
-  }
 }
 
 .image-slider-popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba($black, 0.8);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba($black, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
 
-  .image-slider-content {
-    width: 80%;
-    height: 80%;
-    position: relative;
-    background: $white;
-    border-radius: 8px;
-    padding: 20px;
+    .image-slider-content {
+        width: 80%;
+        height: 80%;
+        position: relative;
+        background: $white;
+        border-radius: 8px;
+        padding: 20px;
 
-    .close-popup-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: $dark-blue;
-    }
-
-    .slider-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 100%;
-
-      .slider-btn {
-        background: rgba($dark-blue, 0.7);
-        color: $white;
-        font-size: 24px;
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        transition: background 0.3s;
-
-        &:hover {
-          background: $dark-blue;
+        .close-popup-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: $dark-blue;
         }
-      }
 
-      .slider-image-container {
-        flex: 1;
-        height: 100%;
-        margin: 0 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        .slider-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
 
-        img {
-          max-width: 100%;
-          max-height: 100%;
-          object-fit: contain;
+            .slider-btn {
+                background: rgba(#61499d, 0.7);
+                color: $white;
+                font-size: 24px;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+                transition: background 0.3s;
+
+                &:hover {
+                    background: $dark-blue;
+                }
+            }
+
+            .slider-image-container {
+                flex: 1;
+                height: 100%;
+                margin: 0 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+            }
         }
-      }
     }
-  }
 }
 
 .send-info-modual {
-  inset: 0;
-  background: rgba($black, 0.8);
-  position: fixed;
-  @include flex;
-  display: none;
-  z-index: 1000;
+    inset: 0;
+    background: rgba($black, 0.8);
+    position: fixed;
+    @include flex;
+    display: none;
+    z-index: 1000;
 
-  .send-info-form {
-    padding: 1rem;
-    background: $white;
-    border-radius: 1rem;
-    font-family: "Poppins", sans-serif;
-    @include flex(start, start, column);
-    width: 350px;
-    gap: .5rem;
-    position: relative;
+    .send-info-form {
+        padding: 1rem;
+        background: $white;
+        border-radius: 1rem;
+        font-family: "Poppins", sans-serif;
+        @include flex(start, start, column);
+        width: 350px;
+        gap: 0.5rem;
+        position: relative;
 
-    .close-btn-info {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    input,
-    button,
-    textarea {
-      width: 100%;
-      padding: .4rem .6rem;
-      font-family: "Poppins", sans-serif;
-      border-radius: .3rem;
-      border: 1px solid darken($light-gray, 20%);
-      resize: none;
-    }
-
-    button {
-      cursor: pointer;
-      background: lighten($light-gray, 5%);
-      transition: .2s background;
-
-      &:hover {
-        background: $light-gray;
-      }
-    }
-    
-    // Admin style form
-    &.admin-style-form {
-      width: 90%;
-      max-width: 500px;
-      padding: 2rem;
-      
-      h2 {
-        margin-bottom: 1.5rem;
-        color: #333;
-        font-size: 1.8rem;
-        font-weight: 600;
-        text-align: center;
-        width: 100%;
-      }
-      
-      .form-group {
-        margin-bottom: 1.25rem;
-        width: 100%;
-      }
-      
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: #333;
-      }
-      
-      .required {
-        color: #e74c3c;
-      }
-      
-      input[type="text"],
-      input[type="email"],
-      textarea {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-        transition: border-color 0.3s;
-        
-        &:focus {
-          border-color: #6c5ce7;
-          outline: none;
-          box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+        .close-btn-info {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
         }
-      }
-      
-      .send-info-btn {
-        background-color: #6c5ce7;
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 500;
-        transition: background-color 0.3s;
-        margin-top: 1rem;
-        
-        &:hover {
-          background-color: #5849be;
+
+        input,
+        button,
+        textarea {
+            width: 100%;
+            padding: 0.4rem 0.6rem;
+            font-family: "Poppins", sans-serif;
+            border-radius: 0.3rem;
+            border: 1px solid darken($light-gray, 20%);
+            resize: none;
         }
-        
-        i {
-          margin-right: 0.5rem;
+
+        button {
+            cursor: pointer;
+            background: lighten($light-gray, 5%);
+            transition: 0.2s background;
+
+            &:hover {
+                background: $light-gray;
+            }
         }
-      }
-      
-      .error {
-        color: #e74c3c;
-        font-size: 0.875rem;
-        margin-top: 0.3rem;
-        display: block;
-      }
+
+        &.admin-style-form {
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+
+            h2 {
+                margin-bottom: 1.5rem;
+                color: #333;
+                font-size: 1.8rem;
+                font-weight: 600;
+                text-align: center;
+                width: 100%;
+            }
+
+            .form-group {
+                margin-bottom: 1.25rem;
+                width: 100%;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: #333;
+            }
+
+            .required {
+                color: #e74c3c;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            textarea {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 1rem;
+                transition: border-color 0.3s;
+
+                &:focus {
+                    border-color: #6c5ce7;
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+                }
+            }
+
+            .send-info-btn {
+                background-color: #61499d;
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                border-radius: 4px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+                transition: background-color 0.3s;
+                margin-top: 1rem;
+
+                &:hover {
+                    background-color: #5849be;
+                }
+
+                i {
+                    margin-right: 0.5rem;
+                }
+            }
+
+            .error {
+                color: #e74c3c;
+                font-size: 0.875rem;
+                margin-top: 0.3rem;
+                display: block;
+            }
+        }
     }
-  }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\FilterController;
 use App\Http\Controllers\AustriaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\RequestsController;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -50,6 +51,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/geo-options/{geoOption}/edit', [AdminController::class, 'geoOptionEdit'])->name('geo-options.edit');
         Route::put('/geo-options/{geoOption}', [AdminController::class, 'geoOptionUpdate'])->name('geo-options.update');
         Route::delete('/geo-options/{geoOption}', [AdminController::class, 'geoOptionDestroy'])->name('geo-options.destroy');
+
+        // House request management routes
+        Route::get('/requests', [RequestsController::class, 'index'])->name('requests.index');
+        Route::put('/requests/{request}/complete', [RequestsController::class, 'markCompleted'])->name('requests.complete');
+        Route::put('/requests/{request}/pending', [RequestsController::class, 'markPending'])->name('requests.pending');
+        Route::delete('/requests/{request}', [RequestsController::class, 'destroy'])->name('requests.destroy');
     });
 });
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\House;
+use App\Models\HouseRequestLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,9 +15,16 @@ class ContactController extends Controller
     public function sendInfo(Request $request, House $house)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'message' => 'required|string',
+        ]);
+        
+        // Store the request in the database
+        HouseRequestLog::create([
+            'house_object_id' => $house->id,
+            'email' => $validated['email'],
+            'message' => $validated['message'],
+            'completed' => false,
         ]);
         
         // Here you would typically send an email
@@ -24,14 +32,13 @@ class ContactController extends Controller
         // Example of sending email:
         /*
         Mail::send('emails.house-inquiry', [
-            'name' => $validated['name'],
             'email' => $validated['email'],
             'message' => $validated['message'],
             'house' => $house
         ], function($message) use ($validated) {
             $message->to('your@email.com', 'Your Name')
                 ->subject('Nieuwe woningaanvraag: ' . $house->name);
-            $message->from($validated['email'], $validated['name']);
+            $message->from($validated['email']);
         });
         */
         
