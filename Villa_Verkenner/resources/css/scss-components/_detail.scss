@@ -69,7 +69,10 @@
             @include flex(start, start, column);
             gap: 0.5rem;
             position: relative;
-
+            margin-bottom: 0.5rem;
+            .place {
+                margin-bottom: 0.2rem;
+            }
             .price {
                 position: absolute;
                 bottom: -2.3rem;

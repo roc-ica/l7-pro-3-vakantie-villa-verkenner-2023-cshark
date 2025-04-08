@@ -99,7 +99,7 @@
             class="send-info-form admin-style-form">
             @csrf
             <i class="fa-solid fa-sharp fa-xmark close-btn-info" id="closeSendInfoBtn"></i>
-            <h2>Meer Info</h2>
+            <h2>Wilt u meer informatie?</h2>
 
             <div class="form-group">
                 <label for="email">E-mail <span class="required">*</span></label>
