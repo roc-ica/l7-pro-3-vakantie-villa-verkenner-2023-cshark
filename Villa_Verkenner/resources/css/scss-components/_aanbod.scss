@@ -403,3 +403,57 @@
       }
     }
   }
+
+
+  @media screen and (max-width: 768px) {
+    .aanbod-main {
+      width: 100%;
+      padding: 0 1rem;
+  
+      .filter-section {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem 1.5rem;
+        margin-bottom: 20px;
+  
+        .filter-one,
+        .filter-two,
+        .filter-three {
+          width: 100%;
+        }
+
+        .filter-three {
+          grid-column: span 2;
+        }
+      }
+  
+      .card-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+  
+        .house {
+          .price {
+            top: 0.5rem;
+            right: 0.5rem;
+  
+            img {
+              height: 80px;
+            }
+          }
+  
+          .see-button {
+            bottom: 0.5rem;
+            right: 0.5rem;
+  
+            img {
+              height: 40px;
+            }
+          }
+  
+          .house-info {
+            padding-right: 150px;
+          }
+        }
+      }
+    }
+  }
+  

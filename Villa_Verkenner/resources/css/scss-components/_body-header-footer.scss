@@ -52,6 +52,16 @@ header {
   }
 }
 
+@media (max-width: 768px) {
+  header {
+    width: 100vw;
+
+    .logo {
+      display: none;
+    }
+  }
+}
+
 footer {
   background-color: $dark-green;
   height: 2.7rem;
