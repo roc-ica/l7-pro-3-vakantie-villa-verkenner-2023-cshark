@@ -75,11 +75,11 @@
             }
             .price {
                 position: absolute;
-                bottom: -2.3rem;
+                bottom: -0.2rem;
                 right: 1rem;
 
                 img {
-                    height: 140px;
+                    height: 50px; // Even smaller from 70px to 60px
                 }
 
                 span {
@@ -88,6 +88,7 @@
                     top: 47%;
                     left: 50%;
                     transform: translate(-50%, -50%);
+                    font-size: 1.3rem; // Increased text size for better readability
                 }
             }
 
@@ -420,19 +421,19 @@
         gap: 0.3rem;
 
         .price {
-          bottom: -1.5rem;
+          bottom: -2rem; // Changed from -1.5rem to move it down more
           right: 0.5rem;
 
           img {
-            height: 50px;
+            height: 40px;
             position: relative;
             bottom: -1rem;
           }
 
           span {
-            font-size: 0.8rem;
+            font-size: 1.1rem;
             position: absolute;
-            top: 75%;
+            top: 77%;
             left: 50%;
             transform: translate(-50%, -50%);
           }
@@ -507,5 +508,8 @@
         font-size: 0.9rem;
       }
     }
+  }
+  .house-title {
+    margin-bottom: 1rem;
   }
 }
