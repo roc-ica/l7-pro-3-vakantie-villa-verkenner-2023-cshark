@@ -12,17 +12,18 @@ use App\Http\Controllers\AustriaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\HousePdfController;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AdminController::class, 'login']);
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
-    
+
     // Protected admin routes using the AdminMiddleware
     Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        
+
         // House management routes
         Route::get('/houses/create', [AdminController::class, 'createHouse'])->name('houses.create');
         Route::post('/houses', [AdminController::class, 'storeHouse'])->name('houses.store');
@@ -31,7 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/houses/{house}', [AdminController::class, 'destroyHouse'])->name('houses.destroy');
         Route::get('/houses/deleted', [AdminController::class, 'deletedHouses'])->name('houses.deleted');
         Route::post('/houses/{house}/restore', [AdminController::class, 'restoreHouse'])->name('houses.restore');
-        
+
         // New routes for image management
         Route::post('/houses/{house}/reorder-images', [AdminController::class, 'reorderImages'])->name('houses.reorder-images');
         Route::delete('/houses/images/{image}', [AdminController::class, 'deleteImage'])->name('houses.delete-image');
@@ -66,6 +67,7 @@ Route::get('/', function () {
 })->name('landing');
 
 Route::get('/over-oostenrijk', [AustriaController::class, 'index'])->name('over-oostenrijk');
+
 Route::get('/aanbod', [FilterController::class, 'filterHouses'])->name('aanbod');
 
 Route::get('/detail/{house}', function (House $house) {
@@ -81,5 +83,8 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// PDF Generation Route
+Route::get('/detail/{house}/pdf', [HousePdfController::class, 'generate'])->name('detail.pdf');
 
 require __DIR__ . '/auth.php';

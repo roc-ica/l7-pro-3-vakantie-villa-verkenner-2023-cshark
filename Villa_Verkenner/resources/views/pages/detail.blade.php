@@ -82,10 +82,13 @@
                     <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="meer info">
                     <span>Meer Info</span>
                 </div>
+                <div>
+
                 <div class="pdf-btn">
-                    <a href="#"></a>
-                    <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="pdf">
-                    <span>PDF</span>
+                    <a href="{{ route('detail.pdf', ['house' => $house->id]) }}" class="btn btn-primary">
+                        <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="pdf">
+                        <span>PDF</span>
+                    </a>
                 </div>
             </div>
         </div>
