@@ -47,7 +47,7 @@
                     @endif
                 </p>
                 <div class="price">
-                    <img src="{{ asset('images/verf/verf_lichtpaars3.png') }}" alt="prijs">
+                    <img src="{{ asset('images/verf/verf_lichtpaars.webp') }}" alt="prijs">
                     <span>€{{ number_format($house->price, 0, ',', '.') }}</span>
                 </div>
             </div>
