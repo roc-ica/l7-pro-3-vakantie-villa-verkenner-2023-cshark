@@ -7,7 +7,7 @@
                 <img src="{{ asset('images/verf/verf_lichtpaars3.png') }}" alt="image">
                 <span>€{{ number_format($house->price, 0, ',', '.') }}</span>
             </div>
-            <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->name }}"
+            <img src="{{ asset('storage/' . $house->primary_image) }}" alt="{{ $house->name }}"
                 onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'" class="house-image">
             <h1 class="house-title">{{ $house->name }}</h1>
             <p class="house-info">{{ $house->address }}</p>
@@ -17,12 +17,12 @@
             </a>
             <br>
             <p class="house-info">
-                {{ $house->rooms }} slaapkamers |
+                {{ $house->rooms }} Slaapkamers |
                 @if ($house->geoOptions->isNotEmpty())
                     {{ $house->geoOptions->pluck('name')->implode(', ') }}
                 @endif
                 @if ($house->features->isNotEmpty())
-                    | Features: {{ $house->features->pluck('name')->implode(', ') }}
+                    | Eigenschappen: {{ $house->features->pluck('name')->implode(', ') }}
                 @endif
             </p>
         </div>

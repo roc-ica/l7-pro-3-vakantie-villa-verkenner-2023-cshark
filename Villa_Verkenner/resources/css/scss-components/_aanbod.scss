@@ -165,6 +165,8 @@
                     height: 100%;
                     @include flex(space-between, center);
                     padding: 1rem;
+
+
                     cursor: pointer;
                     user-select: none;
                     color: $white;
@@ -247,6 +249,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem 3rem;
+      margin-top: 1rem;
   
       .notFound {
           grid-column: 1 / -1;
@@ -326,4 +329,134 @@
             }
         }
     }
-}
+  }
+
+  .card-container {
+    $_inner-radius: .5rem;
+    $_padding: .6rem;
+
+    width: 100%;
+    padding-bottom: 3rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 3rem;
+
+    .house {
+      position: relative;
+      background-color: $white;
+      padding: $_padding;
+      border-radius: $_inner-radius + $_padding;
+      @include flex(start, start, column);
+
+      .price {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        span {
+          color: $white;
+          text-decoration: none;
+          left: 50%;
+          top: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+        }
+
+        img {
+          height: 40px;
+          @include flex;
+        }
+      }
+
+      img {
+        width: 100%;
+        border-radius: $_inner-radius;
+      }
+
+      .house-title {
+        line-height: 1.1;
+        font-weight: 600;
+      }
+
+      .see-button {
+        position: absolute;
+        bottom: .5rem;
+        right: .5rem;
+
+        span {
+          color: $white;
+          text-decoration: none;
+          left: 50%;
+          top: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+        }
+
+        img {
+          height: 60px;
+          @include flex;
+        }
+      }
+
+      .house-info {
+        color: $light-purple;
+        font-size: .8rem;
+        font-weight: 400;
+        line-height: 1;
+      }
+    }
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .aanbod-main {
+      width: 100%;
+      padding: 0 1rem;
+  
+      .filter-section {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem 1.5rem;
+        margin-bottom: 20px;
+  
+        .filter-one,
+        .filter-two,
+        .filter-three {
+          width: 100%;
+        }
+
+        .filter-three {
+          grid-column: span 2;
+        }
+      }
+  
+      .card-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+  
+        .house {
+          .price {
+            top: 0.5rem;
+            right: 0.5rem;
+  
+            img {
+              height: 80px;
+            }
+          }
+  
+          .see-button {
+            bottom: 0.5rem;
+            right: 0.5rem;
+  
+            img {
+              height: 40px;
+            }
+          }
+  
+          .house-info {
+            padding-right: 150px;
+          }
+        }
+      }
+    }
+  }
+  
