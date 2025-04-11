@@ -1,7 +1,7 @@
 <x-layout title="{{ $house->name }}">
     <main class="detail-main"
         data-images='{{ json_encode($house->images->pluck('image_path')->map(function ($path) {return asset('storage/' . $path);})) }}'>
-        
+
         @if(session('success'))
         <div class="success-message">
             <i class="fa-solid fa-check-circle"></i>
@@ -9,7 +9,7 @@
             <button class="close-message"><i class="fa-solid fa-times"></i></button>
         </div>
         @endif
-        
+
         <div class="house-container">
             <div class="image-container">
                 <div class="left-side-image">
@@ -82,9 +82,13 @@
                     <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="meer info">
                     <span>Meer Info</span>
                 </div>
+                <div>
+
                 <div class="pdf-btn">
-                    <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="pdf">
-                    <span>PDF</span>
+                    <a href="{{ route('detail.pdf', ['house' => $house->id]) }}" class="btn btn-primary">
+                        <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="pdf">
+                        <span>PDF</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -148,7 +152,7 @@
                     }, 300);
                 });
             });
-            
+
             // Auto-hide success message after 5 seconds
             const successMessage = document.querySelector('.success-message');
             if (successMessage) {
@@ -180,11 +184,11 @@
             animation: slideIn 0.3s ease;
             transition: opacity 0.3s ease;
         }
-        
+
         .success-message i {
             font-size: 18px;
         }
-        
+
         .close-message {
             margin-left: auto;
             background: none;
@@ -196,11 +200,11 @@
             opacity: 0.7;
             transition: opacity 0.2s;
         }
-        
+
         .close-message:hover {
             opacity: 1;
         }
-        
+
         @keyframes slideIn {
             from {
                 transform: translateX(100px);

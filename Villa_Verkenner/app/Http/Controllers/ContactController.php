@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
-    /**
-     * Handle the request for more information about a house
-     */
     public function sendInfo(Request $request, House $house)
     {
         $validated = $request->validate([
@@ -26,21 +23,7 @@ class ContactController extends Controller
             'message' => $validated['message'],
             'completed' => false,
         ]);
-        
-        // Here you would typically send an email
-        // For now, just return a success message
-        // Example of sending email:
-        /*
-        Mail::send('emails.house-inquiry', [
-            'email' => $validated['email'],
-            'message' => $validated['message'],
-            'house' => $house
-        ], function($message) use ($validated) {
-            $message->to('your@email.com', 'Your Name')
-                ->subject('Nieuwe woningaanvraag: ' . $house->name);
-            $message->from($validated['email']);
-        });
-        */
+    
         
         return redirect()->back()->with('success', 'Uw aanvraag is succesvol verzonden. We nemen zo spoedig mogelijk contact met u op.');
     }

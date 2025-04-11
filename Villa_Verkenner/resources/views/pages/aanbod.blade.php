@@ -1,13 +1,14 @@
 <x-layout title="Aanbod">
     <main class="aanbod-main">
-        <div class="search">
+        <form action="{{ route('aanbod') }}" method="GET" class="search">
             <input type="text" name="search" placeholder="Zoek in Oostenrijk..." value="{{ request('search') }}">
-            <button title="Search"><i class="fa-solid fa-location-dot"></i></button>
-        </div>
+            <button type="submit" title="Search"><i class="fa-solid fa-location-dot"></i></button>
+        </form>
 
         <h1 class="title-top">Huizen in Oostenrijk</h1>
 
         <form id="filterForm" method="GET" action="{{ route('aanbod') }}">
+            <input type="hidden" name="search" value="{{ request('search') }}">
             <div class="filter-section">
                 <div class="filter-one">
                     <div class="values">
@@ -60,7 +61,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </form>
         <!-- House Cards -->
