@@ -16,7 +16,25 @@ class HousePdfController extends Controller
      */
     public function generate(House $house)
     {
-        $pdf = Pdf::loadView('pdf.house', compact('house'));
+        ini_set('memory_limit', '512M');
+
+        $house->load(['features', 'geoOptions', 'images']);
+
+        $pdf = Pdf::setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'isPhpEnabled' => true,
+            'chroot' => base_path(),
+            'defaultFont' => 'sans-serif',
+            'dpi' => 150,
+            'debugKeepTemp' => true,
+            'logOutputFile' => storage_path('logs/dompdf.html'),
+            'pdfBackend' => 'CPDF',
+            'fontDir' => storage_path('fonts'),
+        ]);
+
+        $pdf->loadView('pdf.house', compact('house'));
+
         return $pdf->download($house->name . '.pdf');
     }
 }

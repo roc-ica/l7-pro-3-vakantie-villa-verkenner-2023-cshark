@@ -66,7 +66,25 @@
 <div class="content">
     <h1>{{ $house->name }}</h1>
     <div class="image-wrapper">
-        <img src="{{ asset('storage/houses/' . $house->image) }}" alt="House image" class="house-image">
+        @php
+            try {
+                $imagePath = storage_path('app/public/houses/' . $house->image);
+                $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
+                $imageType = in_array($imageType, ['jpg', 'jpeg', 'png', 'gif']) ? $imageType : 'jpeg';
+                $validImage = file_exists($imagePath) && is_readable($imagePath);
+                $imageData = $validImage ? base64_encode(file_get_contents($imagePath)) : '';
+            } catch (Exception $e) {
+                $imageData = '';
+                $imageType = 'jpeg';
+                $validImage = false;
+            }
+        @endphp
+
+        @if($validImage && $imageData)
+            <img src="data:image/{{ $imageType }};base64,{{ $imageData }}" alt="House image" class="house-image">
+        @else
+            <p>werkt niet</p>
+        @endif
     </div>
     <div class="details">
         <p><strong>Adres:</strong> {{ $house->address }}</p>
@@ -106,8 +124,26 @@
         <div class="gallery-grid">
             @if($house->images && count($house->images) > 0)
                 @foreach($house->images as $image)
+                    @php
+                        try {
+                            $galleryImagePath = storage_path('app/public/houses/' . $image->image_path);
+                            $galleryImageType = pathinfo($galleryImagePath, PATHINFO_EXTENSION);
+                            $galleryImageType = in_array($galleryImageType, ['jpg', 'jpeg', 'png', 'gif']) ? $galleryImageType : 'jpeg';
+                            $validGalleryImage = file_exists($galleryImagePath) && is_readable($galleryImagePath);
+                            $galleryImageData = $validGalleryImage ? base64_encode(file_get_contents($galleryImagePath)) : '';
+                        } catch (Exception $e) {
+                            $galleryImageData = '';
+                            $galleryImageType = 'jpeg';
+                            $validGalleryImage = false;
+                        }
+                    @endphp
+
                     <div class="gallery-item">
-                        <img src="{{ asset('storage/houses/' . $image->image_path) }}" alt="Huis afbeelding">
+                        @if($validGalleryImage && $galleryImageData)
+                            <img src="data:image/{{ $galleryImageType }};base64,{{ $galleryImageData }}" alt="Huis afbeelding">
+                        @else
+                            <p>werkt niet</p>
+                        @endif
                     </div>
                 @endforeach
             @else
