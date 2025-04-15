@@ -34,13 +34,39 @@
         .features-section ul, .geo-options ul {
             padding-left: 20px;
         }
+        .gallery {
+            margin-top: 20px;
+        }
+        .gallery-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .gallery-item {
+            width: calc(33.333% - 10px);
+            margin-bottom: 10px;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        @page {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
 <div class="content">
     <h1>{{ $house->name }}</h1>
     <div class="image-wrapper">
-        <img src="{{ asset('storage/' . $house->primary_image) }}" alt="House image" class="house-image">
+        <img src="{{ asset('storage/houses/' . $house->image) }}" alt="House image" class="house-image">
     </div>
     <div class="details">
         <p><strong>Adres:</strong> {{ $house->address }}</p>
@@ -62,7 +88,7 @@
         </div>
 
         <div class="geo-options">
-            <p><strong>Locatie:</strong></p>
+            <p><strong>Geo-opties:</strong></p>
             @if($house->geoOptions && count($house->geoOptions) > 0)
                 <ul>
                     @foreach($house->geoOptions as $option)
@@ -70,7 +96,22 @@
                     @endforeach
                 </ul>
             @else
-                <p>Geen locatie opties</p>
+                <p>Geen geo-opties beschikbaar</p>
+            @endif
+        </div>
+    </div>
+
+    <div class="gallery">
+        <div class="gallery-title">Fotogalerij</div>
+        <div class="gallery-grid">
+            @if($house->images && count($house->images) > 0)
+                @foreach($house->images as $image)
+                    <div class="gallery-item">
+                        <img src="{{ asset('storage/houses/' . $image->image_path) }}" alt="Huis afbeelding">
+                    </div>
+                @endforeach
+            @else
+                <p>Geen extra afbeeldingen beschikbaar</p>
             @endif
         </div>
     </div>
