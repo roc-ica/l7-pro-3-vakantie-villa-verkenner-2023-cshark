@@ -88,8 +88,11 @@
                         </label>
                         <span class="files-selected">Geen bestanden gekozen</span>
                     </div>
-                    <p class="help-text">De eerste afbeelding wordt automatisch de primaire afbeelding. U kunt maximaal 5 afbeeldingen uploaden.</p>
-                    <div id="image-preview-container" class="image-previews"></div>
+                    <p class="help-text">Selecteer een afbeelding als primair met de radio button. U kunt maximaal 5 afbeeldingen uploaden.</p>
+                    <div class="current-images-container">
+                        <div id="image-preview-container" class="images-grid"></div>
+                    </div>
+                    <input type="hidden" id="primary_image_index" name="primary_image_index" value="0">
                     @error('images')
                         <span class="error">{{ $message }}</span>
                     @enderror
@@ -171,18 +174,88 @@
             
             reader.onload = function(event) {
                 const previewDiv = document.createElement('div');
-                previewDiv.className = 'image-preview';
+                previewDiv.className = 'image-item';
+                previewDiv.dataset.index = i;
+                
+                const imageWrapper = document.createElement('div');
+                imageWrapper.className = 'image-wrapper';
+                
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.alt = "Preview";
+                imageWrapper.appendChild(img);
                 
                 if (i === 0) {
-                    previewDiv.classList.add('primary-image');
-                    previewDiv.innerHTML = `
-                        <div class="primary-badge">Primair</div>
-                        <img src="${event.target.result}" alt="Preview">
-                    `;
-                } else {
-                    previewDiv.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+                    const primBadge = document.createElement('div');
+                    primBadge.className = 'primary-badge';
+                    primBadge.textContent = 'Primair';
+                    imageWrapper.appendChild(primBadge);
                 }
                 
+                previewDiv.appendChild(imageWrapper);
+                
+                const imageActions = document.createElement('div');
+                imageActions.className = 'image-actions';
+                
+                // Create primary radio button
+                const primLabel = document.createElement('label');
+                primLabel.className = 'make-primary-label';
+                
+                const primRadio = document.createElement('input');
+                primRadio.type = 'radio';
+                primRadio.name = 'primary_image_selector';
+                primRadio.value = i;
+                if (i === 0) primRadio.checked = true;
+                
+                primRadio.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Remove all primary badges
+                        document.querySelectorAll('.primary-badge').forEach(badge => {
+                            badge.remove();
+                        });
+                        
+                        // Add primary badge to this image
+                        const wrapper = this.closest('.image-item').querySelector('.image-wrapper');
+                        const badge = document.createElement('div');
+                        badge.className = 'primary-badge';
+                        badge.textContent = 'Primair';
+                        wrapper.appendChild(badge);
+                        
+                        // Update hidden field for primary image index
+                        document.getElementById('primary_image_index').value = this.value;
+                    }
+                });
+                
+                primLabel.appendChild(primRadio);
+                primLabel.appendChild(document.createTextNode('Maak primair'));
+                imageActions.appendChild(primLabel);
+                
+                // Create delete checkbox
+                const deleteLabel = document.createElement('label');
+                deleteLabel.className = 'delete-image-label';
+                
+                const deleteCheckbox = document.createElement('input');
+                deleteCheckbox.type = 'checkbox';
+                deleteCheckbox.name = 'delete_image_indexes[]';
+                deleteCheckbox.value = i;
+                deleteCheckbox.addEventListener('change', function() {
+                    const item = this.closest('.image-item');
+                    if (this.checked) {
+                        item.classList.add('marked-for-deletion');
+                        item.style.opacity = '0.5';
+                        item.style.borderColor = '#f44336';
+                    } else {
+                        item.classList.remove('marked-for-deletion');
+                        item.style.opacity = '1';
+                        item.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    }
+                });
+                
+                deleteLabel.appendChild(deleteCheckbox);
+                deleteLabel.appendChild(document.createTextNode('Verwijderen'));
+                imageActions.appendChild(deleteLabel);
+                
+                previewDiv.appendChild(imageActions);
                 previewContainer.appendChild(previewDiv);
             };
             
@@ -191,6 +264,47 @@
     });
 
     document.querySelector('form.admin-form').addEventListener('submit', function(e) {
+        // Remove files marked for deletion
+        const filesToDelete = document.querySelectorAll('input[name="delete_image_indexes[]"]:checked');
+        if (filesToDelete.length > 0) {
+            const inputElement = document.getElementById('images');
+            const files = inputElement.files;
+            if (files.length > 0) {
+                // Create a new FileList without the deleted files
+                const dataTransfer = new DataTransfer();
+                const deleteIndexes = Array.from(filesToDelete).map(cb => parseInt(cb.value));
+                
+                // Add only non-deleted files to the new list
+                Array.from(files).forEach((file, index) => {
+                    if (!deleteIndexes.includes(index)) {
+                        dataTransfer.items.add(file);
+                    }
+                });
+                
+                // Update file input with new file list
+                inputElement.files = dataTransfer.files;
+                
+                // If no files remain, show error
+                if (inputElement.files.length === 0) {
+                    e.preventDefault();
+                    alert('Upload a.u.b. ten minste één afbeelding voor deze woning');
+                    return false;
+                }
+                
+                // Update primary image index if needed
+                const primaryIndex = parseInt(document.getElementById('primary_image_index').value);
+                if (deleteIndexes.includes(primaryIndex)) {
+                    // Find first non-deleted image and make it primary
+                    const firstAvailableIndex = Array.from(files)
+                        .findIndex((file, index) => !deleteIndexes.includes(index));
+                    
+                    if (firstAvailableIndex !== -1) {
+                        document.getElementById('primary_image_index').value = firstAvailableIndex;
+                    }
+                }
+            }
+        }
+
         const features = document.querySelectorAll('.feature-checkbox:checked');
         if (features.length === 0) {
             e.preventDefault();

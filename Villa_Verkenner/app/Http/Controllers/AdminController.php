@@ -82,6 +82,7 @@ class AdminController extends Controller
             'images.*' => 'image|max:10240',
             'features' => 'required|array|min:1',
             'geo_options' => 'required|array|min:1',
+            'primary_image_index' => 'required|integer|min:0',
         ]);
 
         $validated['popular'] = $request->has('popular') ? true : false;
@@ -92,16 +93,25 @@ class AdminController extends Controller
 
         // Process images
         if ($request->hasFile('images')) {
+            // Get the primary image index from the request
+            $primaryIndex = (int)$request->input('primary_image_index');
+            
+            // Make sure the primary index is valid
+            if ($primaryIndex < 0 || $primaryIndex >= count($request->file('images'))) {
+                $primaryIndex = 0; // Default to first image if invalid
+            }
+            
             foreach ($request->file('images') as $index => $image) {
                 $imagePath = $image->store('houses', 'public');
 
                 $house->images()->create([
                     'image_path' => $imagePath,
-                    'is_primary' => $index === 0,
+                    'is_primary' => $index === $primaryIndex,
                     'display_order' => $index,
                 ]);
 
-                if ($index === 0) {
+                // Set the primary image for the house
+                if ($index === $primaryIndex) {
                     $house->update(['image' => $imagePath]);
                 }
             }
