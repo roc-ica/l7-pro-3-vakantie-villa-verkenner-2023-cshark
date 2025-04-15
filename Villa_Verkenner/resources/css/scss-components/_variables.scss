@@ -1,0 +1,15 @@
+// variables
+$black: #111;
+$white: #f9f9f9;
+$dark-green: #203f51;
+$dark-purple: #3a2c5f;
+$light-purple: #61499d;
+$dark-blue: #345481;
+$light-gray: #d9d9d9;
+
+@mixin flex($justify: center, $align: center, $direction: row) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}
