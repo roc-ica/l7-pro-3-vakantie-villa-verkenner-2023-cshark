@@ -22,7 +22,7 @@
             </div>
             <div class="stat-card">
                 <h3>Actieve Woningen</h3>
-                <p>{{ \App\Models\House::count() }}</p>
+                <p>{{ \App\Models\House::where('status', "!=", 'Verkocht')->whereNull('deleted_at')->count() }}</p>
             </div>
             <div class="stat-card">
                 <h3>Populaire Woningen</h3>
