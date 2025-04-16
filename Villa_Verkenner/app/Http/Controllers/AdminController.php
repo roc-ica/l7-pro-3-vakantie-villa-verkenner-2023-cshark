@@ -90,22 +90,24 @@ class AdminController extends Controller
 
         $house = House::create($validated);
 
-        // Process images
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $index => $image) {
-                $imagePath = $image->store('houses', 'public');
+        $primaryIndex = (int) $request->input('primary_image_index', 0); // standaard = 0
 
-                $house->images()->create([
-                    'image_path' => $imagePath,
-                    'is_primary' => $index === 0,
-                    'display_order' => $index,
-                ]);
-
-                if ($index === 0) {
-                    $house->update(['image' => $imagePath]);
-                }
+        foreach ($request->file('images') as $index => $image) {
+            $imagePath = $image->store('houses', 'public');
+        
+            $isPrimary = $index === $primaryIndex;
+        
+            $house->images()->create([
+                'image_path' => $imagePath,
+                'is_primary' => $isPrimary,
+                'display_order' => $index,
+            ]);
+        
+            if ($isPrimary) {
+                $house->update(['image' => $imagePath]);
             }
         }
+        
 
         // Sync relationships
         if ($request->has('features')) {
