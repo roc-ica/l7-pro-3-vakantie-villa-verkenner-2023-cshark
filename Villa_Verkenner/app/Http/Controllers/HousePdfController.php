@@ -3,38 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\House;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HousePdfController extends Controller
 {
-    /**
-     * Generate and download a PDF for the given house.
-     *
-     * @param \App\Models\House $house
-     * @return \Illuminate\Http\Response
-     */
     public function generate(House $house)
     {
-        ini_set('memory_limit', '512M');
+        $house->load('images', 'features', 'geoOptions');
 
-        $house->load(['features', 'geoOptions', 'images']);
+        try {
+            $domain = request()->getSchemeAndHttpHost();
 
-        $pdf = Pdf::setOptions([
-            'isHtml5ParserEnabled' => true,
-            'isRemoteEnabled' => true,
-            'isPhpEnabled' => true,
-            'chroot' => base_path(),
-            'defaultFont' => 'sans-serif',
-            'dpi' => 150,
-            'debugKeepTemp' => true,
-            'logOutputFile' => storage_path('logs/dompdf.html'),
-            'pdfBackend' => 'CPDF',
-            'fontDir' => storage_path('fonts'),
-        ]);
+            $house->primary_image_url = $domain . '/storage/' . $house->primary_image;
 
-        $pdf->loadView('pdf.house', compact('house'));
+            $limitedImages = $house->images->where('is_primary', false)->take(4);
+            $imageUrls = [];
 
-        return $pdf->download($house->name . '.pdf');
+            foreach ($limitedImages as $image) {
+                $imageUrls[] = [
+                    'url' => $domain . '/storage/' . $image->image_path,
+                    'alt' => $house->name
+                ];
+            }
+
+            $house->image_urls = $imageUrls;
+
+            $pdf = PDF::setOptions([
+                'defaultFont' => 'sans-serif',
+                'isRemoteEnabled' => true,
+                'isHtml5ParserEnabled' => true,
+                'enable_php' => true,
+            ])->loadView('pdf.house', compact('house'));
+
+            $pdf->setPaper('a4', 'portrait');
+
+            return $pdf->download($house->name . '.pdf');
+        } catch (\Exception $e) {
+            \Log::error('PDF Generation Error: ' . $e->getMessage());
+            \Log::error($e->getTraceAsString());
+
+            return back()->with('error', 'Er is een probleem opgetreden bij het genereren van de PDF. ' . $e->getMessage());
+        }
     }
 }

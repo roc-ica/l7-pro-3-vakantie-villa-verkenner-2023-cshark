@@ -1,156 +1,132 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <title>{{ $house->name }} - PDF</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{{ $house->name }}</title>
     <style>
         body {
-            font-family: Poppins, sans-serif;
-            margin: 0;
-            padding: 0;
-            position: relative;
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.5;
         }
-        .content {
-            padding: 80px 30px 30px 30px;
-            position: relative;
-            z-index: 1;
+
+        .container {
+            width: 100%;
+            padding: 10px;
         }
-        img.house-image {
-            max-width: 100%;
-            max-height: 300px;
-        }
+
         h1 {
-            margin-top: 0;
-        }
-        .details {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 15px;
-        }
-        .features-section, .geo-options {
-            margin-top: 10px;
-        }
-        .features-section ul, .geo-options ul {
-            padding-left: 20px;
-        }
-        .gallery {
-            margin-top: 20px;
-        }
-        .gallery-title {
-            font-size: 18px;
+            color: #4682B4;
+            font-size: 22px;
             font-weight: bold;
             margin-bottom: 10px;
         }
-        .gallery-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .gallery-item {
-            width: calc(33.333% - 10px);
+
+        h2 {
+            color: #4682B4;
+            font-size: 18px;
+            margin-top: 15px;
             margin-bottom: 10px;
         }
-        .gallery-item img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            border-radius: 4px;
+
+        .address {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
         }
-        @page {
-            margin: 0;
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4682B4;
+            margin: 15px 0;
+        }
+
+        .section {
+            margin: 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .features {
+            margin: 10px 0;
+        }
+
+        .feature {
+            margin-bottom: 5px;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .main-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .image-gallery {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .gallery-image {
+            max-width: 45%;
+            margin-right: 2%;
+            margin-bottom: 10px;
+            height: auto;
         }
     </style>
 </head>
-<body>
-<div class="content">
-    <h1>{{ $house->name }}</h1>
-    <div class="image-wrapper">
-        @php
-            try {
-                $imagePath = storage_path('app/public/houses/' . $house->image);
-                $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
-                $imageType = in_array($imageType, ['jpg', 'jpeg', 'png', 'gif']) ? $imageType : 'jpeg';
-                $validImage = file_exists($imagePath) && is_readable($imagePath);
-                $imageData = $validImage ? base64_encode(file_get_contents($imagePath)) : '';
-            } catch (Exception $e) {
-                $imageData = '';
-                $imageType = 'jpeg';
-                $validImage = false;
-            }
-        @endphp
 
-        @if($validImage && $imageData)
-            <img src="data:image/{{ $imageType }};base64,{{ $imageData }}" alt="House image" class="house-image">
-        @else
-            <p>werkt niet</p>
+<body>
+    <div class="container">
+        <h1>{{ $house->name }}</h1>
+        <div class="address">{{ $house->address }}</div>
+
+        @if ($house->geoOptions->isNotEmpty())
+        <div>{{ $house->geoOptions->pluck('name')->implode(', ') }}</div>
+        @endif
+
+        <div class="price">€{{ number_format($house->price, 0, ',', '.') }}</div>
+
+        <div class="section">
+            <img class="main-image" src="{{ $house->primary_image_url }}" alt="{{ $house->name }}">
+        </div>
+
+        <div class="section">
+            <h2>Beschrijving</h2>
+            <p>{{ $house->description }}</p>
+        </div>
+
+        <div class="section">
+            <h2>Kenmerken</h2>
+            <div class="features">
+                @if ($house->features->isNotEmpty())
+                @foreach ($house->features as $feature)
+                <div class="feature">• {{ $feature->name }}</div>
+                @endforeach
+                @endif
+                <div class="feature">• Slaapkamers: {{ $house->rooms }}</div>
+                <div class="feature">• Status: {{ $house->status }}</div>
+            </div>
+        </div>
+
+        @if(count($house->image_urls) > 0)
+        <div class="page-break"></div>
+
+        <div class="section">
+            <h2>Foto's</h2>
+            <div class="image-gallery">
+                @foreach($house->image_urls as $index => $image)
+                <img class="gallery-image" src="{{ $image['url'] }}" alt="{{ $image['alt'] }}">
+                @endforeach
+            </div>
+        </div>
         @endif
     </div>
-    <div class="details">
-        <p><strong>Adres:</strong> {{ $house->address }}</p>
-        <p><strong>Beschrijving:</strong> {{ $house->description }}</p>
-        <p><strong>Prijs:</strong> €{{ number_format($house->price, 0, ',', '.') }}</p>
-        <p><strong>Kamers:</strong> {{ $house->rooms }}</p>
-
-        <div class="features-section">
-            <p><strong>Eigenschappen:</strong></p>
-            @if($house->features && count($house->features) > 0)
-                <ul>
-                    @foreach($house->features as $feature)
-                        <li>{{ $feature->name }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <p>Geen eigenschappen beschikbaar</p>
-            @endif
-        </div>
-
-        <div class="geo-options">
-            <p><strong>Geo-opties:</strong></p>
-            @if($house->geoOptions && count($house->geoOptions) > 0)
-                <ul>
-                    @foreach($house->geoOptions as $option)
-                        <li>{{ $option->name }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <p>Geen geo-opties beschikbaar</p>
-            @endif
-        </div>
-    </div>
-
-    <div class="gallery">
-        <div class="gallery-title">Fotogalerij</div>
-        <div class="gallery-grid">
-            @if($house->images && count($house->images) > 0)
-                @foreach($house->images as $image)
-                    @php
-                        try {
-                            $galleryImagePath = storage_path('app/public/houses/' . $image->image_path);
-                            $galleryImageType = pathinfo($galleryImagePath, PATHINFO_EXTENSION);
-                            $galleryImageType = in_array($galleryImageType, ['jpg', 'jpeg', 'png', 'gif']) ? $galleryImageType : 'jpeg';
-                            $validGalleryImage = file_exists($galleryImagePath) && is_readable($galleryImagePath);
-                            $galleryImageData = $validGalleryImage ? base64_encode(file_get_contents($galleryImagePath)) : '';
-                        } catch (Exception $e) {
-                            $galleryImageData = '';
-                            $galleryImageType = 'jpeg';
-                            $validGalleryImage = false;
-                        }
-                    @endphp
-
-                    <div class="gallery-item">
-                        @if($validGalleryImage && $galleryImageData)
-                            <img src="data:image/{{ $galleryImageType }};base64,{{ $galleryImageData }}" alt="Huis afbeelding">
-                        @else
-                            <p>werkt niet</p>
-                        @endif
-                    </div>
-                @endforeach
-            @else
-                <p>Geen extra afbeeldingen beschikbaar</p>
-            @endif
-        </div>
-    </div>
-</div>
 </body>
+
 </html>
