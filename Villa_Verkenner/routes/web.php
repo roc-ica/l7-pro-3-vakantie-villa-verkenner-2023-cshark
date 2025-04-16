@@ -12,7 +12,7 @@ use App\Http\Controllers\AustriaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RequestsController;
-use App\Http\Controllers\HousePdfController;
+use App\Http\Controllers\HouseFlyerController;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// PDF Generation Route
-Route::get('/detail/{house}/pdf', [HousePdfController::class, 'generate'])->name('detail.pdf');
+// Flyer Generation Route
+Route::get('/detail/{house}/flyer', [HouseFlyerController::class, 'generate'])->name('detail.flyer');
 
 require __DIR__ . '/auth.php';

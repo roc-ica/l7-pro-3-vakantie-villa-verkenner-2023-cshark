@@ -20,20 +20,20 @@
                     <button id="seeMoreBtnDetail" class="see-more-btn">Bekijk meer</button>
                     <div class="top-right-image">
                         @if ($house->images->where('is_primary', false)->count() > 0)
-                            <img src="{{ asset('storage/' . $house->images->where('is_primary', false)->first()->image_path) }}"
-                                alt="{{ $house->name }}"
-                                onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'">
+                        <img src="{{ asset('storage/' . $house->images->where('is_primary', false)->first()->image_path) }}"
+                            alt="{{ $house->name }}"
+                            onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'">
                         @else
-                            <img src="{{ asset('storage/houses/defaultImage.webp') }}" alt="{{ $house->name }}">
+                        <img src="{{ asset('storage/houses/defaultImage.webp') }}" alt="{{ $house->name }}">
                         @endif
                     </div>
                     <div class="bottom-right-image">
                         @if ($house->images->where('is_primary', false)->count() > 1)
-                            <img src="{{ asset('storage/' . $house->images->where('is_primary', false)->skip(1)->first()->image_path) }}"
-                                alt="{{ $house->name }}"
-                                onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'">
+                        <img src="{{ asset('storage/' . $house->images->where('is_primary', false)->skip(1)->first()->image_path) }}"
+                            alt="{{ $house->name }}"
+                            onerror="this.src='{{ asset('storage/houses/defaultImage.webp') }}'">
                         @else
-                            <img src="{{ asset('storage/houses/defaultImage.webp') }}" alt="{{ $house->name }}">
+                        <img src="{{ asset('storage/houses/defaultImage.webp') }}" alt="{{ $house->name }}">
                         @endif
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                 <p class="place">{{ $house->address }}</p>
                 <p class="area-surroundings">
                     @if ($house->geoOptions->isNotEmpty())
-                        {{ $house->geoOptions->pluck('name')->implode(', ') }}
+                    {{ $house->geoOptions->pluck('name')->implode(', ') }}
                     @endif
                 </p>
                 <div class="price">
@@ -61,11 +61,11 @@
                 <h2>Kenmerken</h2>
                 <div class="features-grid">
                     @if ($house->features->isNotEmpty())
-                        @foreach ($house->features as $feature)
-                            <div class="feature-item">
-                                <strong>{{ $feature->name }}</strong>
-                            </div>
-                        @endforeach
+                    @foreach ($house->features as $feature)
+                    <div class="feature-item">
+                        <strong>{{ $feature->name }}</strong>
+                    </div>
+                    @endforeach
                     @endif
                     <div class="feature-item">
                         <strong>Slaapkamers:</strong> {{ $house->rooms }}
@@ -83,15 +83,14 @@
                     <span>Meer Info</span>
                 </div>
                 <div>
-
-                <div class="pdf-btn">
-                    <a href="{{ route('detail.pdf', ['house' => $house->id]) }}" class="btn btn-primary">
-                        <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="pdf">
-                        <span>PDF</span>
-                    </a>
+                    <div class="pdf-btn">
+                        <a href="{{ route('detail.flyer', ['house' => $house->id]) }}" class="btn btn-primary" target="_blank">
+                            <img src="{{ asset('images/verf/verf_blauw1.png') }}" alt="flyer">
+                            <span>PDF Flyer</span>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
     </main>
 
     <div class="image-slider-popup" id="imageSliderPopup">
@@ -118,7 +117,7 @@
                 <label for="email">E-mail <span class="required">*</span></label>
                 <input type="email" id="email" name="email" placeholder="Uw e-mailadres" required>
                 @error('email')
-                    <span class="error">{{ $message }}</span>
+                <span class="error">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -126,7 +125,7 @@
                 <label for="message">Bericht <span class="required">*</span></label>
                 <textarea placeholder="Uw bericht" name="message" id="message" rows="7" required></textarea>
                 @error('message')
-                    <span class="error">{{ $message }}</span>
+                <span class="error">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -210,6 +209,7 @@
                 transform: translateX(100px);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
