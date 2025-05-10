@@ -1,0 +1,71 @@
+// body header and footer
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: url('/images/background.jpg') no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+
+  &::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: rgba($black, 0.5);
+    z-index: -1;
+  }
+}
+
+main {
+  flex: 1;
+}
+
+header {
+  height: 5rem;
+  @include flex;
+  position: relative;
+
+  .logo {
+    height: 60%;
+    position: absolute;
+    left: 1rem;
+  }
+
+  nav {
+    @include flex;
+    gap: 3rem;
+
+    a {
+      color: $white;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    width: 100vw;
+
+    .logo {
+      display: none;
+    }
+  }
+}
+
+footer {
+  background-color: $dark-green;
+  height: 2.7rem;
+  @include flex;
+  color: $white;
+  font-size: 0.9rem;
+}

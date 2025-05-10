@@ -1,0 +1,434 @@
+.over-oostenrijk {
+    /* Stijl voor de koptekst */
+    .koptext {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .koptext h1 {
+        font-size: 3rem;
+        color: $white;
+        margin-bottom: 20px;
+    }
+
+    .koptext p {
+        font-size: 1.5rem;
+        color: $white;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    /* Flexbox container voor de main-content */
+    .main-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 40px; /* Vergroot de ruimte tussen de secties */
+        padding: 20px;
+    }
+
+    /* Stijl voor de linkerkant (tekst en info blok) */
+    .left-content {
+        width: 48%; /* Breedte vergroot om meer ruimte te geven */
+        padding: 20px;
+    }
+
+    /* Alleen Oostenrijk Info naar rechts verplaatsen */
+    .info-title {
+        font-size: 2rem;
+        color: $white;
+        margin-bottom: 0;
+        padding-left: 50px; /* Alleen de titel verschuiven */
+    }
+
+    /* Stijl voor het info blok zodat het precies onder de titel staat */
+    .info-block {
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-left: 28px;
+    }
+
+    .info-block p {
+        font-size: 1.2rem;
+        color: $white;;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    .populaire-huizen-title {
+        font-size: 1.8rem;
+        color: $white;
+        margin-top: 50px; /* Vergroot de ruimte boven de titel */
+        margin-bottom: -30px; /* Verklein de ruimte onder de titel */
+        margin-left: 4px; /* Verschuif de titel naar links */
+    }
+    
+
+    .populaire-huizen {
+        display: flex;
+        justify-content: space-between;
+        gap: 65px; /* Vergroot de ruimte tussen de huizen */
+        flex-wrap: nowrap; /* Forceer één rij, zonder wrappen */
+        margin-bottom: 20px; /* Zet de huizen een beetje boven de footer */
+        margin-top: 50px; /* Dit voegt ruimte boven de vakjes toe, zodat ze iets naar beneden schuiven */
+    
+    }
+
+    .huis-box {
+        flex: 0 0 calc((200% - 40px) / 3);
+        /* Dit geeft elke kaart een basisbreedte die groter is dan de vorige berekening */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #fff;
+        transition: transform 0.1s ease-in-out;
+        padding: 10px;
+        margin-bottom: 30px;
+
+    }
+
+    .huis-box:hover {
+        transform: scale(1.02); 
+    }
+
+    .huis-info {
+        position: relative;
+    }
+
+    .huis-box img {
+        width: 100%;
+        height: auto;   
+        border-radius: 10px;
+        display: block;
+        
+    }
+
+    .prijs {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #ffffff;
+        background-color: #61499E;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .huis-details {
+        padding: 0px; /* Vergroot de padding voor een ruimere uitstraling */
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+       
+    }
+
+    .huis-title {
+        font-size: 1.6rem; /* Grotere titel voor meer impact */
+        color: #333;
+        margin-bottom: 10px;
+        text-align: left; /* Zorgt ervoor dat de tekst links uitgelijnd blijft */
+    }
+
+    .huis-adres {
+        font-size: 1.1rem; /* Kleinere tekstgrootte */
+        color: #61499E;
+        margin-bottom: 5px;
+        text-align: left; /* Zorgt ervoor dat de tekst links uitgelijnd blijft */
+    }
+
+    .huis-details {
+        text-align: right; /* Plaatst de knop aan de rechterkant */
+    }
+
+    .bekijk-link:hover {
+        background-color: #49357A;
+    }
+
+    /* Stijl voor de rechterkant (afbeelding) */
+    .right-content {
+        position: absolute;
+        top: 335px; /* Afstand vanaf de bovenkant */
+        right: 20px; /* Afstand vanaf de rechterkant */
+        width: 48%; /* Breedte vergroot om meer ruimte te geven */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    /* Stijl voor de afbeelding */
+    .right-content img {
+        width: 70%; /* Maak de afbeelding kleiner */
+        height: auto;
+        border-radius: 8px;
+        border: 4px solid white;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    }
+
+    .see-button {
+        position: relative; /* Change from absolute to relative */
+        display: block;
+        margin-top: 10px; /* Add space between address and button */
+        width: 50%;
+        align-self: flex-end;
+        
+        span {
+            color: $white;
+            text-decoration: none;
+            left: 50%;
+            top: 50%; 
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+
+        img {
+            height: 50px; 
+        }
+    }
+
+   
+
+    .oostenrijkveeg-image {
+        position: absolute;
+        width: 38%; /* Optimal width for desktop */
+        height: auto;
+        border-radius: 8px; 
+        top: -1.7rem; /* Position at the very top */
+        right: 0; /* Position at the very right */
+        z-index: 10; /* Ensure it stays on top */
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        span {
+            color: white;
+            text-decoration: none;
+            position: absolute;
+            left: 50%;
+            top: 50%; /* Center vertically */
+            transform: translate(-50%, -50%); /* Perfect centering */
+            font-size: 1rem;
+            width: 100%;
+            text-align: center;
+            z-index: 11;
+        }
+        
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+}    
+/* Responsive fix voor afbeeldingen in huis-box */
+@media (max-width: 768px) {
+    .over-oostenrijk .main-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 10px;
+    }
+
+    .over-oostenrijk .left-content,
+    .over-oostenrijk .right-content {
+        width: 100%;
+        padding: 10px;
+        position: static;
+    }
+
+    .over-oostenrijk .right-content img {
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
+    }
+
+    .over-oostenrijk .populaire-huizen {
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        width: 100%;
+    }
+
+    .over-oostenrijk .huis-box {
+        width: 95%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Specifiek deze regel aanpassen om img kleiner te maken */
+    .over-oostenrijk .huis-box img {
+        width: 80%; /* kleiner gemaakt naar wens */
+        height: auto;
+        border-radius: 8px;
+        margin: 10px auto;
+    }
+
+    .over-oostenrijk .prijs {
+        font-size: 1rem;
+        padding: 6px 12px;
+    }
+
+    .over-oostenrijk .huis-details {
+        padding: 0px;
+        text-align: center;
+    }
+
+    .over-oostenrijk .huis-title {
+        font-size: 1.4rem;
+    }
+
+    .over-oostenrijk,
+    .over-oostenrijk {
+        width: 100%;
+        padding: 12px 20px;
+        position: static;
+        display: inline-block;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .over-oostenrijk .info-block {
+        margin-left: 0;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .over-oostenrijk .info-title {
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .over-oostenrijk .koptext h1 {
+        font-size: 2rem;
+    }
+
+    .over-oostenrijk .koptext p {
+        font-size: 1.2rem;
+    }
+
+    .over-oostenrijk .populaire-huizen-title {
+        margin-bottom: 10px;
+        margin-left: 0;
+        font-size: 1.6rem;
+    }
+
+    .over-oostenrijk .oostenrijkveeg-image {
+        position: absolute;
+        width: 35%; /* Slightly smaller on tablets */
+        top: 0rem; /* Stay at the top */
+        right: 0; /* Stay at the right */
+        z-index: 10;
+    }
+
+    .over-oostenrijk .see-button {
+        width: 40%; /* Make button smaller */
+        margin: 15px auto 0 auto; /* Center the button with margin */
+        align-self: center; /* Center horizontally */
+        position: relative; /* Ensure position context for absolute child */
+    }
+    
+    .over-oostenrijk .see-button span {
+        font-size: 0.9rem;
+        position: absolute;
+        left: 50%;
+        top: 50%; /* Always center vertically */
+        transform: translate(-50%, -50%); /* Perfect centering */
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Extra kleine schermen (<480px) */
+@media (max-width: 480px) {
+    .over-oostenrijk .huis-box img {
+        width: 90%; /* op kleine schermen weer iets groter, maar niet te groot */
+    
+    }
+
+    .over-oostenrijk .koptext h1 {
+        font-size: 1.8rem;
+    }
+
+    .over-oostenrijk .koptext p {
+        font-size: 1rem;
+    }
+
+   
+}
+/* Media query voor responsive vakjes zoals in jouw voorbeeld */
+@media (max-width: 768px) {
+    .over-oostenrijk .populaire-huizen {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .over-oostenrijk .huis-box {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 20px;
+    }
+
+    .over-oostenrijk .huis-box img {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .over-oostenrijk .see-button {
+        width: 70%; /* Even smaller on mobile */
+        position: relative; /* Ensure position context */
+    }
+
+    .over-oostenrijk .oostenrijkveeg-image {
+        width: 45%;
+        top: -1rem;
+        right: 1rem;
+    }
+
+    .over-oostenrijk .huis-details {
+        text-align: center;
+        padding: 0px;
+    }
+
+    .over-oostenrijk .huis-title,
+    .over-oostenrijk .huis-adres,
+    .over-oostenrijk .huis-plaatsnaam {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .over-oostenrijk .populaire-huizen {
+        gap: 20px;
+    }
+
+    .over-oostenrijk .huis-box {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .over-oostenrijk .oostenrijkveeg-image {
+        width: 42%; /* Slightly larger percentage on small screens */
+        top: -1rem;
+        right: 0rem;
+    }
+    
+    .over-oostenrijk .oostenrijkveeg-image span {
+        font-size: 0.9rem; /* Smaller font on mobile */
+    }
+
+    .over-oostenrijk .see-button img {
+        height: auto;
+        width: 100%; /* Ensure image fills container */
+    }
+
+    .over-oostenrijk .see-button span {
+        font-size: 1.2rem;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%); /* Perfect centering */
+        width: 100%;
+        text-align: center;
+    }
+}
